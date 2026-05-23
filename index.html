@@ -1,63 +1,1034 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>autoinference</title>
-  <meta name="description" content="A library for autoinference. Work in progress.">
-  <meta property="og:title" content="autoinference">
-  <meta property="og:description" content="A library for autoinference. Work in progress.">
-  <meta property="og:url" content="https://autoinference.org">
-  <meta property="og:type" content="website">
-  <style>
-    :root { --bg: #fff; --fg: #1a1a1a; --muted: #6a6a6a; --accent: #0066ff; --code-bg: #f4f4f4; --border: #e5e5e5; }
-    @media (prefers-color-scheme: dark) {
-      :root { --bg: #0d0d0d; --fg: #f5f5f5; --muted: #999; --accent: #5b9dff; --code-bg: #1c1c1c; --border: #2a2a2a; }
-    }
-    * { box-sizing: border-box; }
-    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: var(--bg); color: var(--fg); line-height: 1.6; -webkit-font-smoothing: antialiased; }
-    .container { max-width: 720px; margin: 0 auto; padding: 4rem 1.5rem; }
-    h1 { font-size: 3rem; font-weight: 800; letter-spacing: -0.03em; margin: 0 0 0.5rem; }
-    .tagline { color: var(--muted); font-size: 1.15rem; margin-bottom: 0.5rem; }
-    .status { display: inline-block; font-size: 0.75rem; font-weight: 600; padding: 0.25rem 0.6rem; border-radius: 4px; background: var(--code-bg); color: var(--muted); margin-bottom: 3rem; text-transform: uppercase; letter-spacing: 0.05em; }
-    h2 { font-size: 1.25rem; margin: 3rem 0 1rem; font-weight: 600; }
-    table { width: 100%; border-collapse: collapse; }
-    th, td { text-align: left; padding: 0.75rem 0.5rem; border-bottom: 1px solid var(--border); }
-    th { font-weight: 600; font-size: 0.85rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
-    code { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace; background: var(--code-bg); padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.9em; }
-    a { color: var(--accent); text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    .links { display: flex; flex-wrap: wrap; gap: 1.5rem; margin-top: 1rem; }
-    footer { margin-top: 5rem; padding-top: 2rem; border-top: 1px solid var(--border); color: var(--muted); font-size: 0.9rem; }
-  </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#07070C" />
+  <title>autoinference — Peak inference performance. Zero ML engineering.</title>
+  <meta name="description" content="autoinference picks the optimal engine, tunes every config, writes custom kernels, and stress-tests the result. Drop in any model, any hardware. Ship inference at the limit of silicon." />
+  <meta name="keywords" content="inference, vLLM, SGLang, TensorRT-LLM, LLM serving, GPU optimization, agentic, autonomous, kernel optimization" />
+
+  <meta property="og:title" content="autoinference — Peak inference performance, autonomously" />
+  <meta property="og:description" content="Drop in any model, any hardware. Our agentic harness picks the optimal engine, tunes every config, writes custom kernels, and stress-tests the result." />
+  <meta property="og:url" content="https://autoinference.org" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://autoinference.org/og.png" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@autoinference_" />
+  <meta name="twitter:title" content="autoinference — Peak inference performance, autonomously" />
+  <meta name="twitter:description" content="Drop in any model, any hardware. Agentic optimization for production inference." />
+
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238B5CF6'/%3E%3Cstop offset='0.5' stop-color='%233B82F6'/%3E%3Cstop offset='1' stop-color='%2306B6D4'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='24' height='24' rx='6' fill='url(%23g)'/%3E%3Cpath d='M7 16 L12 6 L17 16 M9 13 L15 13' stroke='white' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="container">
-    <h1>autoinference</h1>
-    <p class="tagline">A library for autoinference.</p>
-    <span class="status">Work in progress</span>
 
-    <h2>Install</h2>
-    <table>
-      <thead><tr><th>Ecosystem</th><th>Command</th></tr></thead>
-      <tbody>
-        <tr><td>Python (pip)</td><td><code>pip install autoinference</code></td></tr>
-        <tr><td>Python (uv)</td><td><code>uv add autoinference</code></td></tr>
-        <tr><td>Node.js</td><td><code>npm install autoinference</code></td></tr>
-        <tr><td>Rust</td><td><code>cargo add autoinference</code></td></tr>
-        <tr><td>Go</td><td><code>go get github.com/autoinference/autoinference</code></td></tr>
-      </tbody>
-    </table>
+  <!-- =========================================================
+       BACKGROUND LAYERS
+       ========================================================= -->
+  <div class="bg-grid" aria-hidden="true"></div>
+  <div class="bg-glow bg-glow--violet" aria-hidden="true"></div>
+  <div class="bg-glow bg-glow--cyan" aria-hidden="true"></div>
+  <div class="bg-noise" aria-hidden="true"></div>
 
-    <h2>Links</h2>
-    <div class="links">
-      <a href="https://github.com/autoinference/autoinference">GitHub</a>
-      <a href="https://pypi.org/project/autoinference/">PyPI</a>
-      <a href="https://www.npmjs.com/package/autoinference">npm</a>
-      <a href="https://crates.io/crates/autoinference">crates.io</a>
+  <!-- =========================================================
+       NAV
+       ========================================================= -->
+  <header class="nav" id="nav">
+    <div class="nav__inner container">
+      <a class="nav__brand" href="/" aria-label="autoinference home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="22" height="22">
+            <defs>
+              <linearGradient id="brandG" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#A78BFA"/>
+                <stop offset="0.5" stop-color="#60A5FA"/>
+                <stop offset="1" stop-color="#22D3EE"/>
+              </linearGradient>
+            </defs>
+            <rect width="24" height="24" rx="6" fill="url(#brandG)"/>
+            <path d="M7 16 L12 6 L17 16 M9 13 L15 13" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="brand-name">autoinference</span>
+      </a>
+
+      <nav class="nav__links" aria-label="Primary">
+        <a href="#engines">Engines</a>
+        <a href="#how">How it works</a>
+        <a href="#performance">Performance</a>
+        <a href="#validation">Validation</a>
+        <a href="https://github.com/autoinference/autoinference" target="_blank" rel="noopener">GitHub<span class="ext">↗</span></a>
+      </nav>
+
+      <div class="nav__cta">
+        <a href="#waitlist" class="btn btn--ghost">Sign in</a>
+        <a href="#waitlist" class="btn btn--primary">Join waitlist</a>
+      </div>
+
+      <button class="nav__burger" aria-label="Toggle menu" id="burger">
+        <span></span><span></span><span></span>
+      </button>
     </div>
+  </header>
 
-    <footer>MIT licensed. Maintained at <a href="https://github.com/autoinference/autoinference">github.com/autoinference/autoinference</a>.</footer>
-  </div>
+  <!-- =========================================================
+       HERO
+       ========================================================= -->
+  <section class="hero">
+    <div class="container hero__inner">
+      <a href="#waitlist" class="badge" data-reveal>
+        <span class="badge__dot"></span>
+        <span class="badge__text">Coming soon — join the private beta</span>
+        <span class="badge__arrow" aria-hidden="true">→</span>
+      </a>
+
+      <h1 class="hero__title" data-reveal>
+        Peak inference performance.<br />
+        <span class="grad-text">Zero ML engineering.</span>
+      </h1>
+
+      <p class="hero__sub" data-reveal>
+        Drop in any model and any hardware. Our agentic harness picks the optimal engine,
+        tunes every config, writes custom kernels, and stress-tests the result —
+        so your GPUs run at the <em>limit of silicon</em>.
+      </p>
+
+      <div class="hero__cta" data-reveal>
+        <a href="#waitlist" class="btn btn--primary btn--lg">
+          Join the waitlist
+          <span class="btn__arrow" aria-hidden="true">→</span>
+        </a>
+        <a href="#how" class="btn btn--secondary btn--lg">
+          See how it works
+        </a>
+      </div>
+
+      <div class="hero__meta" data-reveal>
+        <div class="hero__meta-item">
+          <span class="dot dot--green"></span>
+          <span>Engine-agnostic</span>
+        </div>
+        <div class="hero__meta-item">
+          <span class="dot dot--violet"></span>
+          <span>Hardware-aware</span>
+        </div>
+        <div class="hero__meta-item">
+          <span class="dot dot--cyan"></span>
+          <span>Battle-tested</span>
+        </div>
+      </div>
+
+      <!-- HERO PRODUCT MOCK -->
+      <div class="hero__mock" data-reveal>
+        <div class="mock mock--hero" aria-hidden="true">
+          <div class="mock__chrome">
+            <span class="mock__dot mock__dot--r"></span>
+            <span class="mock__dot mock__dot--y"></span>
+            <span class="mock__dot mock__dot--g"></span>
+            <span class="mock__url">app.autoinference.org/deployments/llama-3.1-70b</span>
+            <span class="mock__chrome-meta">⌘K</span>
+          </div>
+          <div class="mock__body">
+            <aside class="mock__side">
+              <div class="mock__brand">
+                <span class="mock__brand-mark"></span>
+                <span>autoinference</span>
+              </div>
+              <nav class="mock__nav">
+                <a class="active"><span class="ic"></span>Deployments</a>
+                <a><span class="ic"></span>Models</a>
+                <a><span class="ic"></span>Hardware</a>
+                <a><span class="ic"></span>Kernels</a>
+                <a><span class="ic"></span>Benchmarks</a>
+                <a><span class="ic"></span>Logs</a>
+                <a><span class="ic"></span>Settings</a>
+              </nav>
+              <div class="mock__workspace">
+                <div class="mock__wsbubble">A</div>
+                <div>
+                  <div class="mock__wsname">autoinference</div>
+                  <div class="mock__wsplan">Production · Team</div>
+                </div>
+              </div>
+            </aside>
+
+            <main class="mock__main">
+              <div class="mock__topbar">
+                <div>
+                  <div class="mock__crumb">Deployments / <strong>llama-3.1-70b-instruct</strong></div>
+                  <div class="mock__title">
+                    <span class="status-pill status-pill--live"><span class="ping"></span>Live</span>
+                    <h3>llama-3.1-70b-instruct</h3>
+                    <span class="mock__tag">prod-us-west</span>
+                  </div>
+                </div>
+                <div class="mock__topbar-actions">
+                  <button class="chip"><span class="ic-sm"></span>Re-tune</button>
+                  <button class="chip chip--primary"><span class="ic-sm"></span>Deploy</button>
+                </div>
+              </div>
+
+              <div class="mock__statsrow">
+                <div class="statcard">
+                  <div class="statcard__label">Tokens/sec</div>
+                  <div class="statcard__value" data-count="14820">14,820</div>
+                  <div class="statcard__delta delta--up">+241% vs baseline</div>
+                  <svg class="spark" viewBox="0 0 100 30" preserveAspectRatio="none">
+                    <path d="M0 24 L10 22 L20 20 L30 18 L40 14 L50 12 L60 9 L70 7 L80 5 L90 4 L100 3" stroke="url(#sparkG1)" stroke-width="2" fill="none" stroke-linecap="round"/>
+                    <defs><linearGradient id="sparkG1" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#22D3EE"/><stop offset="1" stop-color="#A78BFA"/></linearGradient></defs>
+                  </svg>
+                </div>
+                <div class="statcard">
+                  <div class="statcard__label">P99 latency</div>
+                  <div class="statcard__value">42<span class="unit">ms</span></div>
+                  <div class="statcard__delta delta--down">−62% vs baseline</div>
+                  <svg class="spark" viewBox="0 0 100 30" preserveAspectRatio="none">
+                    <path d="M0 6 L10 8 L20 10 L30 12 L40 16 L50 18 L60 22 L70 24 L80 25 L90 26 L100 27" stroke="url(#sparkG2)" stroke-width="2" fill="none" stroke-linecap="round"/>
+                    <defs><linearGradient id="sparkG2" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#A78BFA"/><stop offset="1" stop-color="#22D3EE"/></linearGradient></defs>
+                  </svg>
+                </div>
+                <div class="statcard">
+                  <div class="statcard__label">GPU utilization</div>
+                  <div class="statcard__value">94<span class="unit">%</span></div>
+                  <div class="statcard__delta delta--up">+38 pts</div>
+                  <svg class="spark" viewBox="0 0 100 30" preserveAspectRatio="none">
+                    <path d="M0 22 L10 18 L20 19 L30 14 L40 11 L50 8 L60 6 L70 5 L80 4 L90 3 L100 3" stroke="url(#sparkG3)" stroke-width="2" fill="none" stroke-linecap="round"/>
+                    <defs><linearGradient id="sparkG3" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#34D399"/><stop offset="1" stop-color="#22D3EE"/></linearGradient></defs>
+                  </svg>
+                </div>
+                <div class="statcard">
+                  <div class="statcard__label">$ / 1M tokens</div>
+                  <div class="statcard__value">$0.47</div>
+                  <div class="statcard__delta delta--down">−47% spend</div>
+                  <svg class="spark" viewBox="0 0 100 30" preserveAspectRatio="none">
+                    <path d="M0 4 L10 6 L20 8 L30 11 L40 14 L50 17 L60 20 L70 22 L80 24 L90 25 L100 26" stroke="url(#sparkG4)" stroke-width="2" fill="none" stroke-linecap="round"/>
+                    <defs><linearGradient id="sparkG4" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#F472B6"/><stop offset="1" stop-color="#A78BFA"/></linearGradient></defs>
+                  </svg>
+                </div>
+              </div>
+
+              <div class="mock__grid">
+                <div class="panel">
+                  <div class="panel__head">
+                    <h4>Optimization run #1842</h4>
+                    <span class="panel__sub">live · agent thinking</span>
+                  </div>
+                  <div class="agentlog">
+                    <div class="agentlog__row"><span class="t">14:02:11</span><span class="tag tag--violet">plan</span><span>Profiling workload &mdash; chat-completion, p50=512 tok, p99=4096 tok</span></div>
+                    <div class="agentlog__row"><span class="t">14:02:18</span><span class="tag tag--blue">choose</span><span>Selected <strong>vLLM 0.6.3</strong> over SGLang for paged-attention + AWQ INT4</span></div>
+                    <div class="agentlog__row"><span class="t">14:02:31</span><span class="tag tag--cyan">tune</span><span>Sweeping batch={64,128,192,256}, max_seqs={128,256}&hellip;</span></div>
+                    <div class="agentlog__row"><span class="t">14:03:02</span><span class="tag tag--cyan">tune</span><span>Optimum: batch=192, max_seqs=192, kv-cache 16MB pages</span></div>
+                    <div class="agentlog__row"><span class="t">14:03:14</span><span class="tag tag--pink">kernel</span><span>Generating fused RMSNorm+RoPE Triton kernel for H100&hellip;</span></div>
+                    <div class="agentlog__row"><span class="t">14:03:51</span><span class="tag tag--green">verify</span><span>Kernel: 4.2× faster, 0-ulp output diff vs reference ✓</span></div>
+                    <div class="agentlog__row agentlog__row--active"><span class="t">14:04:09</span><span class="tag tag--orange">loadtest</span><span>Ramping concurrent users: 1,200 / 2,000 <span class="dotpulse"></span></span></div>
+                  </div>
+                </div>
+
+                <div class="panel panel--compact">
+                  <div class="panel__head">
+                    <h4>Engine recommendation</h4>
+                  </div>
+                  <div class="enginepick">
+                    <div class="enginepick__row enginepick__row--win">
+                      <span class="enginepick__name">vLLM <span class="enginepick__ver">0.6.3</span></span>
+                      <span class="enginepick__bar"><span style="width:96%"></span></span>
+                      <span class="enginepick__score">96</span>
+                    </div>
+                    <div class="enginepick__row">
+                      <span class="enginepick__name">SGLang <span class="enginepick__ver">0.3.2</span></span>
+                      <span class="enginepick__bar"><span style="width:91%"></span></span>
+                      <span class="enginepick__score">91</span>
+                    </div>
+                    <div class="enginepick__row">
+                      <span class="enginepick__name">TensorRT-LLM</span>
+                      <span class="enginepick__bar"><span style="width:88%"></span></span>
+                      <span class="enginepick__score">88</span>
+                    </div>
+                    <div class="enginepick__row">
+                      <span class="enginepick__name">TokenSpeed</span>
+                      <span class="enginepick__bar"><span style="width:84%"></span></span>
+                      <span class="enginepick__score">84</span>
+                    </div>
+                    <div class="enginepick__row">
+                      <span class="enginepick__name">llama.cpp</span>
+                      <span class="enginepick__bar"><span style="width:71%"></span></span>
+                      <span class="enginepick__score">71</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </main>
+          </div>
+        </div>
+        <!-- floating accent cards around mock -->
+        <div class="float float--tl" aria-hidden="true">
+          <div class="float__icon"></div>
+          <div>
+            <div class="float__t">Kernel deployed</div>
+            <div class="float__s">flash_attn_v3_h100 · +4.2× </div>
+          </div>
+        </div>
+        <div class="float float--br" aria-hidden="true">
+          <div class="float__metric">94<span>%</span></div>
+          <div class="float__l">GPU saturated</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       LOGO BAR
+       ========================================================= -->
+  <section class="logobar" id="engines">
+    <div class="container">
+      <p class="logobar__label">Engine-agnostic. Hardware-aware.</p>
+      <div class="logobar__marquee">
+        <div class="logobar__track">
+          <span class="logo-pill">vLLM</span>
+          <span class="logo-pill">SGLang</span>
+          <span class="logo-pill">TensorRT-LLM</span>
+          <span class="logo-pill">TokenSpeed</span>
+          <span class="logo-pill">llama.cpp</span>
+          <span class="logo-pill">TGI</span>
+          <span class="logo-pill">LMDeploy</span>
+          <span class="logo-pill">MLC-LLM</span>
+          <span class="logo-pill logo-pill--hw">NVIDIA H100</span>
+          <span class="logo-pill logo-pill--hw">H200</span>
+          <span class="logo-pill logo-pill--hw">B200</span>
+          <span class="logo-pill logo-pill--hw">AMD MI300X</span>
+          <span class="logo-pill logo-pill--hw">Intel Gaudi 3</span>
+          <span class="logo-pill logo-pill--hw">Apple Silicon</span>
+          <!-- duplicate for seamless loop -->
+          <span class="logo-pill">vLLM</span>
+          <span class="logo-pill">SGLang</span>
+          <span class="logo-pill">TensorRT-LLM</span>
+          <span class="logo-pill">TokenSpeed</span>
+          <span class="logo-pill">llama.cpp</span>
+          <span class="logo-pill">TGI</span>
+          <span class="logo-pill">LMDeploy</span>
+          <span class="logo-pill">MLC-LLM</span>
+          <span class="logo-pill logo-pill--hw">NVIDIA H100</span>
+          <span class="logo-pill logo-pill--hw">H200</span>
+          <span class="logo-pill logo-pill--hw">B200</span>
+          <span class="logo-pill logo-pill--hw">AMD MI300X</span>
+          <span class="logo-pill logo-pill--hw">Intel Gaudi 3</span>
+          <span class="logo-pill logo-pill--hw">Apple Silicon</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       PROBLEM
+       ========================================================= -->
+  <section class="section section--tight">
+    <div class="container">
+      <div class="eyebrow" data-reveal>The problem</div>
+      <h2 class="section__title" data-reveal>
+        Modern inference is <span class="strike">just <em>spinning up vLLM</em></span><br />
+        a <span class="grad-text">multi-axis optimization</span> problem.
+      </h2>
+      <p class="section__lede" data-reveal>
+        Every model has dozens of correct ways to serve it, and only one peak. Engine choice, batch size,
+        KV-cache layout, tensor parallelism, quantization scheme, custom kernels &mdash; the search space is
+        massive, and a wrong setting silently leaves <em>40–80%</em> of your GPU on the floor.
+      </p>
+
+      <div class="painrow">
+        <div class="painrow__item" data-reveal>
+          <div class="painrow__num">40-80%</div>
+          <div class="painrow__l">of GPU compute wasted in default configs <span class="src">(industry benchmarks, 2024)</span></div>
+        </div>
+        <div class="painrow__div" aria-hidden="true"></div>
+        <div class="painrow__item" data-reveal>
+          <div class="painrow__num">3-6 weeks</div>
+          <div class="painrow__l">average time for an ML eng team to dial-in one model on one hardware target</div>
+        </div>
+        <div class="painrow__div" aria-hidden="true"></div>
+        <div class="painrow__item" data-reveal>
+          <div class="painrow__num">2x ↑</div>
+          <div class="painrow__l">cloud spend that disappears when you re-tune for the next model</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       FOUR PILLARS
+       ========================================================= -->
+  <section class="section">
+    <div class="container">
+      <div class="eyebrow" data-reveal>The platform</div>
+      <h2 class="section__title" data-reveal>
+        Four agents. One <span class="grad-text">autonomous pipeline</span>.
+      </h2>
+      <p class="section__lede" data-reveal>
+        Each stage is owned by a specialized agent. Together they take you from
+        model weights to a hardened, peak-throughput deployment &mdash; without you writing a single config line.
+      </p>
+
+      <div class="pillars">
+        <article class="pillar" data-reveal style="--i:0">
+          <div class="pillar__head">
+            <span class="pillar__num">01</span>
+            <span class="pillar__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 L4 6 L4 18 L12 22 L20 18 L20 6 Z"/><path d="M4 6 L12 10 L20 6"/><path d="M12 10 L12 22"/></svg>
+            </span>
+          </div>
+          <h3 class="pillar__title">Engine selection</h3>
+          <p class="pillar__body">
+            Profiles your workload pattern &mdash; chat, RAG, batch, agentic, vision-language &mdash;
+            and ranks <strong>vLLM</strong>, <strong>SGLang</strong>, <strong>TensorRT-LLM</strong>,
+            <strong>TokenSpeed</strong>, and others against your exact distribution.
+          </p>
+          <ul class="pillar__bullets">
+            <li>Workload fingerprinting</li>
+            <li>Engine capability matrix</li>
+            <li>Cross-engine A/B harness</li>
+          </ul>
+        </article>
+
+        <article class="pillar" data-reveal style="--i:1">
+          <div class="pillar__head">
+            <span class="pillar__num">02</span>
+            <span class="pillar__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v6 M12 17v6 M4.2 4.2l4.3 4.3 M15.5 15.5l4.3 4.3 M1 12h6 M17 12h6 M4.2 19.8l4.3-4.3 M15.5 8.5l4.3-4.3"/></svg>
+            </span>
+          </div>
+          <h3 class="pillar__title">Config tuning</h3>
+          <p class="pillar__body">
+            Bayesian + multi-armed bandit search over batch size, max-seqs, KV-cache paging, TP/PP shape,
+            CUDA graphs, speculative decoding, and quantization (AWQ / GPTQ / FP8 / INT4).
+          </p>
+          <ul class="pillar__bullets">
+            <li>500+ hyperparameters explored</li>
+            <li>SLO-aware Pareto front</li>
+            <li>Closed-loop re-tuning on drift</li>
+          </ul>
+        </article>
+
+        <article class="pillar" data-reveal style="--i:2">
+          <div class="pillar__head">
+            <span class="pillar__num">03</span>
+            <span class="pillar__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/><line x1="14" y1="4" x2="10" y2="20"/></svg>
+            </span>
+          </div>
+          <h3 class="pillar__title">Kernel synthesis</h3>
+          <p class="pillar__body">
+            Writes custom Triton and CUDA kernels for the hot path of your model &mdash;
+            fused RMSNorm+RoPE, paged FlashAttention variants, MoE routing, prefix-shared prefill.
+            Auto-verified bit-equivalent to reference.
+          </p>
+          <ul class="pillar__bullets">
+            <li>Triton / CUDA / ROCm / Metal targets</li>
+            <li>0-ulp output verification</li>
+            <li>Per-arch tuning (SM90, SM100, CDNA3)</li>
+          </ul>
+        </article>
+
+        <article class="pillar" data-reveal style="--i:3">
+          <div class="pillar__head">
+            <span class="pillar__num">04</span>
+            <span class="pillar__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-12V5l-8-3-8 3v5c0 8 8 12 8 12z"/><path d="M9 12l2 2 4-4"/></svg>
+            </span>
+          </div>
+          <h3 class="pillar__title">Validation</h3>
+          <p class="pillar__body">
+            Every deployment ships behind a generated test harness:
+            functional correctness, golden-output regression, k6 load tests at projected QPS,
+            and adversarial security / prompt-injection battery.
+          </p>
+          <ul class="pillar__bullets">
+            <li>Correctness vs reference model</li>
+            <li>Load tests up to 10k concurrent</li>
+            <li>OWASP LLM Top-10 coverage</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       HOW IT WORKS
+       ========================================================= -->
+  <section class="section section--how" id="how">
+    <div class="container">
+      <div class="eyebrow" data-reveal>How it works</div>
+      <h2 class="section__title" data-reveal>
+        Three inputs. <span class="grad-text">One deployment.</span>
+      </h2>
+      <p class="section__lede" data-reveal>
+        You bring the model and the hardware. We bring the rest.
+      </p>
+
+      <div class="how">
+        <ol class="how__steps">
+          <li class="how__step" data-reveal>
+            <div class="how__num">1</div>
+            <div class="how__body">
+              <h3>Pick a model</h3>
+              <p>Hugging Face checkpoint, local weights, custom fine-tune, or one of 600+ pre-profiled models from our catalog.</p>
+              <div class="codeblock">
+                <div class="codeblock__head">
+                  <span class="lang">python</span>
+                  <span class="copy">⎘ copy</span>
+                </div>
+                <pre><code><span class="kw">from</span> autoinference <span class="kw">import</span> Deployment
+
+deploy = Deployment(
+    model=<span class="str">"meta-llama/Llama-3.1-70B-Instruct"</span>,
+    quantize=<span class="str">"auto"</span>,   <span class="cm"># picks AWQ / FP8 / INT4 for your hw</span>
+)</code></pre>
+              </div>
+            </div>
+          </li>
+
+          <li class="how__step" data-reveal>
+            <div class="how__num">2</div>
+            <div class="how__body">
+              <h3>State your hardware</h3>
+              <p>A single H100, a multi-node H200 cluster, AMD MI300X, edge Jetson, or a cloud provider. We auto-detect topology, interconnect, memory, and headroom.</p>
+              <div class="codeblock">
+                <div class="codeblock__head">
+                  <span class="lang">python</span>
+                  <span class="copy">⎘ copy</span>
+                </div>
+                <pre><code>deploy.target(
+    hardware=<span class="str">"8x H100 SXM"</span>,
+    interconnect=<span class="str">"NVLink"</span>,
+    region=<span class="str">"us-west-2"</span>,
+    slo=<span class="brc">{</span><span class="str">"p99_latency_ms"</span>: <span class="num">200</span>, <span class="str">"min_qps"</span>: <span class="num">120</span><span class="brc">}</span>,
+)</code></pre>
+              </div>
+            </div>
+          </li>
+
+          <li class="how__step" data-reveal>
+            <div class="how__num">3</div>
+            <div class="how__body">
+              <h3>Hit deploy</h3>
+              <p>The agentic harness takes over: profile → choose engine → tune configs → synthesize kernels → load-test → harden → ship. You get an OpenAI-compatible endpoint, with full audit trail.</p>
+              <div class="codeblock">
+                <div class="codeblock__head">
+                  <span class="lang">python</span>
+                  <span class="copy">⎘ copy</span>
+                </div>
+                <pre><code>endpoint = deploy.run()
+<span class="cm"># → https://api.autoinference.org/v1/llama-3.1-70b
+# → tested, hardened, optimized for your exact workload</span></code></pre>
+              </div>
+            </div>
+          </li>
+        </ol>
+
+        <!-- HOW IT WORKS DIAGRAM -->
+        <aside class="how__diagram" data-reveal aria-hidden="true">
+          <svg viewBox="0 0 400 540" class="flowsvg">
+            <defs>
+              <linearGradient id="flowG" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#A78BFA"/>
+                <stop offset="0.5" stop-color="#60A5FA"/>
+                <stop offset="1" stop-color="#22D3EE"/>
+              </linearGradient>
+              <filter id="flowGlow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="6" result="b"/>
+                <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+            </defs>
+
+            <!-- Step nodes -->
+            <g class="flownode" transform="translate(40 40)">
+              <rect width="320" height="60" rx="14" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.08)"/>
+              <text x="20" y="26" class="ft-l">INPUT</text>
+              <text x="20" y="46" class="ft-h">Model weights</text>
+              <text x="300" y="36" class="ft-ic" text-anchor="end">⌗</text>
+            </g>
+            <g class="flownode" transform="translate(40 120)">
+              <rect width="320" height="60" rx="14" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.08)"/>
+              <text x="20" y="26" class="ft-l">INPUT</text>
+              <text x="20" y="46" class="ft-h">Hardware target + SLO</text>
+              <text x="300" y="36" class="ft-ic" text-anchor="end">⚙</text>
+            </g>
+
+            <!-- Central agent box -->
+            <g class="flowcenter" transform="translate(40 220)">
+              <rect width="320" height="180" rx="18" fill="url(#flowG)" opacity="0.12" stroke="url(#flowG)" stroke-width="1.5"/>
+              <text x="20" y="30" class="ft-l ft-l--grad">AGENTIC HARNESS</text>
+              <g transform="translate(20 50)">
+                <circle cx="0" cy="8" r="3" fill="url(#flowG)"/><text x="14" y="12" class="ft-step">Profile workload</text>
+              </g>
+              <g transform="translate(20 75)">
+                <circle cx="0" cy="8" r="3" fill="url(#flowG)"/><text x="14" y="12" class="ft-step">Rank engines</text>
+              </g>
+              <g transform="translate(20 100)">
+                <circle cx="0" cy="8" r="3" fill="url(#flowG)"/><text x="14" y="12" class="ft-step">Tune configs (bandit)</text>
+              </g>
+              <g transform="translate(20 125)">
+                <circle cx="0" cy="8" r="3" fill="url(#flowG)"/><text x="14" y="12" class="ft-step">Synthesize kernels</text>
+              </g>
+              <g transform="translate(20 150)">
+                <circle cx="0" cy="8" r="3" fill="url(#flowG)"/><text x="14" y="12" class="ft-step">Battle-test &amp; harden</text>
+              </g>
+            </g>
+
+            <!-- Output -->
+            <g class="flownode flownode--out" transform="translate(40 430)">
+              <rect width="320" height="80" rx="14" fill="rgba(34,211,238,0.08)" stroke="rgba(34,211,238,0.35)"/>
+              <text x="20" y="28" class="ft-l ft-l--cyan">OUTPUT</text>
+              <text x="20" y="50" class="ft-h">Optimized endpoint</text>
+              <text x="20" y="68" class="ft-sub">api.autoinference.org/v1/&lt;model&gt;</text>
+              <text x="300" y="46" class="ft-ic" text-anchor="end">↗</text>
+            </g>
+
+            <!-- Connectors -->
+            <path d="M200 100 L200 120" stroke="url(#flowG)" stroke-width="2" class="flowline" />
+            <path d="M200 180 L200 220" stroke="url(#flowG)" stroke-width="2" class="flowline" />
+            <path d="M200 400 L200 430" stroke="url(#flowG)" stroke-width="2" class="flowline" filter="url(#flowGlow)"/>
+
+            <!-- Pulse particles -->
+            <circle r="3" fill="#22D3EE" class="pulse-particle p1"><animateMotion dur="3s" repeatCount="indefinite" path="M200 100 L200 220 L200 400 L200 430"/></circle>
+            <circle r="3" fill="#A78BFA" class="pulse-particle p2"><animateMotion dur="3s" begin="1s" repeatCount="indefinite" path="M200 100 L200 220 L200 400 L200 430"/></circle>
+            <circle r="3" fill="#60A5FA" class="pulse-particle p3"><animateMotion dur="3s" begin="2s" repeatCount="indefinite" path="M200 100 L200 220 L200 400 L200 430"/></circle>
+          </svg>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       PERFORMANCE
+       ========================================================= -->
+  <section class="section section--perf" id="performance">
+    <div class="container">
+      <div class="eyebrow" data-reveal>Performance</div>
+      <h2 class="section__title" data-reveal>
+        Numbers we're targeting at GA — on <span class="grad-text">your existing hardware</span>.
+      </h2>
+      <p class="section__lede" data-reveal>
+        Internal benchmarks on Llama-3.1-70B-Instruct, batch=192, FP8 quantization, NVIDIA H100 SXM.
+        Comparison vs out-of-the-box default vLLM config.
+      </p>
+
+      <div class="bignums">
+        <div class="bignum" data-reveal style="--i:0">
+          <div class="bignum__v"><span class="counter" data-target="3.4">0</span>×</div>
+          <div class="bignum__l">Throughput<br/>vs default</div>
+          <div class="bignum__b"><span style="width:90%"></span></div>
+        </div>
+        <div class="bignum" data-reveal style="--i:1">
+          <div class="bignum__v">−<span class="counter" data-target="62">0</span>%</div>
+          <div class="bignum__l">P99 latency<br/>reduction</div>
+          <div class="bignum__b"><span style="width:72%"></span></div>
+        </div>
+        <div class="bignum" data-reveal style="--i:2">
+          <div class="bignum__v"><span class="counter" data-target="94">0</span>%</div>
+          <div class="bignum__l">GPU utilization<br/>steady-state</div>
+          <div class="bignum__b"><span style="width:94%"></span></div>
+        </div>
+        <div class="bignum" data-reveal style="--i:3">
+          <div class="bignum__v">−<span class="counter" data-target="47">0</span>%</div>
+          <div class="bignum__l">$ per million<br/>tokens served</div>
+          <div class="bignum__b"><span style="width:58%"></span></div>
+        </div>
+      </div>
+
+      <!-- PERFORMANCE CHART MOCK -->
+      <div class="perfchart" data-reveal>
+        <div class="perfchart__head">
+          <div>
+            <div class="perfchart__title">Throughput across optimization stages</div>
+            <div class="perfchart__sub">Llama-3.1-70B-Instruct · 8× H100 · live ramp</div>
+          </div>
+          <div class="perfchart__legend">
+            <span class="leg"><span class="leg__d leg__d--gray"></span>Default vLLM</span>
+            <span class="leg"><span class="leg__d leg__d--violet"></span>+ Config tuning</span>
+            <span class="leg"><span class="leg__d leg__d--cyan"></span>+ Custom kernels</span>
+          </div>
+        </div>
+        <svg class="perfchart__svg" viewBox="0 0 760 280" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="areaCyan" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#22D3EE" stop-opacity="0.45"/>
+              <stop offset="1" stop-color="#22D3EE" stop-opacity="0"/>
+            </linearGradient>
+            <linearGradient id="areaViolet" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#A78BFA" stop-opacity="0.35"/>
+              <stop offset="1" stop-color="#A78BFA" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <!-- grid -->
+          <g class="grid">
+            <line x1="40" y1="40"  x2="740" y2="40"  />
+            <line x1="40" y1="100" x2="740" y2="100" />
+            <line x1="40" y1="160" x2="740" y2="160" />
+            <line x1="40" y1="220" x2="740" y2="220" />
+            <text x="34" y="44"  text-anchor="end" class="gridlbl">16k</text>
+            <text x="34" y="104" text-anchor="end" class="gridlbl">12k</text>
+            <text x="34" y="164" text-anchor="end" class="gridlbl">8k</text>
+            <text x="34" y="224" text-anchor="end" class="gridlbl">4k</text>
+          </g>
+          <!-- baseline (gray) -->
+          <path d="M40 210 L120 208 L200 207 L280 209 L360 206 L440 208 L520 207 L600 206 L680 207 L740 208"
+                stroke="rgba(255,255,255,0.35)" stroke-width="2" fill="none" stroke-dasharray="4 3" class="chartline"/>
+          <!-- tuning (violet) -->
+          <path d="M40 210 L120 180 L200 150 L280 130 L360 122 L440 120 L520 120 L600 120 L680 120 L740 120"
+                stroke="#A78BFA" stroke-width="2.5" fill="none" class="chartline chartline--violet"/>
+          <path d="M40 210 L120 180 L200 150 L280 130 L360 122 L440 120 L520 120 L600 120 L680 120 L740 120 L740 240 L40 240 Z"
+                fill="url(#areaViolet)" class="chartarea"/>
+          <!-- kernels (cyan) -->
+          <path d="M40 210 L120 175 L200 140 L280 110 L360 88 L440 70 L520 58 L600 50 L680 45 L740 42"
+                stroke="#22D3EE" stroke-width="2.5" fill="none" class="chartline chartline--cyan"/>
+          <path d="M40 210 L120 175 L200 140 L280 110 L360 88 L440 70 L520 58 L600 50 L680 45 L740 42 L740 240 L40 240 Z"
+                fill="url(#areaCyan)" class="chartarea"/>
+          <!-- marker on cyan endpoint -->
+          <circle cx="740" cy="42" r="5" fill="#22D3EE"/>
+          <circle cx="740" cy="42" r="10" fill="#22D3EE" opacity="0.2"><animate attributeName="r" values="6;14;6" dur="2s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.4;0;0.4" dur="2s" repeatCount="indefinite"/></circle>
+          <text x="735" y="32" text-anchor="end" class="endlbl">14,820 tok/s</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       PRODUCT MOCK #2 — DEPLOYMENT WIZARD
+       ========================================================= -->
+  <section class="section section--mock2">
+    <div class="container">
+      <div class="splitrow">
+        <div class="splitrow__copy" data-reveal>
+          <div class="eyebrow">The console</div>
+          <h2 class="section__title">
+            Spin up <span class="grad-text">production inference</span><br/>
+            in less time than a coffee break.
+          </h2>
+          <p class="section__lede">
+            One screen. Three fields. The agentic pipeline runs in the background and streams
+            its reasoning as it goes &mdash; so you can audit every decision before it ships.
+          </p>
+          <ul class="copylist">
+            <li><span class="check">✓</span>OpenAI-compatible REST endpoint out of the box</li>
+            <li><span class="check">✓</span>Streaming, function calling, structured outputs</li>
+            <li><span class="check">✓</span>Versioned deployments with one-click rollback</li>
+            <li><span class="check">✓</span>Per-tenant rate limits + audit logs</li>
+            <li><span class="check">✓</span>Self-host or fully-managed</li>
+          </ul>
+        </div>
+
+        <div class="splitrow__mock" data-reveal>
+          <div class="mock mock--wizard" aria-hidden="true">
+            <div class="mock__chrome">
+              <span class="mock__dot mock__dot--r"></span>
+              <span class="mock__dot mock__dot--y"></span>
+              <span class="mock__dot mock__dot--g"></span>
+              <span class="mock__url">app.autoinference.org/new</span>
+            </div>
+            <div class="wiz">
+              <div class="wiz__step wiz__step--done">
+                <span class="wiz__bullet">✓</span>
+                <div>
+                  <div class="wiz__label">Model</div>
+                  <div class="wiz__value">
+                    <span class="hfchip">🤗</span>
+                    meta-llama/Llama-3.1-70B-Instruct
+                    <span class="wiz__tag">141 GB · BF16</span>
+                  </div>
+                </div>
+              </div>
+              <div class="wiz__step wiz__step--done">
+                <span class="wiz__bullet">✓</span>
+                <div>
+                  <div class="wiz__label">Hardware</div>
+                  <div class="wiz__value">
+                    8× NVIDIA H100 SXM 80GB
+                    <span class="wiz__tag">NVLink · us-west-2</span>
+                  </div>
+                </div>
+              </div>
+              <div class="wiz__step wiz__step--done">
+                <span class="wiz__bullet">✓</span>
+                <div>
+                  <div class="wiz__label">SLO</div>
+                  <div class="wiz__value">
+                    <span class="kvchip">p99_latency_ms <strong>200</strong></span>
+                    <span class="kvchip">min_qps <strong>120</strong></span>
+                  </div>
+                </div>
+              </div>
+              <div class="wiz__step wiz__step--active">
+                <span class="wiz__bullet wiz__bullet--spin"></span>
+                <div>
+                  <div class="wiz__label">Optimizing</div>
+                  <div class="wiz__value">
+                    <span class="muted">Stage 3 of 5: Synthesizing kernels for SM90</span>
+                    <div class="wiz__progress"><span style="width:62%"></span></div>
+                  </div>
+                </div>
+              </div>
+              <div class="wiz__step wiz__step--pending">
+                <span class="wiz__bullet">5</span>
+                <div>
+                  <div class="wiz__label">Battle-test</div>
+                  <div class="wiz__value muted">Correctness + load + security</div>
+                </div>
+              </div>
+              <div class="wiz__step wiz__step--pending">
+                <span class="wiz__bullet">6</span>
+                <div>
+                  <div class="wiz__label">Endpoint live</div>
+                  <div class="wiz__value muted">api.autoinference.org/v1/...</div>
+                </div>
+              </div>
+            </div>
+            <div class="wiz__foot">
+              <span class="wiz__time">Started 2m 14s ago</span>
+              <span class="wiz__eta">ETA · 1m 48s</span>
+            </div>
+          </div>
+
+          <div class="float float--wizard" aria-hidden="true">
+            <span class="float__icon float__icon--ok"></span>
+            <div>
+              <div class="float__t">Engine locked in</div>
+              <div class="float__s">vLLM 0.6.3 + paged FP8</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       VALIDATION SECTION
+       ========================================================= -->
+  <section class="section section--validation" id="validation">
+    <div class="container">
+      <div class="eyebrow" data-reveal>Validation</div>
+      <h2 class="section__title" data-reveal>
+        Battle-tested before <span class="grad-text">your users ever see it</span>.
+      </h2>
+      <p class="section__lede" data-reveal>
+        Every deployment ships behind a generated test harness. If something would break
+        a real user, it breaks our test first &mdash; and the deployment is held until it's fixed.
+      </p>
+
+      <div class="testgrid">
+        <div class="testcard" data-reveal style="--i:0">
+          <div class="testcard__head">
+            <span class="testcard__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            </span>
+            <h3>Correctness</h3>
+          </div>
+          <p class="testcard__body">
+            Bit-equivalence sweeps against the reference implementation. 0-ulp diff on hot kernels;
+            golden-output regression on 12k sampled prompts per release.
+          </p>
+          <div class="testcard__stat">
+            <div class="testcard__statv">0 ulp</div>
+            <div class="testcard__statl">max numerical drift</div>
+          </div>
+        </div>
+
+        <div class="testcard" data-reveal style="--i:1">
+          <div class="testcard__head">
+            <span class="testcard__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3-9 4 18 3-9h4"/></svg>
+            </span>
+            <h3>Load &amp; soak</h3>
+          </div>
+          <p class="testcard__body">
+            k6-driven ramp tests up to <strong>10,000 concurrent users</strong>, traffic patterns from
+            real production traces, multi-hour soak to surface KV-cache leaks before they bite.
+          </p>
+          <div class="testcard__stat">
+            <div class="testcard__statv">10k</div>
+            <div class="testcard__statl">concurrent connections</div>
+          </div>
+        </div>
+
+        <div class="testcard" data-reveal style="--i:2">
+          <div class="testcard__head">
+            <span class="testcard__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-12V5l-8-3-8 3v5c0 8 8 12 8 12z"/></svg>
+            </span>
+            <h3>Security</h3>
+          </div>
+          <p class="testcard__body">
+            OWASP LLM Top-10 coverage out of the box. Prompt-injection battery, jailbreak corpus,
+            PII leakage probes, and supply-chain SBOM for every kernel artifact.
+          </p>
+          <div class="testcard__stat">
+            <div class="testcard__statv">147</div>
+            <div class="testcard__statl">attack patterns covered</div>
+          </div>
+        </div>
+
+        <div class="testcard" data-reveal style="--i:3">
+          <div class="testcard__head">
+            <span class="testcard__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </span>
+            <h3>Continuous re-tune</h3>
+          </div>
+          <p class="testcard__body">
+            Production telemetry feeds back into the harness. When workload distribution drifts,
+            re-tuning kicks off in shadow, and a canary swap rolls only if it Pareto-dominates.
+          </p>
+          <div class="testcard__stat">
+            <div class="testcard__statv">&lt; 30s</div>
+            <div class="testcard__statl">canary rollback window</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PRODUCT MOCK #3 — TEST RESULTS -->
+      <div class="mock mock--tests" data-reveal aria-hidden="true">
+        <div class="mock__chrome">
+          <span class="mock__dot mock__dot--r"></span>
+          <span class="mock__dot mock__dot--y"></span>
+          <span class="mock__dot mock__dot--g"></span>
+          <span class="mock__url">app.autoinference.org/deployments/llama-3.1-70b/tests</span>
+        </div>
+        <div class="testpanel">
+          <div class="testpanel__head">
+            <h4>Pre-deployment verification</h4>
+            <span class="status-pill status-pill--ok">PASSED · 6/6 suites</span>
+          </div>
+          <div class="testrows">
+            <div class="testrow"><span class="trbullet trbullet--ok">✓</span><span class="trname">Correctness</span><span class="trbar"><span style="width:100%"></span></span><span class="trval">12,000 / 12,000</span></div>
+            <div class="testrow"><span class="trbullet trbullet--ok">✓</span><span class="trname">Numerical equivalence</span><span class="trbar"><span style="width:100%"></span></span><span class="trval">0 ulp drift</span></div>
+            <div class="testrow"><span class="trbullet trbullet--ok">✓</span><span class="trname">Load · 10k concurrent</span><span class="trbar"><span style="width:100%"></span></span><span class="trval">p99 = 142ms</span></div>
+            <div class="testrow"><span class="trbullet trbullet--ok">✓</span><span class="trname">4-hour soak</span><span class="trbar"><span style="width:100%"></span></span><span class="trval">no mem drift</span></div>
+            <div class="testrow"><span class="trbullet trbullet--ok">✓</span><span class="trname">OWASP LLM-01..10</span><span class="trbar"><span style="width:100%"></span></span><span class="trval">147 / 147 blocked</span></div>
+            <div class="testrow"><span class="trbullet trbullet--ok">✓</span><span class="trname">SBOM + signature</span><span class="trbar"><span style="width:100%"></span></span><span class="trval">attested</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       WAITLIST CTA
+       ========================================================= -->
+  <section class="cta" id="waitlist">
+    <div class="container">
+      <div class="cta__card" data-reveal>
+        <div class="cta__badge"><span class="dot dot--pulse"></span>Private beta · Q3 2026</div>
+        <h2 class="cta__title">
+          Stop tuning. <span class="grad-text">Start shipping.</span>
+        </h2>
+        <p class="cta__sub">
+          We're onboarding design-partner teams running real production inference. Tell us your stack &mdash;
+          we'll come back with a deployment plan and an early slot.
+        </p>
+        <form class="cta__form" onsubmit="event.preventDefault(); window._aiSubmit(this);">
+          <input type="email" required placeholder="you@company.com" class="cta__email" autocomplete="email" />
+          <button type="submit" class="btn btn--primary btn--lg">
+            Request access
+            <span class="btn__arrow">→</span>
+          </button>
+        </form>
+        <p class="cta__fine">
+          No spam. We use the email only to reply about beta access.
+        </p>
+        <div class="cta__row">
+          <a href="https://github.com/autoinference/autoinference" class="ghostlink" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.7-.3-5.5-1.3-5.5-6 0-1.3.5-2.4 1.3-3.2-.1-.4-.6-1.6.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.7 1.6.2 2.8.1 3.2.8.8 1.3 1.9 1.3 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3"/></svg>
+            github.com/autoinference
+          </a>
+          <a href="mailto:hello@autoinference.org" class="ghostlink">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+            hello@autoinference.org
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       INSTALL FOOTER
+       ========================================================= -->
+  <section class="section section--install">
+    <div class="container">
+      <div class="eyebrow" data-reveal>SDK · today (placeholder packages)</div>
+      <h2 class="section__title" data-reveal>
+        The name is <span class="grad-text">already yours</span>, on every registry.
+      </h2>
+      <p class="section__lede" data-reveal>
+        v0.0.1 is published as placeholders across pip, uv, npm, cargo, and go.
+        Real SDK lands with the private beta.
+      </p>
+      <div class="installgrid">
+        <div class="installcard" data-reveal><span class="installcard__l">Python</span><code>pip install autoinference</code></div>
+        <div class="installcard" data-reveal><span class="installcard__l">uv</span><code>uv add autoinference</code></div>
+        <div class="installcard" data-reveal><span class="installcard__l">Node</span><code>npm install autoinference</code></div>
+        <div class="installcard" data-reveal><span class="installcard__l">Rust</span><code>cargo add autoinference</code></div>
+        <div class="installcard" data-reveal><span class="installcard__l">Go</span><code>go get github.com/autoinference/autoinference</code></div>
+        <div class="installcard" data-reveal><span class="installcard__l">Docker</span><code>docker pull autoinference/autoinference</code></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       FOOTER
+       ========================================================= -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="20" height="20"><rect width="24" height="24" rx="6" fill="url(#brandG)"/><path d="M7 16 L12 6 L17 16 M9 13 L15 13" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <div>
+          <div class="footer__name">autoinference</div>
+          <div class="footer__line">Peak inference performance. Zero ML engineering.</div>
+        </div>
+      </div>
+
+      <div class="footer__cols">
+        <div class="footer__col">
+          <div class="footer__h">Product</div>
+          <a href="#engines">Engines</a>
+          <a href="#how">How it works</a>
+          <a href="#performance">Performance</a>
+          <a href="#validation">Validation</a>
+          <a href="#waitlist">Join waitlist</a>
+        </div>
+        <div class="footer__col">
+          <div class="footer__h">Packages</div>
+          <a href="https://pypi.org/project/autoinference/" target="_blank" rel="noopener">PyPI</a>
+          <a href="https://www.npmjs.com/package/autoinference" target="_blank" rel="noopener">npm</a>
+          <a href="https://crates.io/crates/autoinference" target="_blank" rel="noopener">crates.io</a>
+          <a href="https://pkg.go.dev/github.com/autoinference/autoinference" target="_blank" rel="noopener">pkg.go.dev</a>
+          <a href="https://hub.docker.com/r/autoinference/autoinference" target="_blank" rel="noopener">Docker Hub</a>
+        </div>
+        <div class="footer__col">
+          <div class="footer__h">Company</div>
+          <a href="https://github.com/autoinference/autoinference" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://huggingface.co/autoinference" target="_blank" rel="noopener">Hugging Face</a>
+          <a href="https://x.com/autoinference_" target="_blank" rel="noopener">X / Twitter</a>
+          <a href="https://www.instagram.com/autoinference/" target="_blank" rel="noopener">Instagram</a>
+          <a href="mailto:hello@autoinference.org">hello@autoinference.org</a>
+        </div>
+      </div>
+    </div>
+    <div class="container footer__bottom">
+      <div>© 2026 autoinference. MIT-licensed core.</div>
+      <div class="footer__chips">
+        <span class="footer__chip"><span class="dot dot--green"></span>All systems normal</span>
+        <span class="footer__chip">v0.0.1 · placeholder release</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js" defer></script>
 </body>
 </html>
