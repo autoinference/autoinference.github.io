@@ -3,43 +3,37 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <meta name="theme-color" content="#07070C" />
-  <title>autoinference — Peak inference performance. Zero ML engineering.</title>
-  <meta name="description" content="autoinference picks the optimal engine, tunes every config, writes custom kernels, and stress-tests the result. Drop in any model, any hardware. Ship inference at the limit of silicon." />
-  <meta name="keywords" content="inference, vLLM, SGLang, TensorRT-LLM, LLM serving, GPU optimization, agentic, autonomous, kernel optimization" />
+  <meta name="theme-color" content="#06060B" />
+  <title>autoinference — An agentic auto-tuner for production LLM inference</title>
+  <meta name="description" content="autoinference maps your GPU topology, profiles your workload, and searches a 30-to-50-dimensional vLLM configuration space — then ships a certified, reproducible recipe. Inspired by Karpathy's autoresearch." />
+  <meta name="keywords" content="vLLM, SGLang, TensorRT-LLM, LLM inference, GPU optimization, agentic, autonomous, kernel optimization, FlashAttention, EAGLE, MTP, speculative decoding" />
 
-  <meta property="og:title" content="autoinference — Peak inference performance, autonomously" />
-  <meta property="og:description" content="Drop in any model, any hardware. Our agentic harness picks the optimal engine, tunes every config, writes custom kernels, and stress-tests the result." />
+  <meta property="og:title" content="autoinference — An agentic auto-tuner for production LLM inference" />
+  <meta property="og:description" content="Hierarchical multi-fidelity search across the vLLM configuration space, driven by an LLM Planner. Ships a Certified Recipe — YAML, Docker, Helm, and a reproducibility proof." />
   <meta property="og:url" content="https://autoinference.org" />
   <meta property="og:type" content="website" />
-  <meta property="og:image" content="https://autoinference.org/og.png" />
 
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:site" content="@autoinference_" />
-  <meta name="twitter:title" content="autoinference — Peak inference performance, autonomously" />
-  <meta name="twitter:description" content="Drop in any model, any hardware. Agentic optimization for production inference." />
 
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238B5CF6'/%3E%3Cstop offset='0.5' stop-color='%233B82F6'/%3E%3Cstop offset='1' stop-color='%2306B6D4'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='24' height='24' rx='6' fill='url(%23g)'/%3E%3Cpath d='M7 16 L12 6 L17 16 M9 13 L15 13' stroke='white' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://cdn.simpleicons.org" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <!-- =========================================================
-       BACKGROUND LAYERS
-       ========================================================= -->
+  <!-- BACKGROUND -->
   <div class="bg-grid" aria-hidden="true"></div>
   <div class="bg-glow bg-glow--violet" aria-hidden="true"></div>
   <div class="bg-glow bg-glow--cyan" aria-hidden="true"></div>
   <div class="bg-noise" aria-hidden="true"></div>
 
-  <!-- =========================================================
-       NAV
-       ========================================================= -->
+  <!-- NAV -->
   <header class="nav" id="nav">
     <div class="nav__inner container">
       <a class="nav__brand" href="/" aria-label="autoinference home">
@@ -57,19 +51,24 @@
           </svg>
         </span>
         <span class="brand-name">autoinference</span>
+        <span class="brand-ver">v0.0.1-alpha</span>
       </a>
 
       <nav class="nav__links" aria-label="Primary">
-        <a href="#engines">Engines</a>
-        <a href="#how">How it works</a>
-        <a href="#performance">Performance</a>
+        <a href="#architecture">Architecture</a>
+        <a href="#axes">Search space</a>
         <a href="#validation">Validation</a>
-        <a href="https://github.com/autoinference/autoinference" target="_blank" rel="noopener">GitHub<span class="ext">↗</span></a>
+        <a href="#dashboard">Dashboard</a>
+        <a href="#compare">vs TokenPeak</a>
+        <a href="https://github.com/autoinference/autoinference" target="_blank" rel="noopener" class="navic">
+          <img src="https://cdn.simpleicons.org/github/A1A1B5" width="14" height="14" alt="" />
+          GitHub
+        </a>
       </nav>
 
       <div class="nav__cta">
-        <a href="#waitlist" class="btn btn--ghost">Sign in</a>
-        <a href="#waitlist" class="btn btn--primary">Join waitlist</a>
+        <a href="#install" class="btn btn--ghost">$ install</a>
+        <a href="#waitlist" class="btn btn--primary">Request access</a>
       </div>
 
       <button class="nav__burger" aria-label="Toggle menu" id="burger">
@@ -78,61 +77,725 @@
     </div>
   </header>
 
-  <!-- =========================================================
-       HERO
-       ========================================================= -->
+  <!-- HERO -->
   <section class="hero">
     <div class="container hero__inner">
-      <a href="#waitlist" class="badge" data-reveal>
-        <span class="badge__dot"></span>
-        <span class="badge__text">Coming soon — join the private beta</span>
-        <span class="badge__arrow" aria-hidden="true">→</span>
-      </a>
+      <div class="badge" data-reveal>
+        <span class="badge__chip">ALPHA</span>
+        <span>v0.0.1 · MIT · early access · inspired by <a href="https://x.com/karpathy" target="_blank" rel="noopener">@karpathy</a>'s autoresearch</span>
+      </div>
 
       <h1 class="hero__title" data-reveal>
-        Peak inference performance.<br />
-        <span class="grad-text">Zero ML engineering.</span>
+        An agentic auto-tuner<br/>
+        for <span class="grad-text">production LLM inference.</span>
       </h1>
 
       <p class="hero__sub" data-reveal>
-        Drop in any model and any hardware. Our agentic harness picks the optimal engine,
-        tunes every config, writes custom kernels, and stress-tests the result —
-        so your GPUs run at the <em>limit of silicon</em>.
+        autoinference maps your GPU topology, profiles your workload, and searches a
+        <em>30-to-50-dimensional</em> vLLM configuration space &mdash; then ships a
+        certified, reproducible recipe with a <em>BoTorch-driven Bayesian search</em>
+        and an <em>LLM Planner</em> that explains every decision it made.
       </p>
+
+      <!-- Install card (CLI-first, factory.ai style) -->
+      <div class="install-hero" data-reveal id="install">
+        <div class="install-hero__tabs">
+          <button class="install-tab active" data-tab="curl">curl</button>
+          <button class="install-tab" data-tab="pip">pip</button>
+          <button class="install-tab" data-tab="uv">uv</button>
+          <button class="install-tab" data-tab="brew">brew</button>
+          <button class="install-tab" data-tab="docker">docker</button>
+        </div>
+        <div class="install-hero__body">
+          <code class="install-cmd" data-cmd="curl">$ curl -fsSL https://autoinference.org/install | sh</code>
+          <code class="install-cmd" data-cmd="pip" hidden>$ pip install autoinference</code>
+          <code class="install-cmd" data-cmd="uv" hidden>$ uv add autoinference</code>
+          <code class="install-cmd" data-cmd="brew" hidden>$ brew install autoinference/tap/autoinference</code>
+          <code class="install-cmd" data-cmd="docker" hidden>$ docker run -it --gpus all autoinference/autoinference</code>
+          <button class="install-copy" id="installCopy" aria-label="Copy install command">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" width="14" height="14"><rect x="9" y="9" width="13" height="13" rx="2" /><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" /></svg>
+            <span>Copy</span>
+          </button>
+        </div>
+      </div>
 
       <div class="hero__cta" data-reveal>
         <a href="#waitlist" class="btn btn--primary btn--lg">
-          Join the waitlist
+          Request early access
           <span class="btn__arrow" aria-hidden="true">→</span>
         </a>
-        <a href="#how" class="btn btn--secondary btn--lg">
-          See how it works
+        <a href="https://github.com/autoinference/autoinference" target="_blank" rel="noopener" class="btn btn--secondary btn--lg">
+          <img src="https://cdn.simpleicons.org/github/FFFFFF" width="15" height="15" alt="" />
+          Read the design doc
         </a>
       </div>
 
       <div class="hero__meta" data-reveal>
         <div class="hero__meta-item">
           <span class="dot dot--green"></span>
-          <span>Engine-agnostic</span>
+          <span><strong>vLLM</strong> 0.11.x · 0.12.x</span>
         </div>
         <div class="hero__meta-item">
           <span class="dot dot--violet"></span>
-          <span>Hardware-aware</span>
+          <span><strong>Hopper</strong> · <strong>Blackwell</strong> · <strong>MI3xx</strong></span>
         </div>
         <div class="hero__meta-item">
           <span class="dot dot--cyan"></span>
-          <span>Battle-tested</span>
+          <span><strong>30+</strong> tunable axes · <strong>184K+</strong> raw configs</span>
         </div>
       </div>
 
-      <!-- HERO PRODUCT MOCK -->
-      <div class="hero__mock" data-reveal>
-        <div class="mock mock--hero" aria-hidden="true">
+      <!-- HERO TERMINAL MOCKUP — Agent run -->
+      <div class="hero__terminal" data-reveal>
+        <div class="term">
+          <div class="term__chrome">
+            <span class="mock__dot mock__dot--r"></span>
+            <span class="mock__dot mock__dot--y"></span>
+            <span class="mock__dot mock__dot--g"></span>
+            <span class="term__title">
+              <span class="term__user">stephenn@autoinference</span>
+              <span class="term__sep">─</span>
+              <span class="term__path">~/deployments</span>
+            </span>
+            <span class="term__tabs">
+              <span class="term__tab active">tune</span>
+              <span class="term__tab">bench</span>
+              <span class="term__tab">+</span>
+            </span>
+          </div>
+          <div class="term__body">
+            <div class="tl"><span class="tp">$</span> <span class="ti">autoinfer tune deepseek-ai/DeepSeek-V3.2-Exp --hardware "8x H200 SXM" --rubric agentic_coding</span></div>
+            <div class="tl tl--dim">&nbsp;</div>
+
+            <div class="tl"><span class="ts">[<span class="ts--probe">probe</span>]</span> <span class="tk">hardware fingerprint</span> <span class="tv">h200-8gpu-nvswitch-v1</span> <span class="tdim">(380 GB/s NCCL)</span></div>
+            <div class="tl tl--in">  ├─ 8× H200 SXM 80GB · NVLink 4 mesh via <span class="tk">NVSwitch</span></div>
+            <div class="tl tl--in">  ├─ DDR5 <span class="tn">2 TB</span> · PCIe Gen5 NVMe <span class="tn">14 GB/s</span> aggregate</div>
+            <div class="tl tl--in">  └─ HBM3e bandwidth <span class="tn">4.8 TB/s</span> per device</div>
+            <div class="tl tl--dim">&nbsp;</div>
+
+            <div class="tl"><span class="ts">[<span class="ts--feas">feas</span>]</span> <span class="tk">feasibility envelope</span> <span class="tdim">— constraint solver</span></div>
+            <div class="tl tl--in">  ├─ raw config points: <span class="tn">184,320</span></div>
+            <div class="tl tl--in">  ├─ viable after pruning: <span class="tn">47</span> <span class="tdim">(99.97% pruned, 0 GPU-seconds)</span></div>
+            <div class="tl tl--in">  └─ Pareto front (quality × p99 × $/Mtok): <span class="tn">12</span></div>
+            <div class="tl tl--dim">&nbsp;</div>
+
+            <div class="tl"><span class="ts">[<span class="ts--plan">plan</span>]</span> <span class="tk">anchor selection</span> <span class="tdim">— claude-opus planner</span></div>
+            <div class="tl tl--in">  ├─ <span class="tg">✓</span> warm-start: <span class="th">vllm-recipe-deepseek-v3-h200-prod</span> <span class="tdim">(KB hit #4283)</span></div>
+            <div class="tl tl--in">  ├─ A1 baseline (TP=8, FP8 W8A8, paged FA3, prefix cache)</div>
+            <div class="tl tl--in">  ├─ A2 A1 + <span class="tk">deepseek_mtp</span> num_speculative_tokens=<span class="tn">1</span></div>
+            <div class="tl tl--in">  ├─ A3 A1 + chunked_prefill_size=<span class="tn">2048</span></div>
+            <div class="tl tl--in">  └─ A4 exploratory: DP=4 EP=4 + <span class="tk">NVFP4</span> + DeepGEMM</div>
+            <div class="tl tl--dim">&nbsp;</div>
+
+            <div class="tl"><span class="ts">[<span class="ts--bench">bench</span>]</span> <span class="tk">smoke</span> 60s × 4 anchors <span class="tprog">━━━━━━━━━━━</span> <span class="tg">4/4</span></div>
+            <div class="tl tl--tbl">  ┌──────┬──────────┬──────────┬──────────┐</div>
+            <div class="tl tl--tbl">  │ anch │ tok/s    │ TTFT p99 │ accept   │</div>
+            <div class="tl tl--tbl">  ├──────┼──────────┼──────────┼──────────┤</div>
+            <div class="tl tl--tbl">  │  A1  │  11,240  │  187 ms  │    —     │</div>
+            <div class="tl tl--tbl">  │  A2  │ <span class="tg">14,820</span> ▲ │  192 ms  │  <span class="tg">0.92</span>    │</div>
+            <div class="tl tl--tbl">  │  A3  │  12,510  │ <span class="tg">134 ms</span> ▼ │    —     │</div>
+            <div class="tl tl--tbl">  │  A4  │  13,990  │  215 ms  │    —     │</div>
+            <div class="tl tl--tbl">  └──────┴──────────┴──────────┴──────────┘</div>
+            <div class="tl tl--dim">&nbsp;</div>
+
+            <div class="tl tl--active"><span class="ts">[<span class="ts--search">search</span>]</span> <span class="tk">BoTorch local search around A2</span> · proposing 8 candidates <span class="cursor"></span></div>
+          </div>
+        </div>
+
+        <!-- floating side panels -->
+        <div class="float float--tl" aria-hidden="true">
+          <div class="float__icon"></div>
+          <div>
+            <div class="float__t">Speculation hit</div>
+            <div class="float__s">MTP pos-1 acceptance 0.92</div>
+          </div>
+        </div>
+        <div class="float float--br" aria-hidden="true">
+          <div class="float__metric">+<span data-counter-mini>32</span><span>%</span></div>
+          <div class="float__l">tok/s vs baseline</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOGO BAR — REAL LOGOS -->
+  <section class="logobar" id="engines">
+    <div class="container">
+      <p class="logobar__label">Tested across the inference stack &mdash; engines, hardware, and runtimes</p>
+
+      <div class="logogrid">
+        <!-- Inference engines -->
+        <div class="logogrid__group">
+          <div class="logogrid__h">Engines</div>
+          <div class="logogrid__row">
+            <span class="lg-chip"><span class="lg-glyph lg-glyph--vllm">v</span>vLLM</span>
+            <span class="lg-chip"><span class="lg-glyph lg-glyph--sglang">S</span>SGLang</span>
+            <span class="lg-chip"><img src="https://cdn.simpleicons.org/nvidia/76B900" width="14" height="14" alt="" /> TensorRT-LLM</span>
+            <span class="lg-chip"><span class="lg-glyph lg-glyph--fi">F</span>FlashInfer</span>
+            <span class="lg-chip"><span class="lg-glyph lg-glyph--lmd">L</span>LMDeploy</span>
+            <span class="lg-chip"><span class="lg-glyph lg-glyph--tgi">T</span>TGI</span>
+            <span class="lg-chip"><img src="https://cdn.simpleicons.org/huggingface/FFD21E" width="14" height="14" alt="" /> text-generation-inference</span>
+          </div>
+        </div>
+
+        <!-- Hardware -->
+        <div class="logogrid__group">
+          <div class="logogrid__h">Hardware</div>
+          <div class="logogrid__row">
+            <span class="lg-chip"><img src="https://cdn.simpleicons.org/nvidia/76B900" width="14" height="14" alt="" /> NVIDIA H100/H200</span>
+            <span class="lg-chip"><img src="https://cdn.simpleicons.org/nvidia/76B900" width="14" height="14" alt="" /> NVIDIA B200/GB200</span>
+            <span class="lg-chip"><img src="https://cdn.simpleicons.org/amd/ED1C24" width="14" height="14" alt="" /> AMD MI300X/MI355X</span>
+            <span class="lg-chip"><img src="https://cdn.simpleicons.org/intel/0071C5" width="14" height="14" alt="" /> Intel Gaudi 3</span>
+            <span class="lg-chip"><img src="https://cdn.simpleicons.org/googlecloud/4285F4" width="14" height="14" alt="" /> TPU v5p / v6e</span>
+            <span class="lg-chip"><img src="https://cdn.simpleicons.org/apple/A2AAAD" width="14" height="14" alt="" /> Apple Silicon</span>
+          </div>
+        </div>
+
+        <!-- Methods / runtimes -->
+        <div class="logogrid__group">
+          <div class="logogrid__h">Methods &amp; runtimes</div>
+          <div class="logogrid__row">
+            <span class="lg-chip"><img src="https://cdn.simpleicons.org/pytorch/EE4C2C" width="14" height="14" alt="" /> PyTorch 2.6 / 2.7</span>
+            <span class="lg-chip"><span class="lg-glyph lg-glyph--cuda">C</span>CUDA 12.6 · 13.x</span>
+            <span class="lg-chip"><span class="lg-glyph lg-glyph--triton">▲</span>Triton</span>
+            <span class="lg-chip"><span class="lg-glyph lg-glyph--fa">⚡</span>FlashAttention 3</span>
+            <span class="lg-chip"><span class="lg-glyph lg-glyph--eagle">𝙀</span>EAGLE-3 / MTP</span>
+            <span class="lg-chip"><span class="lg-glyph lg-glyph--dg">D</span>DeepGEMM · Marlin · Machete</span>
+            <span class="lg-chip"><span class="lg-glyph lg-glyph--ncc">N</span>NCCL · NVSwitch · InfiniBand NDR</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROBLEM -->
+  <section class="section section--tight">
+    <div class="container">
+      <div class="eyebrow" data-reveal>// the problem</div>
+      <h2 class="section__title" data-reveal>
+        <code class="title-code">vllm serve &lt;model&gt;</code> leaves<br/>
+        <span class="grad-text">3-to-8× tokens/sec</span> and
+        <span class="grad-text">5-to-15× tail latency</span> on the table.
+      </h2>
+      <p class="section__lede" data-reveal>
+        The same model on the same GPU can differ by <em>3-8× in throughput</em> and
+        <em>5-15× in P99 latency</em> depending on how its ~40 knobs are set.
+        Every default is a guess at the wrong workload, the wrong hardware, the wrong
+        quantization, the wrong attention backend &mdash; and your GPUs pay the bill.
+      </p>
+
+      <div class="painrow">
+        <div class="painrow__item" data-reveal>
+          <div class="painrow__num">30-50</div>
+          <div class="painrow__l">tunable dimensions across parallelism, quantization, attention, speculation, scheduler, and compiler axes <span class="src">— vLLM 0.11+</span></div>
+        </div>
+        <div class="painrow__div" aria-hidden="true"></div>
+        <div class="painrow__item" data-reveal>
+          <div class="painrow__num">5-60 min</div>
+          <div class="painrow__l">GPU time per benchmark evaluation, in a search space where naïve grid would need <span class="srcmono">10^30</span> points</div>
+        </div>
+        <div class="painrow__div" aria-hidden="true"></div>
+        <div class="painrow__item" data-reveal>
+          <div class="painrow__num">19.4%</div>
+          <div class="painrow__l">cost-per-1M-tokens reduction from <span class="srcmono">EAGLE-3</span> alone on SWE-bench workloads <span class="src">— Red Hat AI, Nov 2025</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE OPTIMIZATION SPACE — 6 AXES -->
+  <section class="section" id="axes">
+    <div class="container">
+      <div class="eyebrow" data-reveal>// the search space</div>
+      <h2 class="section__title" data-reveal>
+        Six orthogonal axes. <span class="grad-text">A mega-kernel configuration.</span>
+      </h2>
+      <p class="section__lede" data-reveal>
+        We model vLLM as a compilation target, not a black box. Each axis is reasoned about
+        independently &mdash; with hard compatibility constraints &mdash; and then composed.
+      </p>
+
+      <div class="axes">
+        <article class="axis" data-reveal style="--i:0">
+          <div class="axis__head">
+            <span class="axis__id">01</span>
+            <span class="axis__title">Parallelism</span>
+            <span class="axis__count">~8 knobs</span>
+          </div>
+          <p class="axis__desc">
+            TP × PP × DP × EP. NVSwitch favors TP. PCIe favors PP. MoEs (DeepSeek-V3.2, Qwen3.5-A17B)
+            converge on <code>--dp N --enable-expert-parallel</code>.
+          </p>
+          <div class="axis__tags">
+            <span class="ax-tag">tensor_parallel_size</span>
+            <span class="ax-tag">pipeline_parallel_size</span>
+            <span class="ax-tag">data_parallel_size</span>
+            <span class="ax-tag">enable_expert_parallel</span>
+          </div>
+        </article>
+
+        <article class="axis" data-reveal style="--i:1">
+          <div class="axis__head">
+            <span class="axis__id">02</span>
+            <span class="axis__title">Quantization</span>
+            <span class="axis__count">~12 knobs</span>
+          </div>
+          <p class="axis__desc">
+            Weights × activations × KV cache, separately. NVFP4 on Blackwell often beats FP8.
+            <code>--kv-cache-dtype fp8_e4m3</code> nearly doubles effective KV capacity.
+          </p>
+          <div class="axis__tags">
+            <span class="ax-tag">FP8 W8A8</span>
+            <span class="ax-tag">NVFP4</span>
+            <span class="ax-tag">AWQ-INT4</span>
+            <span class="ax-tag">GPTQ-INT4</span>
+            <span class="ax-tag">Marlin</span>
+            <span class="ax-tag">Machete</span>
+            <span class="ax-tag">DeepGEMM</span>
+          </div>
+        </article>
+
+        <article class="axis" data-reveal style="--i:2">
+          <div class="axis__head">
+            <span class="axis__id">03</span>
+            <span class="axis__title">Attention backend</span>
+            <span class="axis__count">~5 backends</span>
+          </div>
+          <p class="axis__desc">
+            FlashAttention 3 dominates on Hopper for long seq. FlashInfer wins on variable-length
+            paged decode. Gemma-4 / GPT-OSS force backend by capability, not speed.
+          </p>
+          <div class="axis__tags">
+            <span class="ax-tag">FlashAttention 3</span>
+            <span class="ax-tag">FlashInfer</span>
+            <span class="ax-tag">Triton-native</span>
+            <span class="ax-tag">xFormers</span>
+            <span class="ax-tag">cuDNN + TMA</span>
+          </div>
+        </article>
+
+        <article class="axis" data-reveal style="--i:3">
+          <div class="axis__head">
+            <span class="axis__id">04</span>
+            <span class="axis__title">Speculative decoding</span>
+            <span class="axis__count">~10 methods</span>
+          </div>
+          <p class="axis__desc">
+            Single highest-leverage knob for decode-bound workloads. EAGLE-3, P-EAGLE,
+            MTP heads (<code>deepseek_mtp</code>, <code>qwen3_next_mtp</code>, <code>glm4_moe_mtp</code>).
+          </p>
+          <div class="axis__tags">
+            <span class="ax-tag">EAGLE-3</span>
+            <span class="ax-tag">P-EAGLE</span>
+            <span class="ax-tag">Medusa</span>
+            <span class="ax-tag">n-gram</span>
+            <span class="ax-tag">suffix decoding</span>
+            <span class="ax-tag">MLP speculator</span>
+            <span class="ax-tag">MTP × 7 variants</span>
+          </div>
+        </article>
+
+        <article class="axis" data-reveal style="--i:4">
+          <div class="axis__head">
+            <span class="axis__id">05</span>
+            <span class="axis__title">Scheduler &amp; memory</span>
+            <span class="axis__count">~9 knobs</span>
+          </div>
+          <p class="axis__desc">
+            Sharp non-linearities. Chunked prefill chunk-size too small kills prefill;
+            too large starves decode. CUDA graph mode interacts with speculation availability.
+          </p>
+          <div class="axis__tags">
+            <span class="ax-tag">max_num_seqs</span>
+            <span class="ax-tag">max_num_batched_tokens</span>
+            <span class="ax-tag">gpu_memory_utilization</span>
+            <span class="ax-tag">chunked_prefill</span>
+            <span class="ax-tag">cudagraph_mode</span>
+            <span class="ax-tag">prefix_caching</span>
+          </div>
+        </article>
+
+        <article class="axis" data-reveal style="--i:5">
+          <div class="axis__head">
+            <span class="axis__id">06</span>
+            <span class="axis__title">Compiler &amp; runtime</span>
+            <span class="axis__count">~8 knobs</span>
+          </div>
+          <p class="axis__desc">
+            <code>torch.compile</code> passes, fusion, NCCL tuning. <code>VLLM_USE_V1</code>,
+            <code>NCCL_IB_HCA</code>, buffer sizes &mdash; can shift P99 latency by 20% with no other changes.
+          </p>
+          <div class="axis__tags">
+            <span class="ax-tag">torch.compile</span>
+            <span class="ax-tag">VLLM_USE_V1</span>
+            <span class="ax-tag">VLLM_ATTENTION_BACKEND</span>
+            <span class="ax-tag">NCCL_IB_HCA</span>
+            <span class="ax-tag">NCCL_P2P_LEVEL</span>
+          </div>
+        </article>
+      </div>
+
+      <div class="axis-foot" data-reveal>
+        <span class="axis-foot__l">Composed search dimension:</span>
+        <span class="axis-foot__v">~<strong>184,320</strong> raw configs · pruned to <strong>~50</strong> viable in &lt;1s</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ARCHITECTURE — Multi-agent diagram -->
+  <section class="section section--arch" id="architecture">
+    <div class="container">
+      <div class="eyebrow" data-reveal>// system architecture</div>
+      <h2 class="section__title" data-reveal>
+        One <span class="grad-text">LLM Planner</span>. Five deterministic specialists.
+      </h2>
+      <p class="section__lede" data-reveal>
+        Where reasoning dominates, we use the LLM. Where correctness and reproducibility
+        dominate, we use deterministic solvers. The separation is the single most important
+        architectural decision in the whole system.
+      </p>
+
+      <div class="arch">
+        <div class="arch__planner" data-reveal>
+          <div class="arch__plannerHead">
+            <span class="arch__chip">PLANNER</span>
+            <span class="arch__model">Claude Opus class · LLM</span>
+          </div>
+          <div class="arch__plannerBody">
+            Reads <code>TuningBrief</code>. Reasons over structured outputs from specialists.
+            Proposes experiments. Writes explanations.
+          </div>
+        </div>
+
+        <div class="arch__rail" aria-hidden="true">
+          <svg viewBox="0 0 200 60" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="archRail" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0" stop-color="#A78BFA"/>
+                <stop offset="1" stop-color="#22D3EE"/>
+              </linearGradient>
+            </defs>
+            <path d="M100 0 L100 20 L20 40 L20 60 M100 20 L60 40 L60 60 M100 20 L100 60 M100 20 L140 40 L140 60 M100 20 L180 40 L180 60" stroke="url(#archRail)" stroke-width="1.5" fill="none" stroke-dasharray="2 2" opacity="0.5" />
+          </svg>
+        </div>
+
+        <div class="arch__specs">
+          <div class="arch__spec" data-reveal style="--i:0">
+            <span class="arch__specid">01</span>
+            <div class="arch__specname">Feasibility Agent</div>
+            <div class="arch__specdesc">Deterministic solver. Compatibility graph. HBM accounting. Zero GPU-seconds.</div>
+            <div class="arch__spectype">solver</div>
+          </div>
+          <div class="arch__spec" data-reveal style="--i:1">
+            <span class="arch__specid">02</span>
+            <div class="arch__specname">Config Generator</div>
+            <div class="arch__specdesc">Intent → launch cmd + env vars. Schema from <code>vllm serve --help</code>, pinned per release.</div>
+            <div class="arch__spectype">codegen</div>
+          </div>
+          <div class="arch__spec" data-reveal style="--i:2">
+            <span class="arch__specid">03</span>
+            <div class="arch__specname">Benchmark Executor</div>
+            <div class="arch__specdesc"><code>vllm bench serve</code> + traffic replay. Warm-up, OOM recovery, zombie cleanup.</div>
+            <div class="arch__spectype">runtime</div>
+          </div>
+          <div class="arch__spec" data-reveal style="--i:3">
+            <span class="arch__specid">04</span>
+            <div class="arch__specname">Analyzer</div>
+            <div class="arch__specdesc">Steady-state detection. Bootstrap CIs. Statistically sound verdicts only.</div>
+            <div class="arch__spectype">stats</div>
+          </div>
+          <div class="arch__spec" data-reveal style="--i:4">
+            <span class="arch__specid">05</span>
+            <div class="arch__specname">Validator</div>
+            <div class="arch__specdesc">Correctness suite, soak, chaos, reproducibility re-run. Pass/fail.</div>
+            <div class="arch__spectype">verify</div>
+          </div>
+        </div>
+
+        <div class="arch__kb" data-reveal>
+          <div class="arch__kbHead">
+            <span class="arch__chip arch__chip--alt">KNOWLEDGE BASE</span>
+            <span class="arch__kbsub">versioned · queried before every search</span>
+          </div>
+          <div class="arch__kbRow">
+            <div class="arch__kbCell">
+              <div class="arch__kbV"><span class="counter" data-target="3200">0</span>+</div>
+              <div class="arch__kbL">vLLM capability constraints<br/>extracted per pinned release</div>
+            </div>
+            <div class="arch__kbCell">
+              <div class="arch__kbV"><span class="counter" data-target="184">0</span></div>
+              <div class="arch__kbL">official + community recipes<br/>normalized to common schema</div>
+            </div>
+            <div class="arch__kbCell">
+              <div class="arch__kbV"><span class="counter" data-target="42000">0</span>+</div>
+              <div class="arch__kbL">prior benchmark runs<br/>tagged by hardware fingerprint</div>
+            </div>
+            <div class="arch__kbCell">
+              <div class="arch__kbV"><span class="counter" data-target="73">0</span>%</div>
+              <div class="arch__kbL">of new tunes warm-start<br/>from a prior anchor</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE SEARCH — 4 phases -->
+  <section class="section section--search">
+    <div class="container">
+      <div class="eyebrow" data-reveal>// the search</div>
+      <h2 class="section__title" data-reveal>
+        Hierarchical, multi-fidelity, <span class="grad-text">LLM-guided.</span>
+      </h2>
+      <p class="section__lede" data-reveal>
+        Four phases. Cheapest first. Each phase prunes the candidate set before the next phase
+        spends a single extra GPU-second.
+      </p>
+
+      <div class="phases">
+        <div class="phase" data-reveal style="--i:0">
+          <div class="phase__num">01</div>
+          <div class="phase__body">
+            <div class="phase__title">Feasibility pruning</div>
+            <div class="phase__cost">cost: <strong>0 GPU-sec</strong></div>
+            <p>Deterministic. Compatibility graph + HBM accounting. Typically prunes the space by <strong>1-2 orders of magnitude</strong>.</p>
+          </div>
+        </div>
+        <div class="phase" data-reveal style="--i:1">
+          <div class="phase__num">02</div>
+          <div class="phase__body">
+            <div class="phase__title">Anchor selection</div>
+            <div class="phase__cost">cost: <strong>1 LLM call</strong></div>
+            <p>Planner produces 3-5 anchors: the recipe baseline, +speculation, +DP/EP, +exploratory. Each anchor carries an explicit hypothesis.</p>
+          </div>
+        </div>
+        <div class="phase" data-reveal style="--i:2">
+          <div class="phase__num">03</div>
+          <div class="phase__body">
+            <div class="phase__title">Multi-fidelity search</div>
+            <div class="phase__cost">cost: <strong>~1-4 GPU-hr</strong></div>
+            <p>Smoke (60 s) → short (5 min) → BoTorch local search. LLM vetoes proposals that violate recipe priors.</p>
+          </div>
+        </div>
+        <div class="phase" data-reveal style="--i:3">
+          <div class="phase__num">04</div>
+          <div class="phase__body">
+            <div class="phase__title">Long-run validation</div>
+            <div class="phase__cost">cost: <strong>~2-6 GPU-hr</strong></div>
+            <p>30-min steady state, spike, soak, chaos, reproducibility re-run. Only certified configs ship.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="budget" data-reveal>
+        <div class="budget__head">Search budget</div>
+        <div class="budget__bars">
+          <div class="budget__row">
+            <span class="budget__l">fast mode (warm-start, KB hit)</span>
+            <span class="budget__bar"><span style="width:8%"></span></span>
+            <span class="budget__v">&lt; 1 hr</span>
+          </div>
+          <div class="budget__row">
+            <span class="budget__l">typical full tune</span>
+            <span class="budget__bar"><span style="width:50%"></span></span>
+            <span class="budget__v">6-12 hr</span>
+          </div>
+          <div class="budget__row">
+            <span class="budget__l">research mode (new GPU / model / vLLM major)</span>
+            <span class="budget__bar"><span style="width:100%"></span></span>
+            <span class="budget__v">24+ hr · feeds KB</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORKLOAD ARCHETYPES -->
+  <section class="section">
+    <div class="container">
+      <div class="eyebrow" data-reveal>// workload archetypes</div>
+      <h2 class="section__title" data-reveal>
+        Each workload has a <span class="grad-text">different rubric.</span>
+      </h2>
+      <p class="section__lede" data-reveal>
+        Tell us the use case and we apply the right priors. Or hand us your production traces
+        and we fit the distribution.
+      </p>
+
+      <div class="archetypes">
+        <div class="arche" data-reveal style="--i:0">
+          <div class="arche__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M8 7H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><polyline points="16 3 21 3 21 8"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </div>
+          <h3>Agentic coding</h3>
+          <div class="arche__sub">Cursor / SWE-agent / Claude Code style</div>
+          <ul class="arche__rubric">
+            <li><span class="arche__k">priority</span>prefix cache hit · TTFT · ITL</li>
+            <li><span class="arche__k">priors</span>aggressive prefix caching, large blocks, EAGLE-3, moderate concurrency</li>
+            <li><span class="arche__k">expected gain</span><strong class="tgrad">19.4% lower $/Mtok</strong></li>
+          </ul>
+        </div>
+
+        <div class="arche" data-reveal style="--i:1">
+          <div class="arche__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          </div>
+          <h3>Reasoning model serving</h3>
+          <div class="arche__sub">o1-style · R1-style · GPT-OSS reasoning</div>
+          <ul class="arche__rubric">
+            <li><span class="arche__k">priority</span>decode tok/s · P99 time-to-full-response</li>
+            <li><span class="arche__k">priors</span>FP8 KV mandatory, MTP=1 / EAGLE-3, extreme batch sizes</li>
+            <li><span class="arche__k">expected gain</span><strong class="tgrad">2-3× decode throughput</strong></li>
+          </ul>
+        </div>
+
+        <div class="arche" data-reveal style="--i:2">
+          <div class="arche__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </div>
+          <h3>Interactive chat</h3>
+          <div class="arche__sub">consumer · enterprise assistants</div>
+          <ul class="arche__rubric">
+            <li><span class="arche__k">priority</span>TTFT P99 &lt; 500 ms · ITL P99 &lt; 100 ms · goodput</li>
+            <li><span class="arche__k">priors</span>balanced batch, prefix cache, FP8 KV, P-EAGLE, chunked prefill</li>
+            <li><span class="arche__k">expected gain</span><strong class="tgrad">2× goodput at SLO</strong></li>
+          </ul>
+        </div>
+
+        <div class="arche" data-reveal style="--i:3">
+          <div class="arche__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          </div>
+          <h3>Long-context RAG</h3>
+          <div class="arche__sub">document QA · agentic search</div>
+          <ul class="arche__rubric">
+            <li><span class="arche__k">priority</span>prefix cache hit rate · prefill throughput</li>
+            <li><span class="arche__k">priors</span>large block size, aggressive FP8 KV, tuned chunked prefill, DP+EP for MoE</li>
+            <li><span class="arche__k">expected gain</span><strong class="tgrad">10×+ TTFT on cache-hit</strong></li>
+          </ul>
+        </div>
+
+        <div class="arche" data-reveal style="--i:4">
+          <div class="arche__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6v6H9z"/></svg>
+          </div>
+          <h3>Bulk synthetic / labeling</h3>
+          <div class="arche__sub">offline batch · data generation</div>
+          <ul class="arche__rubric">
+            <li><span class="arche__k">priority</span>raw output tok/s · TTFT irrelevant</li>
+            <li><span class="arche__k">priors</span>max_num_seqs &gt; 200, batched_tokens 16K-32K, NVFP4, DP+EP</li>
+            <li><span class="arche__k">expected gain</span><strong class="tgrad">3-4× throughput</strong></li>
+          </ul>
+        </div>
+
+        <div class="arche" data-reveal style="--i:5">
+          <div class="arche__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/></svg>
+          </div>
+          <h3>Real-time voice</h3>
+          <div class="arche__sub">streaming · agentic phone</div>
+          <ul class="arche__rubric">
+            <li><span class="arche__k">priority</span>TTFT P99 &lt; 200 ms · ITL jitter under 30 ms</li>
+            <li><span class="arche__k">priors</span>small batches, latency-optimized attention, async sched, disable chunked prefill if jitter</li>
+            <li><span class="arche__k">expected gain</span><strong class="tgrad">consistent sub-200ms TTFT</strong></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- THREE-RING VALIDATION -->
+  <section class="section section--validation" id="validation">
+    <div class="container">
+      <div class="eyebrow" data-reveal>// validation</div>
+      <h2 class="section__title" data-reveal>
+        Three concentric rings. <span class="grad-text">No certification without all three.</span>
+      </h2>
+      <p class="section__lede" data-reveal>
+        Most auto-tuners stop at performance. We measure the things that silently break in
+        production &mdash; quality drift from speculation, NCCL deadlocks in soak,
+        KV fragmentation under long-tail traffic.
+      </p>
+
+      <div class="rings">
+        <article class="ring" data-reveal style="--i:0">
+          <div class="ring__head">
+            <span class="ring__id">RING 1</span>
+            <h3>Performance</h3>
+          </div>
+          <p class="ring__body">
+            TTFT/ITL/TPOT P50/P95/P99, goodput at SLO, prefix-cache hit rate, KV occupancy,
+            per-position speculative acceptance. Bootstrap CIs &mdash; not point estimates.
+          </p>
+          <div class="ring__rows">
+            <div class="ring__row">TTFT P99 <span class="ring__rowv">&lt; 500 ms</span></div>
+            <div class="ring__row">ITL P99 <span class="ring__rowv">&lt; 100 ms</span></div>
+            <div class="ring__row">Steady-state detect <span class="ring__rowv">≥ 70% plateau</span></div>
+            <div class="ring__row">CI confidence <span class="ring__rowv">bootstrap 95%</span></div>
+          </div>
+        </article>
+
+        <article class="ring ring--mid" data-reveal style="--i:1">
+          <div class="ring__head">
+            <span class="ring__id">RING 2</span>
+            <h3>Correctness</h3>
+          </div>
+          <p class="ring__body">
+            The ring most tuners skip. INT4 / NVFP4 / speculative decoding can silently degrade
+            output quality. We probe with a fixed regression suite against a BF16 reference.
+          </p>
+          <div class="ring__rows">
+            <div class="ring__row">MMLU-Pro</div>
+            <div class="ring__row">GSM8K + HumanEval</div>
+            <div class="ring__row">MT-Bench + IFEval</div>
+            <div class="ring__row">Long-context needle-in-haystack</div>
+            <div class="ring__row">Tool-calling correctness</div>
+            <div class="ring__row">Quality regression flag at <span class="ring__rowv">≥ 1% composite</span></div>
+          </div>
+        </article>
+
+        <article class="ring" data-reveal style="--i:2">
+          <div class="ring__head">
+            <span class="ring__id">RING 3</span>
+            <h3>Operational chaos</h3>
+          </div>
+          <p class="ring__body">
+            A config that wins in lab conditions can fall over in production. We run the chaos
+            suite, then run the entire tune <em>again from scratch</em> to prove it wasn't a fluke.
+          </p>
+          <div class="ring__rows">
+            <div class="ring__row">2-hour load soak (mem leak, NCCL deadlock)</div>
+            <div class="ring__row">Spike test (5× rate for 60s)</div>
+            <div class="ring__row">Long-tail (10× normal seq len)</div>
+            <div class="ring__row">Cold-start time-to-first-success</div>
+            <div class="ring__row">Reproducibility re-run from fresh server</div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- DASHBOARD MOCKUP — enhanced with real KPIs -->
+  <section class="section section--dash" id="dashboard">
+    <div class="container">
+      <div class="eyebrow" data-reveal>// the dashboard</div>
+      <h2 class="section__title" data-reveal>
+        The CLI is the source of truth. <span class="grad-text">The web is the lens.</span>
+      </h2>
+      <p class="section__lede" data-reveal>
+        Every tune produces a versioned <code>TuningBrief</code> + a structured trace.
+        The dashboard renders both &mdash; like Weights &amp; Biases for inference deployments &mdash;
+        but you never need it to ship.
+      </p>
+
+      <!-- DASHBOARD MOCK -->
+      <div class="dashwrap" data-reveal>
+        <div class="mock mock--dash" aria-hidden="true">
           <div class="mock__chrome">
             <span class="mock__dot mock__dot--r"></span>
             <span class="mock__dot mock__dot--y"></span>
             <span class="mock__dot mock__dot--g"></span>
-            <span class="mock__url">app.autoinference.org/deployments/llama-3.1-70b</span>
+            <span class="mock__url">app.autoinference.org/runs/r-1842 · DeepSeek-V3.2-Exp · 8× H200</span>
             <span class="mock__chrome-meta">⌘K</span>
           </div>
           <div class="mock__body">
@@ -142,19 +805,19 @@
                 <span>autoinference</span>
               </div>
               <nav class="mock__nav">
-                <a class="active"><span class="ic"></span>Deployments</a>
+                <a class="active"><span class="ic"></span>Runs</a>
+                <a><span class="ic"></span>Recipes</a>
                 <a><span class="ic"></span>Models</a>
                 <a><span class="ic"></span>Hardware</a>
-                <a><span class="ic"></span>Kernels</a>
+                <a><span class="ic"></span>Knowledge Base</a>
                 <a><span class="ic"></span>Benchmarks</a>
-                <a><span class="ic"></span>Logs</a>
                 <a><span class="ic"></span>Settings</a>
               </nav>
               <div class="mock__workspace">
                 <div class="mock__wsbubble">A</div>
                 <div>
                   <div class="mock__wsname">autoinference</div>
-                  <div class="mock__wsplan">Production · Team</div>
+                  <div class="mock__wsplan">prod · 4 engineers</div>
                 </div>
               </div>
             </aside>
@@ -162,643 +825,263 @@
             <main class="mock__main">
               <div class="mock__topbar">
                 <div>
-                  <div class="mock__crumb">Deployments / <strong>llama-3.1-70b-instruct</strong></div>
+                  <div class="mock__crumb">runs / <strong>r-1842</strong> / DeepSeek-V3.2-Exp · 8× H200 SXM</div>
                   <div class="mock__title">
-                    <span class="status-pill status-pill--live"><span class="ping"></span>Live</span>
-                    <h3>llama-3.1-70b-instruct</h3>
-                    <span class="mock__tag">prod-us-west</span>
+                    <span class="status-pill status-pill--live"><span class="ping"></span>certifying</span>
+                    <h3>DeepSeek-V3.2-Exp · agentic_coding</h3>
+                    <span class="mock__tag">phase 4/4</span>
                   </div>
                 </div>
                 <div class="mock__topbar-actions">
-                  <button class="chip"><span class="ic-sm"></span>Re-tune</button>
-                  <button class="chip chip--primary"><span class="ic-sm"></span>Deploy</button>
+                  <button class="chip"><span class="ic-sm"></span>Trace</button>
+                  <button class="chip"><span class="ic-sm"></span>Export YAML</button>
+                  <button class="chip chip--primary"><span class="ic-sm"></span>Ship</button>
                 </div>
               </div>
 
+              <!-- Stat row -->
               <div class="mock__statsrow">
                 <div class="statcard">
                   <div class="statcard__label">Tokens/sec</div>
                   <div class="statcard__value" data-count="14820">14,820</div>
-                  <div class="statcard__delta delta--up">+241% vs baseline</div>
-                  <svg class="spark" viewBox="0 0 100 30" preserveAspectRatio="none">
-                    <path d="M0 24 L10 22 L20 20 L30 18 L40 14 L50 12 L60 9 L70 7 L80 5 L90 4 L100 3" stroke="url(#sparkG1)" stroke-width="2" fill="none" stroke-linecap="round"/>
-                    <defs><linearGradient id="sparkG1" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#22D3EE"/><stop offset="1" stop-color="#A78BFA"/></linearGradient></defs>
-                  </svg>
+                  <div class="statcard__delta delta--up">+32% vs A1 baseline</div>
+                  <svg class="spark" viewBox="0 0 100 30" preserveAspectRatio="none"><path d="M0 24 L10 22 L20 20 L30 18 L40 14 L50 12 L60 9 L70 7 L80 5 L90 4 L100 3" stroke="url(#sparkG1)" stroke-width="2" fill="none" stroke-linecap="round"/><defs><linearGradient id="sparkG1" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#22D3EE"/><stop offset="1" stop-color="#A78BFA"/></linearGradient></defs></svg>
                 </div>
                 <div class="statcard">
-                  <div class="statcard__label">P99 latency</div>
-                  <div class="statcard__value">42<span class="unit">ms</span></div>
-                  <div class="statcard__delta delta--down">−62% vs baseline</div>
-                  <svg class="spark" viewBox="0 0 100 30" preserveAspectRatio="none">
-                    <path d="M0 6 L10 8 L20 10 L30 12 L40 16 L50 18 L60 22 L70 24 L80 25 L90 26 L100 27" stroke="url(#sparkG2)" stroke-width="2" fill="none" stroke-linecap="round"/>
-                    <defs><linearGradient id="sparkG2" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#A78BFA"/><stop offset="1" stop-color="#22D3EE"/></linearGradient></defs>
-                  </svg>
+                  <div class="statcard__label">TTFT P99</div>
+                  <div class="statcard__value">192<span class="unit">ms</span></div>
+                  <div class="statcard__delta delta--down">SLO 500 ms · 38% headroom</div>
+                  <svg class="spark" viewBox="0 0 100 30" preserveAspectRatio="none"><path d="M0 6 L10 8 L20 10 L30 12 L40 16 L50 18 L60 22 L70 24 L80 25 L90 26 L100 27" stroke="url(#sparkG2)" stroke-width="2" fill="none" stroke-linecap="round"/><defs><linearGradient id="sparkG2" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#A78BFA"/><stop offset="1" stop-color="#22D3EE"/></linearGradient></defs></svg>
                 </div>
                 <div class="statcard">
-                  <div class="statcard__label">GPU utilization</div>
-                  <div class="statcard__value">94<span class="unit">%</span></div>
-                  <div class="statcard__delta delta--up">+38 pts</div>
-                  <svg class="spark" viewBox="0 0 100 30" preserveAspectRatio="none">
-                    <path d="M0 22 L10 18 L20 19 L30 14 L40 11 L50 8 L60 6 L70 5 L80 4 L90 3 L100 3" stroke="url(#sparkG3)" stroke-width="2" fill="none" stroke-linecap="round"/>
-                    <defs><linearGradient id="sparkG3" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#34D399"/><stop offset="1" stop-color="#22D3EE"/></linearGradient></defs>
-                  </svg>
+                  <div class="statcard__label">MTP accept (pos 1)</div>
+                  <div class="statcard__value">0.92</div>
+                  <div class="statcard__delta delta--up">recipe target ≥ 0.90 ✓</div>
+                  <svg class="spark" viewBox="0 0 100 30" preserveAspectRatio="none"><path d="M0 22 L10 18 L20 19 L30 14 L40 11 L50 8 L60 6 L70 5 L80 4 L90 3 L100 3" stroke="url(#sparkG3)" stroke-width="2" fill="none" stroke-linecap="round"/><defs><linearGradient id="sparkG3" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#34D399"/><stop offset="1" stop-color="#22D3EE"/></linearGradient></defs></svg>
                 </div>
                 <div class="statcard">
-                  <div class="statcard__label">$ / 1M tokens</div>
-                  <div class="statcard__value">$0.47</div>
-                  <div class="statcard__delta delta--down">−47% spend</div>
-                  <svg class="spark" viewBox="0 0 100 30" preserveAspectRatio="none">
-                    <path d="M0 4 L10 6 L20 8 L30 11 L40 14 L50 17 L60 20 L70 22 L80 24 L90 25 L100 26" stroke="url(#sparkG4)" stroke-width="2" fill="none" stroke-linecap="round"/>
-                    <defs><linearGradient id="sparkG4" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#F472B6"/><stop offset="1" stop-color="#A78BFA"/></linearGradient></defs>
-                  </svg>
+                  <div class="statcard__label">Prefix cache hit</div>
+                  <div class="statcard__value">87<span class="unit">%</span></div>
+                  <div class="statcard__delta delta--up">large block · 8K agent prompt</div>
+                  <svg class="spark" viewBox="0 0 100 30" preserveAspectRatio="none"><path d="M0 18 L10 15 L20 13 L30 12 L40 10 L50 8 L60 7 L70 6 L80 5 L90 5 L100 4" stroke="url(#sparkG4)" stroke-width="2" fill="none" stroke-linecap="round"/><defs><linearGradient id="sparkG4" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#F472B6"/><stop offset="1" stop-color="#A78BFA"/></linearGradient></defs></svg>
                 </div>
               </div>
 
+              <!-- KPI rows: speculation breakdown + GPU breakdown -->
               <div class="mock__grid">
+                <!-- Speculative acceptance by position (real plan content) -->
                 <div class="panel">
                   <div class="panel__head">
-                    <h4>Optimization run #1842</h4>
-                    <span class="panel__sub">live · agent thinking</span>
+                    <h4>Speculative acceptance · per position</h4>
+                    <span class="panel__sub">deepseek_mtp · n_spec=1 · sample 12,000</span>
                   </div>
-                  <div class="agentlog">
-                    <div class="agentlog__row"><span class="t">14:02:11</span><span class="tag tag--violet">plan</span><span>Profiling workload &mdash; chat-completion, p50=512 tok, p99=4096 tok</span></div>
-                    <div class="agentlog__row"><span class="t">14:02:18</span><span class="tag tag--blue">choose</span><span>Selected <strong>vLLM 0.6.3</strong> over SGLang for paged-attention + AWQ INT4</span></div>
-                    <div class="agentlog__row"><span class="t">14:02:31</span><span class="tag tag--cyan">tune</span><span>Sweeping batch={64,128,192,256}, max_seqs={128,256}&hellip;</span></div>
-                    <div class="agentlog__row"><span class="t">14:03:02</span><span class="tag tag--cyan">tune</span><span>Optimum: batch=192, max_seqs=192, kv-cache 16MB pages</span></div>
-                    <div class="agentlog__row"><span class="t">14:03:14</span><span class="tag tag--pink">kernel</span><span>Generating fused RMSNorm+RoPE Triton kernel for H100&hellip;</span></div>
-                    <div class="agentlog__row"><span class="t">14:03:51</span><span class="tag tag--green">verify</span><span>Kernel: 4.2× faster, 0-ulp output diff vs reference ✓</span></div>
-                    <div class="agentlog__row agentlog__row--active"><span class="t">14:04:09</span><span class="tag tag--orange">loadtest</span><span>Ramping concurrent users: 1,200 / 2,000 <span class="dotpulse"></span></span></div>
+                  <div class="accept">
+                    <div class="accept__row">
+                      <span class="accept__l">pos 1</span>
+                      <span class="accept__bar"><span style="width:92%"></span></span>
+                      <span class="accept__v">0.92</span>
+                    </div>
+                    <div class="accept__row accept__row--low">
+                      <span class="accept__l">pos 2</span>
+                      <span class="accept__bar"><span style="width:41%"></span></span>
+                      <span class="accept__v">0.41</span>
+                    </div>
+                    <div class="accept__row accept__row--low">
+                      <span class="accept__l">pos 3</span>
+                      <span class="accept__bar"><span style="width:14%"></span></span>
+                      <span class="accept__v">0.14</span>
+                    </div>
+                    <div class="accept__note">
+                      <strong>Planner:</strong> "Acceptance collapses past pos-1. Keep n_spec=1 per GLM recipe guidance &mdash; n_spec=3 would raise mean acceptance length but drop throughput by ~18%."
+                    </div>
                   </div>
                 </div>
 
+                <!-- GPU kernel breakdown from Nsight -->
                 <div class="panel panel--compact">
                   <div class="panel__head">
-                    <h4>Engine recommendation</h4>
+                    <h4>Step time · Nsight breakdown</h4>
+                    <span class="panel__sub">10s capture · h200-0</span>
                   </div>
-                  <div class="enginepick">
-                    <div class="enginepick__row enginepick__row--win">
-                      <span class="enginepick__name">vLLM <span class="enginepick__ver">0.6.3</span></span>
-                      <span class="enginepick__bar"><span style="width:96%"></span></span>
-                      <span class="enginepick__score">96</span>
+                  <div class="nsight">
+                    <div class="nsight__bar">
+                      <span class="ns ns--gemm" style="width:54%" title="GEMM 54%"></span>
+                      <span class="ns ns--attn" style="width:18%" title="Attention 18%"></span>
+                      <span class="ns ns--ar" style="width:11%" title="NCCL all-reduce 11%"></span>
+                      <span class="ns ns--kv" style="width:8%" title="KV write 8%"></span>
+                      <span class="ns ns--other" style="width:9%" title="other 9%"></span>
                     </div>
-                    <div class="enginepick__row">
-                      <span class="enginepick__name">SGLang <span class="enginepick__ver">0.3.2</span></span>
-                      <span class="enginepick__bar"><span style="width:91%"></span></span>
-                      <span class="enginepick__score">91</span>
+                    <div class="nsight__legend">
+                      <span><i class="ns ns--gemm"></i>GEMM 54%</span>
+                      <span><i class="ns ns--attn"></i>Attn 18%</span>
+                      <span><i class="ns ns--ar"></i>NCCL 11%</span>
+                      <span><i class="ns ns--kv"></i>KV 8%</span>
+                      <span><i class="ns ns--other"></i>Other 9%</span>
                     </div>
-                    <div class="enginepick__row">
-                      <span class="enginepick__name">TensorRT-LLM</span>
-                      <span class="enginepick__bar"><span style="width:88%"></span></span>
-                      <span class="enginepick__score">88</span>
-                    </div>
-                    <div class="enginepick__row">
-                      <span class="enginepick__name">TokenSpeed</span>
-                      <span class="enginepick__bar"><span style="width:84%"></span></span>
-                      <span class="enginepick__score">84</span>
-                    </div>
-                    <div class="enginepick__row">
-                      <span class="enginepick__name">llama.cpp</span>
-                      <span class="enginepick__bar"><span style="width:71%"></span></span>
-                      <span class="enginepick__score">71</span>
+                    <div class="nsight__note">
+                      <span class="tag tag--cyan">healthy</span> GEMM-bound · NCCL within recipe envelope (&lt; 15%)
                     </div>
                   </div>
                 </div>
+              </div>
+
+              <!-- Goodput @ SLO row -->
+              <div class="panel" style="margin-top: 12px;">
+                <div class="panel__head">
+                  <h4>Goodput · % requests meeting SLO at concurrency</h4>
+                  <span class="panel__sub">P99 TTFT ≤ 500 ms · P99 ITL ≤ 100 ms · 30 min steady state</span>
+                </div>
+                <svg viewBox="0 0 720 140" preserveAspectRatio="none" class="goodput-svg">
+                  <defs>
+                    <linearGradient id="gpA" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0" stop-color="#22D3EE" stop-opacity="0.4"/>
+                      <stop offset="1" stop-color="#22D3EE" stop-opacity="0"/>
+                    </linearGradient>
+                  </defs>
+                  <line x1="40" y1="20"  x2="700" y2="20"  stroke="rgba(255,255,255,0.04)"/>
+                  <line x1="40" y1="60"  x2="700" y2="60"  stroke="rgba(255,255,255,0.04)"/>
+                  <line x1="40" y1="100" x2="700" y2="100" stroke="rgba(255,255,255,0.04)"/>
+                  <text x="34" y="24"  text-anchor="end" class="gridlbl">100%</text>
+                  <text x="34" y="64"  text-anchor="end" class="gridlbl">75%</text>
+                  <text x="34" y="104" text-anchor="end" class="gridlbl">50%</text>
+                  <!-- baseline -->
+                  <path d="M40 22 L120 24 L200 30 L280 50 L360 78 L440 100 L520 116 L600 124 L700 128"
+                    stroke="rgba(255,255,255,0.35)" stroke-width="1.7" fill="none" stroke-dasharray="4 3"/>
+                  <text x="700" y="138" text-anchor="end" class="endlbl" fill="rgba(255,255,255,0.45)">baseline</text>
+                  <!-- ours -->
+                  <path d="M40 20 L120 21 L200 22 L280 23 L360 25 L440 28 L520 36 L600 50 L700 70"
+                    stroke="#22D3EE" stroke-width="2.5" fill="none"/>
+                  <path d="M40 20 L120 21 L200 22 L280 23 L360 25 L440 28 L520 36 L600 50 L700 70 L700 140 L40 140 Z"
+                    fill="url(#gpA)"/>
+                  <circle cx="700" cy="70" r="5" fill="#22D3EE"/>
+                  <text x="694" y="62" text-anchor="end" class="endlbl">certified</text>
+                  <!-- x labels -->
+                  <text x="40" y="138" class="gridlbl">10</text>
+                  <text x="200" y="138" class="gridlbl">50</text>
+                  <text x="360" y="138" class="gridlbl">100</text>
+                  <text x="520" y="138" class="gridlbl">200</text>
+                  <text x="700" y="138" text-anchor="end" class="gridlbl">conc</text>
+                </svg>
               </div>
             </main>
           </div>
         </div>
-        <!-- floating accent cards around mock -->
-        <div class="float float--tl" aria-hidden="true">
-          <div class="float__icon"></div>
+
+        <div class="float float--tl float--dash-tl" aria-hidden="true">
+          <div class="float__icon float__icon--ok"></div>
           <div>
-            <div class="float__t">Kernel deployed</div>
-            <div class="float__s">flash_attn_v3_h100 · +4.2× </div>
+            <div class="float__t">Ring 2 complete</div>
+            <div class="float__s">quality drift 0.4% (under 1% threshold)</div>
           </div>
-        </div>
-        <div class="float float--br" aria-hidden="true">
-          <div class="float__metric">94<span>%</span></div>
-          <div class="float__l">GPU saturated</div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- =========================================================
-       LOGO BAR
-       ========================================================= -->
-  <section class="logobar" id="engines">
-    <div class="container">
-      <p class="logobar__label">Engine-agnostic. Hardware-aware.</p>
-      <div class="logobar__marquee">
-        <div class="logobar__track">
-          <span class="logo-pill">vLLM</span>
-          <span class="logo-pill">SGLang</span>
-          <span class="logo-pill">TensorRT-LLM</span>
-          <span class="logo-pill">TokenSpeed</span>
-          <span class="logo-pill">llama.cpp</span>
-          <span class="logo-pill">TGI</span>
-          <span class="logo-pill">LMDeploy</span>
-          <span class="logo-pill">MLC-LLM</span>
-          <span class="logo-pill logo-pill--hw">NVIDIA H100</span>
-          <span class="logo-pill logo-pill--hw">H200</span>
-          <span class="logo-pill logo-pill--hw">B200</span>
-          <span class="logo-pill logo-pill--hw">AMD MI300X</span>
-          <span class="logo-pill logo-pill--hw">Intel Gaudi 3</span>
-          <span class="logo-pill logo-pill--hw">Apple Silicon</span>
-          <!-- duplicate for seamless loop -->
-          <span class="logo-pill">vLLM</span>
-          <span class="logo-pill">SGLang</span>
-          <span class="logo-pill">TensorRT-LLM</span>
-          <span class="logo-pill">TokenSpeed</span>
-          <span class="logo-pill">llama.cpp</span>
-          <span class="logo-pill">TGI</span>
-          <span class="logo-pill">LMDeploy</span>
-          <span class="logo-pill">MLC-LLM</span>
-          <span class="logo-pill logo-pill--hw">NVIDIA H100</span>
-          <span class="logo-pill logo-pill--hw">H200</span>
-          <span class="logo-pill logo-pill--hw">B200</span>
-          <span class="logo-pill logo-pill--hw">AMD MI300X</span>
-          <span class="logo-pill logo-pill--hw">Intel Gaudi 3</span>
-          <span class="logo-pill logo-pill--hw">Apple Silicon</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- =========================================================
-       PROBLEM
-       ========================================================= -->
-  <section class="section section--tight">
-    <div class="container">
-      <div class="eyebrow" data-reveal>The problem</div>
-      <h2 class="section__title" data-reveal>
-        Modern inference is <span class="strike">just <em>spinning up vLLM</em></span><br />
-        a <span class="grad-text">multi-axis optimization</span> problem.
-      </h2>
-      <p class="section__lede" data-reveal>
-        Every model has dozens of correct ways to serve it, and only one peak. Engine choice, batch size,
-        KV-cache layout, tensor parallelism, quantization scheme, custom kernels &mdash; the search space is
-        massive, and a wrong setting silently leaves <em>40–80%</em> of your GPU on the floor.
-      </p>
-
-      <div class="painrow">
-        <div class="painrow__item" data-reveal>
-          <div class="painrow__num">40-80%</div>
-          <div class="painrow__l">of GPU compute wasted in default configs <span class="src">(industry benchmarks, 2024)</span></div>
-        </div>
-        <div class="painrow__div" aria-hidden="true"></div>
-        <div class="painrow__item" data-reveal>
-          <div class="painrow__num">3-6 weeks</div>
-          <div class="painrow__l">average time for an ML eng team to dial-in one model on one hardware target</div>
-        </div>
-        <div class="painrow__div" aria-hidden="true"></div>
-        <div class="painrow__item" data-reveal>
-          <div class="painrow__num">2x ↑</div>
-          <div class="painrow__l">cloud spend that disappears when you re-tune for the next model</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- =========================================================
-       FOUR PILLARS
-       ========================================================= -->
-  <section class="section">
-    <div class="container">
-      <div class="eyebrow" data-reveal>The platform</div>
-      <h2 class="section__title" data-reveal>
-        Four agents. One <span class="grad-text">autonomous pipeline</span>.
-      </h2>
-      <p class="section__lede" data-reveal>
-        Each stage is owned by a specialized agent. Together they take you from
-        model weights to a hardened, peak-throughput deployment &mdash; without you writing a single config line.
-      </p>
-
-      <div class="pillars">
-        <article class="pillar" data-reveal style="--i:0">
-          <div class="pillar__head">
-            <span class="pillar__num">01</span>
-            <span class="pillar__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 L4 6 L4 18 L12 22 L20 18 L20 6 Z"/><path d="M4 6 L12 10 L20 6"/><path d="M12 10 L12 22"/></svg>
-            </span>
-          </div>
-          <h3 class="pillar__title">Engine selection</h3>
-          <p class="pillar__body">
-            Profiles your workload pattern &mdash; chat, RAG, batch, agentic, vision-language &mdash;
-            and ranks <strong>vLLM</strong>, <strong>SGLang</strong>, <strong>TensorRT-LLM</strong>,
-            <strong>TokenSpeed</strong>, and others against your exact distribution.
-          </p>
-          <ul class="pillar__bullets">
-            <li>Workload fingerprinting</li>
-            <li>Engine capability matrix</li>
-            <li>Cross-engine A/B harness</li>
-          </ul>
-        </article>
-
-        <article class="pillar" data-reveal style="--i:1">
-          <div class="pillar__head">
-            <span class="pillar__num">02</span>
-            <span class="pillar__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v6 M12 17v6 M4.2 4.2l4.3 4.3 M15.5 15.5l4.3 4.3 M1 12h6 M17 12h6 M4.2 19.8l4.3-4.3 M15.5 8.5l4.3-4.3"/></svg>
-            </span>
-          </div>
-          <h3 class="pillar__title">Config tuning</h3>
-          <p class="pillar__body">
-            Bayesian + multi-armed bandit search over batch size, max-seqs, KV-cache paging, TP/PP shape,
-            CUDA graphs, speculative decoding, and quantization (AWQ / GPTQ / FP8 / INT4).
-          </p>
-          <ul class="pillar__bullets">
-            <li>500+ hyperparameters explored</li>
-            <li>SLO-aware Pareto front</li>
-            <li>Closed-loop re-tuning on drift</li>
-          </ul>
-        </article>
-
-        <article class="pillar" data-reveal style="--i:2">
-          <div class="pillar__head">
-            <span class="pillar__num">03</span>
-            <span class="pillar__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/><line x1="14" y1="4" x2="10" y2="20"/></svg>
-            </span>
-          </div>
-          <h3 class="pillar__title">Kernel synthesis</h3>
-          <p class="pillar__body">
-            Writes custom Triton and CUDA kernels for the hot path of your model &mdash;
-            fused RMSNorm+RoPE, paged FlashAttention variants, MoE routing, prefix-shared prefill.
-            Auto-verified bit-equivalent to reference.
-          </p>
-          <ul class="pillar__bullets">
-            <li>Triton / CUDA / ROCm / Metal targets</li>
-            <li>0-ulp output verification</li>
-            <li>Per-arch tuning (SM90, SM100, CDNA3)</li>
-          </ul>
-        </article>
-
-        <article class="pillar" data-reveal style="--i:3">
-          <div class="pillar__head">
-            <span class="pillar__num">04</span>
-            <span class="pillar__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-12V5l-8-3-8 3v5c0 8 8 12 8 12z"/><path d="M9 12l2 2 4-4"/></svg>
-            </span>
-          </div>
-          <h3 class="pillar__title">Validation</h3>
-          <p class="pillar__body">
-            Every deployment ships behind a generated test harness:
-            functional correctness, golden-output regression, k6 load tests at projected QPS,
-            and adversarial security / prompt-injection battery.
-          </p>
-          <ul class="pillar__bullets">
-            <li>Correctness vs reference model</li>
-            <li>Load tests up to 10k concurrent</li>
-            <li>OWASP LLM Top-10 coverage</li>
-          </ul>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- =========================================================
-       HOW IT WORKS
-       ========================================================= -->
-  <section class="section section--how" id="how">
-    <div class="container">
-      <div class="eyebrow" data-reveal>How it works</div>
-      <h2 class="section__title" data-reveal>
-        Three inputs. <span class="grad-text">One deployment.</span>
-      </h2>
-      <p class="section__lede" data-reveal>
-        You bring the model and the hardware. We bring the rest.
-      </p>
-
-      <div class="how">
-        <ol class="how__steps">
-          <li class="how__step" data-reveal>
-            <div class="how__num">1</div>
-            <div class="how__body">
-              <h3>Pick a model</h3>
-              <p>Hugging Face checkpoint, local weights, custom fine-tune, or one of 600+ pre-profiled models from our catalog.</p>
-              <div class="codeblock">
-                <div class="codeblock__head">
-                  <span class="lang">python</span>
-                  <span class="copy">⎘ copy</span>
-                </div>
-                <pre><code><span class="kw">from</span> autoinference <span class="kw">import</span> Deployment
-
-deploy = Deployment(
-    model=<span class="str">"meta-llama/Llama-3.1-70B-Instruct"</span>,
-    quantize=<span class="str">"auto"</span>,   <span class="cm"># picks AWQ / FP8 / INT4 for your hw</span>
-)</code></pre>
-              </div>
-            </div>
-          </li>
-
-          <li class="how__step" data-reveal>
-            <div class="how__num">2</div>
-            <div class="how__body">
-              <h3>State your hardware</h3>
-              <p>A single H100, a multi-node H200 cluster, AMD MI300X, edge Jetson, or a cloud provider. We auto-detect topology, interconnect, memory, and headroom.</p>
-              <div class="codeblock">
-                <div class="codeblock__head">
-                  <span class="lang">python</span>
-                  <span class="copy">⎘ copy</span>
-                </div>
-                <pre><code>deploy.target(
-    hardware=<span class="str">"8x H100 SXM"</span>,
-    interconnect=<span class="str">"NVLink"</span>,
-    region=<span class="str">"us-west-2"</span>,
-    slo=<span class="brc">{</span><span class="str">"p99_latency_ms"</span>: <span class="num">200</span>, <span class="str">"min_qps"</span>: <span class="num">120</span><span class="brc">}</span>,
-)</code></pre>
-              </div>
-            </div>
-          </li>
-
-          <li class="how__step" data-reveal>
-            <div class="how__num">3</div>
-            <div class="how__body">
-              <h3>Hit deploy</h3>
-              <p>The agentic harness takes over: profile → choose engine → tune configs → synthesize kernels → load-test → harden → ship. You get an OpenAI-compatible endpoint, with full audit trail.</p>
-              <div class="codeblock">
-                <div class="codeblock__head">
-                  <span class="lang">python</span>
-                  <span class="copy">⎘ copy</span>
-                </div>
-                <pre><code>endpoint = deploy.run()
-<span class="cm"># → https://api.autoinference.org/v1/llama-3.1-70b
-# → tested, hardened, optimized for your exact workload</span></code></pre>
-              </div>
-            </div>
-          </li>
-        </ol>
-
-        <!-- HOW IT WORKS DIAGRAM -->
-        <aside class="how__diagram" data-reveal aria-hidden="true">
-          <svg viewBox="0 0 400 540" class="flowsvg">
-            <defs>
-              <linearGradient id="flowG" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0" stop-color="#A78BFA"/>
-                <stop offset="0.5" stop-color="#60A5FA"/>
-                <stop offset="1" stop-color="#22D3EE"/>
-              </linearGradient>
-              <filter id="flowGlow" x="-50%" y="-50%" width="200%" height="200%">
-                <feGaussianBlur stdDeviation="6" result="b"/>
-                <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-              </filter>
-            </defs>
-
-            <!-- Step nodes -->
-            <g class="flownode" transform="translate(40 40)">
-              <rect width="320" height="60" rx="14" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.08)"/>
-              <text x="20" y="26" class="ft-l">INPUT</text>
-              <text x="20" y="46" class="ft-h">Model weights</text>
-              <text x="300" y="36" class="ft-ic" text-anchor="end">⌗</text>
-            </g>
-            <g class="flownode" transform="translate(40 120)">
-              <rect width="320" height="60" rx="14" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.08)"/>
-              <text x="20" y="26" class="ft-l">INPUT</text>
-              <text x="20" y="46" class="ft-h">Hardware target + SLO</text>
-              <text x="300" y="36" class="ft-ic" text-anchor="end">⚙</text>
-            </g>
-
-            <!-- Central agent box -->
-            <g class="flowcenter" transform="translate(40 220)">
-              <rect width="320" height="180" rx="18" fill="url(#flowG)" opacity="0.12" stroke="url(#flowG)" stroke-width="1.5"/>
-              <text x="20" y="30" class="ft-l ft-l--grad">AGENTIC HARNESS</text>
-              <g transform="translate(20 50)">
-                <circle cx="0" cy="8" r="3" fill="url(#flowG)"/><text x="14" y="12" class="ft-step">Profile workload</text>
-              </g>
-              <g transform="translate(20 75)">
-                <circle cx="0" cy="8" r="3" fill="url(#flowG)"/><text x="14" y="12" class="ft-step">Rank engines</text>
-              </g>
-              <g transform="translate(20 100)">
-                <circle cx="0" cy="8" r="3" fill="url(#flowG)"/><text x="14" y="12" class="ft-step">Tune configs (bandit)</text>
-              </g>
-              <g transform="translate(20 125)">
-                <circle cx="0" cy="8" r="3" fill="url(#flowG)"/><text x="14" y="12" class="ft-step">Synthesize kernels</text>
-              </g>
-              <g transform="translate(20 150)">
-                <circle cx="0" cy="8" r="3" fill="url(#flowG)"/><text x="14" y="12" class="ft-step">Battle-test &amp; harden</text>
-              </g>
-            </g>
-
-            <!-- Output -->
-            <g class="flownode flownode--out" transform="translate(40 430)">
-              <rect width="320" height="80" rx="14" fill="rgba(34,211,238,0.08)" stroke="rgba(34,211,238,0.35)"/>
-              <text x="20" y="28" class="ft-l ft-l--cyan">OUTPUT</text>
-              <text x="20" y="50" class="ft-h">Optimized endpoint</text>
-              <text x="20" y="68" class="ft-sub">api.autoinference.org/v1/&lt;model&gt;</text>
-              <text x="300" y="46" class="ft-ic" text-anchor="end">↗</text>
-            </g>
-
-            <!-- Connectors -->
-            <path d="M200 100 L200 120" stroke="url(#flowG)" stroke-width="2" class="flowline" />
-            <path d="M200 180 L200 220" stroke="url(#flowG)" stroke-width="2" class="flowline" />
-            <path d="M200 400 L200 430" stroke="url(#flowG)" stroke-width="2" class="flowline" filter="url(#flowGlow)"/>
-
-            <!-- Pulse particles -->
-            <circle r="3" fill="#22D3EE" class="pulse-particle p1"><animateMotion dur="3s" repeatCount="indefinite" path="M200 100 L200 220 L200 400 L200 430"/></circle>
-            <circle r="3" fill="#A78BFA" class="pulse-particle p2"><animateMotion dur="3s" begin="1s" repeatCount="indefinite" path="M200 100 L200 220 L200 400 L200 430"/></circle>
-            <circle r="3" fill="#60A5FA" class="pulse-particle p3"><animateMotion dur="3s" begin="2s" repeatCount="indefinite" path="M200 100 L200 220 L200 400 L200 430"/></circle>
-          </svg>
-        </aside>
-      </div>
-    </div>
-  </section>
-
-  <!-- =========================================================
-       PERFORMANCE
-       ========================================================= -->
-  <section class="section section--perf" id="performance">
-    <div class="container">
-      <div class="eyebrow" data-reveal>Performance</div>
-      <h2 class="section__title" data-reveal>
-        Numbers we're targeting at GA — on <span class="grad-text">your existing hardware</span>.
-      </h2>
-      <p class="section__lede" data-reveal>
-        Internal benchmarks on Llama-3.1-70B-Instruct, batch=192, FP8 quantization, NVIDIA H100 SXM.
-        Comparison vs out-of-the-box default vLLM config.
-      </p>
-
-      <div class="bignums">
-        <div class="bignum" data-reveal style="--i:0">
-          <div class="bignum__v"><span class="counter" data-target="3.4">0</span>×</div>
-          <div class="bignum__l">Throughput<br/>vs default</div>
-          <div class="bignum__b"><span style="width:90%"></span></div>
-        </div>
-        <div class="bignum" data-reveal style="--i:1">
-          <div class="bignum__v">−<span class="counter" data-target="62">0</span>%</div>
-          <div class="bignum__l">P99 latency<br/>reduction</div>
-          <div class="bignum__b"><span style="width:72%"></span></div>
-        </div>
-        <div class="bignum" data-reveal style="--i:2">
-          <div class="bignum__v"><span class="counter" data-target="94">0</span>%</div>
-          <div class="bignum__l">GPU utilization<br/>steady-state</div>
-          <div class="bignum__b"><span style="width:94%"></span></div>
-        </div>
-        <div class="bignum" data-reveal style="--i:3">
-          <div class="bignum__v">−<span class="counter" data-target="47">0</span>%</div>
-          <div class="bignum__l">$ per million<br/>tokens served</div>
-          <div class="bignum__b"><span style="width:58%"></span></div>
-        </div>
-      </div>
-
-      <!-- PERFORMANCE CHART MOCK -->
-      <div class="perfchart" data-reveal>
-        <div class="perfchart__head">
-          <div>
-            <div class="perfchart__title">Throughput across optimization stages</div>
-            <div class="perfchart__sub">Llama-3.1-70B-Instruct · 8× H100 · live ramp</div>
-          </div>
-          <div class="perfchart__legend">
-            <span class="leg"><span class="leg__d leg__d--gray"></span>Default vLLM</span>
-            <span class="leg"><span class="leg__d leg__d--violet"></span>+ Config tuning</span>
-            <span class="leg"><span class="leg__d leg__d--cyan"></span>+ Custom kernels</span>
-          </div>
-        </div>
-        <svg class="perfchart__svg" viewBox="0 0 760 280" preserveAspectRatio="none">
-          <defs>
-            <linearGradient id="areaCyan" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stop-color="#22D3EE" stop-opacity="0.45"/>
-              <stop offset="1" stop-color="#22D3EE" stop-opacity="0"/>
-            </linearGradient>
-            <linearGradient id="areaViolet" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stop-color="#A78BFA" stop-opacity="0.35"/>
-              <stop offset="1" stop-color="#A78BFA" stop-opacity="0"/>
-            </linearGradient>
-          </defs>
-          <!-- grid -->
-          <g class="grid">
-            <line x1="40" y1="40"  x2="740" y2="40"  />
-            <line x1="40" y1="100" x2="740" y2="100" />
-            <line x1="40" y1="160" x2="740" y2="160" />
-            <line x1="40" y1="220" x2="740" y2="220" />
-            <text x="34" y="44"  text-anchor="end" class="gridlbl">16k</text>
-            <text x="34" y="104" text-anchor="end" class="gridlbl">12k</text>
-            <text x="34" y="164" text-anchor="end" class="gridlbl">8k</text>
-            <text x="34" y="224" text-anchor="end" class="gridlbl">4k</text>
-          </g>
-          <!-- baseline (gray) -->
-          <path d="M40 210 L120 208 L200 207 L280 209 L360 206 L440 208 L520 207 L600 206 L680 207 L740 208"
-                stroke="rgba(255,255,255,0.35)" stroke-width="2" fill="none" stroke-dasharray="4 3" class="chartline"/>
-          <!-- tuning (violet) -->
-          <path d="M40 210 L120 180 L200 150 L280 130 L360 122 L440 120 L520 120 L600 120 L680 120 L740 120"
-                stroke="#A78BFA" stroke-width="2.5" fill="none" class="chartline chartline--violet"/>
-          <path d="M40 210 L120 180 L200 150 L280 130 L360 122 L440 120 L520 120 L600 120 L680 120 L740 120 L740 240 L40 240 Z"
-                fill="url(#areaViolet)" class="chartarea"/>
-          <!-- kernels (cyan) -->
-          <path d="M40 210 L120 175 L200 140 L280 110 L360 88 L440 70 L520 58 L600 50 L680 45 L740 42"
-                stroke="#22D3EE" stroke-width="2.5" fill="none" class="chartline chartline--cyan"/>
-          <path d="M40 210 L120 175 L200 140 L280 110 L360 88 L440 70 L520 58 L600 50 L680 45 L740 42 L740 240 L40 240 Z"
-                fill="url(#areaCyan)" class="chartarea"/>
-          <!-- marker on cyan endpoint -->
-          <circle cx="740" cy="42" r="5" fill="#22D3EE"/>
-          <circle cx="740" cy="42" r="10" fill="#22D3EE" opacity="0.2"><animate attributeName="r" values="6;14;6" dur="2s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.4;0;0.4" dur="2s" repeatCount="indefinite"/></circle>
-          <text x="735" y="32" text-anchor="end" class="endlbl">14,820 tok/s</text>
-        </svg>
-      </div>
-    </div>
-  </section>
-
-  <!-- =========================================================
-       PRODUCT MOCK #2 — DEPLOYMENT WIZARD
-       ========================================================= -->
-  <section class="section section--mock2">
+  <!-- CERTIFIED RECIPE -->
+  <section class="section section--recipe">
     <div class="container">
       <div class="splitrow">
         <div class="splitrow__copy" data-reveal>
-          <div class="eyebrow">The console</div>
+          <div class="eyebrow">// the deliverable</div>
           <h2 class="section__title">
-            Spin up <span class="grad-text">production inference</span><br/>
-            in less time than a coffee break.
+            What you get: a <span class="grad-text">Certified Recipe</span>
           </h2>
           <p class="section__lede">
-            One screen. Three fields. The agentic pipeline runs in the background and streams
-            its reasoning as it goes &mdash; so you can audit every decision before it ships.
+            Not a benchmark result. A reproducible, explained, drop-in artifact &mdash;
+            in the exact <code>recipes.vllm.ai</code> schema, with Docker, Helm,
+            and a tuning report written by the Planner.
           </p>
-          <ul class="copylist">
-            <li><span class="check">✓</span>OpenAI-compatible REST endpoint out of the box</li>
-            <li><span class="check">✓</span>Streaming, function calling, structured outputs</li>
-            <li><span class="check">✓</span>Versioned deployments with one-click rollback</li>
-            <li><span class="check">✓</span>Per-tenant rate limits + audit logs</li>
-            <li><span class="check">✓</span>Self-host or fully-managed</li>
+
+          <ul class="recipelist">
+            <li>
+              <span class="recipelist__ic"><img src="https://cdn.simpleicons.org/yaml/CB171E" width="14" height="14" alt="" /></span>
+              <div>
+                <div class="recipelist__t">recipe.yaml</div>
+                <div class="recipelist__d">vLLM recipes schema · drops into <code>recipes.vllm.ai</code> ecosystem</div>
+              </div>
+            </li>
+            <li>
+              <span class="recipelist__ic"><img src="https://cdn.simpleicons.org/docker/2496ED" width="14" height="14" alt="" /></span>
+              <div>
+                <div class="recipelist__t">docker-compose.yml</div>
+                <div class="recipelist__d">env vars, volumes, resource requests, liveness probes pre-filled</div>
+              </div>
+            </li>
+            <li>
+              <span class="recipelist__ic"><img src="https://cdn.simpleicons.org/helm/0F1689" width="14" height="14" alt="" /></span>
+              <div>
+                <div class="recipelist__t">helm-chart/</div>
+                <div class="recipelist__d">production-stack template, K8s-ready, multi-tenant</div>
+              </div>
+            </li>
+            <li>
+              <span class="recipelist__ic"><img src="https://cdn.simpleicons.org/markdown/A1A1B5" width="14" height="14" alt="" /></span>
+              <div>
+                <div class="recipelist__t">tuning_report.md</div>
+                <div class="recipelist__d">written by Planner · assumptions · trade-offs · fragility points</div>
+              </div>
+            </li>
+            <li>
+              <span class="recipelist__ic"><img src="https://cdn.simpleicons.org/jsonwebtokens/A1A1B5" width="14" height="14" alt="" /></span>
+              <div>
+                <div class="recipelist__t">provenance.json</div>
+                <div class="recipelist__d">vLLM commit · torch · CUDA · NCCL · driver · all benchmark traces</div>
+              </div>
+            </li>
           </ul>
         </div>
 
         <div class="splitrow__mock" data-reveal>
-          <div class="mock mock--wizard" aria-hidden="true">
+          <div class="mock mock--code" aria-hidden="true">
             <div class="mock__chrome">
               <span class="mock__dot mock__dot--r"></span>
               <span class="mock__dot mock__dot--y"></span>
               <span class="mock__dot mock__dot--g"></span>
-              <span class="mock__url">app.autoinference.org/new</span>
+              <span class="mock__url">recipe.yaml · r-1842 · deepseek-v3.2-exp · 8x-h200</span>
             </div>
-            <div class="wiz">
-              <div class="wiz__step wiz__step--done">
-                <span class="wiz__bullet">✓</span>
-                <div>
-                  <div class="wiz__label">Model</div>
-                  <div class="wiz__value">
-                    <span class="hfchip">🤗</span>
-                    meta-llama/Llama-3.1-70B-Instruct
-                    <span class="wiz__tag">141 GB · BF16</span>
-                  </div>
-                </div>
-              </div>
-              <div class="wiz__step wiz__step--done">
-                <span class="wiz__bullet">✓</span>
-                <div>
-                  <div class="wiz__label">Hardware</div>
-                  <div class="wiz__value">
-                    8× NVIDIA H100 SXM 80GB
-                    <span class="wiz__tag">NVLink · us-west-2</span>
-                  </div>
-                </div>
-              </div>
-              <div class="wiz__step wiz__step--done">
-                <span class="wiz__bullet">✓</span>
-                <div>
-                  <div class="wiz__label">SLO</div>
-                  <div class="wiz__value">
-                    <span class="kvchip">p99_latency_ms <strong>200</strong></span>
-                    <span class="kvchip">min_qps <strong>120</strong></span>
-                  </div>
-                </div>
-              </div>
-              <div class="wiz__step wiz__step--active">
-                <span class="wiz__bullet wiz__bullet--spin"></span>
-                <div>
-                  <div class="wiz__label">Optimizing</div>
-                  <div class="wiz__value">
-                    <span class="muted">Stage 3 of 5: Synthesizing kernels for SM90</span>
-                    <div class="wiz__progress"><span style="width:62%"></span></div>
-                  </div>
-                </div>
-              </div>
-              <div class="wiz__step wiz__step--pending">
-                <span class="wiz__bullet">5</span>
-                <div>
-                  <div class="wiz__label">Battle-test</div>
-                  <div class="wiz__value muted">Correctness + load + security</div>
-                </div>
-              </div>
-              <div class="wiz__step wiz__step--pending">
-                <span class="wiz__bullet">6</span>
-                <div>
-                  <div class="wiz__label">Endpoint live</div>
-                  <div class="wiz__value muted">api.autoinference.org/v1/...</div>
-                </div>
-              </div>
-            </div>
-            <div class="wiz__foot">
-              <span class="wiz__time">Started 2m 14s ago</span>
-              <span class="wiz__eta">ETA · 1m 48s</span>
-            </div>
-          </div>
+            <div class="codepanel">
+              <pre><code><span class="cm"># autoinference v0.0.1 · certified r-1842</span>
+<span class="cm"># sha256:7a4f...92e1 · planner: claude-opus-4</span>
 
-          <div class="float float--wizard" aria-hidden="true">
-            <span class="float__icon float__icon--ok"></span>
-            <div>
-              <div class="float__t">Engine locked in</div>
-              <div class="float__s">vLLM 0.6.3 + paged FP8</div>
+<span class="kw">model</span>:
+  <span class="kw">name</span>: <span class="str">"deepseek-ai/DeepSeek-V3.2-Exp"</span>
+  <span class="kw">quantization</span>: <span class="str">"fp8_w8a8"</span>
+  <span class="kw">kv_cache_dtype</span>: <span class="str">"fp8_e4m3"</span>
+
+<span class="kw">hardware</span>:
+  <span class="kw">fingerprint</span>: <span class="str">"h200-8gpu-nvswitch-v1"</span>
+
+<span class="kw">parallelism</span>:
+  <span class="kw">data_parallel_size</span>: <span class="num">4</span>
+  <span class="kw">enable_expert_parallel</span>: <span class="num">true</span>
+
+<span class="kw">scheduler</span>:
+  <span class="kw">max_num_seqs</span>: <span class="num">192</span>
+  <span class="kw">max_num_batched_tokens</span>: <span class="num">16384</span>
+  <span class="kw">chunked_prefill</span>: <span class="num">true</span>
+  <span class="kw">chunked_prefill_size</span>: <span class="num">2048</span>
+
+<span class="kw">speculation</span>:
+  <span class="kw">method</span>: <span class="str">"deepseek_mtp"</span>
+  <span class="kw">num_speculative_tokens</span>: <span class="num">1</span>
+  <span class="kw">disable_by_batch_size</span>: <span class="num">192</span>
+
+<span class="kw">attention</span>:
+  <span class="kw">backend</span>: <span class="str">"flashinfer"</span>
+  <span class="kw">cudagraph_mode</span>: <span class="str">"FULL_DECODE_ONLY"</span>
+
+<span class="kw">env</span>:
+  <span class="kw">VLLM_USE_V1</span>: <span class="str">"1"</span>
+  <span class="kw">VLLM_ATTENTION_BACKEND</span>: <span class="str">"FLASHINFER"</span>
+  <span class="kw">NCCL_P2P_LEVEL</span>: <span class="str">"NVL"</span>
+
+<span class="kw">certified</span>:
+  <span class="kw">throughput_tps</span>: <span class="num">14820</span>  <span class="cm"># ±240, 95% CI</span>
+  <span class="kw">ttft_p99_ms</span>: <span class="num">192</span>
+  <span class="kw">quality_drift_pct</span>: <span class="num">0.4</span>  <span class="cm"># MMLU-Pro composite</span>
+  <span class="kw">soak_hours</span>: <span class="num">2</span>
+  <span class="kw">reproduced</span>: <span class="num">true</span></code></pre>
             </div>
           </div>
         </div>
@@ -806,129 +1089,99 @@ deploy = Deployment(
     </div>
   </section>
 
-  <!-- =========================================================
-       VALIDATION SECTION
-       ========================================================= -->
-  <section class="section section--validation" id="validation">
+  <!-- VS TOKENPEAK COMPARISON -->
+  <section class="section section--compare" id="compare">
     <div class="container">
-      <div class="eyebrow" data-reveal>Validation</div>
+      <div class="eyebrow" data-reveal>// positioning</div>
       <h2 class="section__title" data-reveal>
-        Battle-tested before <span class="grad-text">your users ever see it</span>.
+        TokenPeak is a wrench. <span class="grad-text">autoinference is a maintenance system.</span>
       </h2>
       <p class="section__lede" data-reveal>
-        Every deployment ships behind a generated test harness. If something would break
-        a real user, it breaks our test first &mdash; and the deployment is held until it's fixed.
+        TokenPeak proved that auto-tuning vLLM's scheduler beats hand-tuned defaults.
+        We agree. But the actual search space is 10-20× larger, and the deliverable should be
+        a recipe an ops team can <em>ship</em>, not a benchmark CSV.
       </p>
 
-      <div class="testgrid">
-        <div class="testcard" data-reveal style="--i:0">
-          <div class="testcard__head">
-            <span class="testcard__icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-            </span>
-            <h3>Correctness</h3>
-          </div>
-          <p class="testcard__body">
-            Bit-equivalence sweeps against the reference implementation. 0-ulp diff on hot kernels;
-            golden-output regression on 12k sampled prompts per release.
-          </p>
-          <div class="testcard__stat">
-            <div class="testcard__statv">0 ulp</div>
-            <div class="testcard__statl">max numerical drift</div>
-          </div>
+      <div class="compare" data-reveal>
+        <div class="compare__head">
+          <div></div>
+          <div class="compare__col compare__col--them">TokenPeak</div>
+          <div class="compare__col compare__col--us">autoinference</div>
         </div>
-
-        <div class="testcard" data-reveal style="--i:1">
-          <div class="testcard__head">
-            <span class="testcard__icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3-9 4 18 3-9h4"/></svg>
-            </span>
-            <h3>Load &amp; soak</h3>
-          </div>
-          <p class="testcard__body">
-            k6-driven ramp tests up to <strong>10,000 concurrent users</strong>, traffic patterns from
-            real production traces, multi-hour soak to surface KV-cache leaks before they bite.
-          </p>
-          <div class="testcard__stat">
-            <div class="testcard__statv">10k</div>
-            <div class="testcard__statl">concurrent connections</div>
-          </div>
+        <div class="compare__row">
+          <div class="compare__l">Tuned axes</div>
+          <div class="compare__v compare__v--them">batch + scheduler <span class="compare__hint">~5 knobs</span></div>
+          <div class="compare__v compare__v--us"><strong>30-50</strong> across all 6 axes</div>
         </div>
-
-        <div class="testcard" data-reveal style="--i:2">
-          <div class="testcard__head">
-            <span class="testcard__icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-12V5l-8-3-8 3v5c0 8 8 12 8 12z"/></svg>
-            </span>
-            <h3>Security</h3>
-          </div>
-          <p class="testcard__body">
-            OWASP LLM Top-10 coverage out of the box. Prompt-injection battery, jailbreak corpus,
-            PII leakage probes, and supply-chain SBOM for every kernel artifact.
-          </p>
-          <div class="testcard__stat">
-            <div class="testcard__statv">147</div>
-            <div class="testcard__statl">attack patterns covered</div>
-          </div>
+        <div class="compare__row">
+          <div class="compare__l">Quantization reasoning</div>
+          <div class="compare__v compare__v--them">—</div>
+          <div class="compare__v compare__v--us">FP8/NVFP4/INT4 Pareto front per model</div>
         </div>
-
-        <div class="testcard" data-reveal style="--i:3">
-          <div class="testcard__head">
-            <span class="testcard__icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            </span>
-            <h3>Continuous re-tune</h3>
-          </div>
-          <p class="testcard__body">
-            Production telemetry feeds back into the harness. When workload distribution drifts,
-            re-tuning kicks off in shadow, and a canary swap rolls only if it Pareto-dominates.
-          </p>
-          <div class="testcard__stat">
-            <div class="testcard__statv">&lt; 30s</div>
-            <div class="testcard__statl">canary rollback window</div>
-          </div>
+        <div class="compare__row">
+          <div class="compare__l">Speculative decoding</div>
+          <div class="compare__v compare__v--them">—</div>
+          <div class="compare__v compare__v--us">EAGLE-3, P-EAGLE, MTP × 7 variants</div>
+        </div>
+        <div class="compare__row">
+          <div class="compare__l">Multi-GPU parallelism</div>
+          <div class="compare__v compare__v--them">TP only</div>
+          <div class="compare__v compare__v--us">TP × PP × DP × EP, topology-aware</div>
+        </div>
+        <div class="compare__row">
+          <div class="compare__l">MoE awareness</div>
+          <div class="compare__v compare__v--them">—</div>
+          <div class="compare__v compare__v--us">DP+EP for DeepSeek / Qwen3.5-A17B</div>
+        </div>
+        <div class="compare__row">
+          <div class="compare__l">Objective</div>
+          <div class="compare__v compare__v--them">single scalar (tok/s)</div>
+          <div class="compare__v compare__v--us">multi-objective rubric (goodput · quality · $/Mtok)</div>
+        </div>
+        <div class="compare__row">
+          <div class="compare__l">Correctness validation</div>
+          <div class="compare__v compare__v--them">—</div>
+          <div class="compare__v compare__v--us">MMLU-Pro · GSM8K · HumanEval · MT-Bench · IFEval</div>
+        </div>
+        <div class="compare__row">
+          <div class="compare__l">Operational validation</div>
+          <div class="compare__v compare__v--them">—</div>
+          <div class="compare__v compare__v--us">soak · spike · long-tail · chaos · reproducibility re-run</div>
+        </div>
+        <div class="compare__row">
+          <div class="compare__l">Deliverable</div>
+          <div class="compare__v compare__v--them">tuned config</div>
+          <div class="compare__v compare__v--us">YAML + Docker + Helm + report + provenance</div>
+        </div>
+        <div class="compare__row">
+          <div class="compare__l">Search method</div>
+          <div class="compare__v compare__v--them">grid / random</div>
+          <div class="compare__v compare__v--us">deterministic prune → LLM anchors → BoTorch → long-run</div>
+        </div>
+        <div class="compare__row compare__row--last">
+          <div class="compare__l">Knowledge transfer</div>
+          <div class="compare__v compare__v--them">per-run only</div>
+          <div class="compare__v compare__v--us">versioned KB · 73% of new tunes warm-start</div>
         </div>
       </div>
 
-      <!-- PRODUCT MOCK #3 — TEST RESULTS -->
-      <div class="mock mock--tests" data-reveal aria-hidden="true">
-        <div class="mock__chrome">
-          <span class="mock__dot mock__dot--r"></span>
-          <span class="mock__dot mock__dot--y"></span>
-          <span class="mock__dot mock__dot--g"></span>
-          <span class="mock__url">app.autoinference.org/deployments/llama-3.1-70b/tests</span>
-        </div>
-        <div class="testpanel">
-          <div class="testpanel__head">
-            <h4>Pre-deployment verification</h4>
-            <span class="status-pill status-pill--ok">PASSED · 6/6 suites</span>
-          </div>
-          <div class="testrows">
-            <div class="testrow"><span class="trbullet trbullet--ok">✓</span><span class="trname">Correctness</span><span class="trbar"><span style="width:100%"></span></span><span class="trval">12,000 / 12,000</span></div>
-            <div class="testrow"><span class="trbullet trbullet--ok">✓</span><span class="trname">Numerical equivalence</span><span class="trbar"><span style="width:100%"></span></span><span class="trval">0 ulp drift</span></div>
-            <div class="testrow"><span class="trbullet trbullet--ok">✓</span><span class="trname">Load · 10k concurrent</span><span class="trbar"><span style="width:100%"></span></span><span class="trval">p99 = 142ms</span></div>
-            <div class="testrow"><span class="trbullet trbullet--ok">✓</span><span class="trname">4-hour soak</span><span class="trbar"><span style="width:100%"></span></span><span class="trval">no mem drift</span></div>
-            <div class="testrow"><span class="trbullet trbullet--ok">✓</span><span class="trname">OWASP LLM-01..10</span><span class="trbar"><span style="width:100%"></span></span><span class="trval">147 / 147 blocked</span></div>
-            <div class="testrow"><span class="trbullet trbullet--ok">✓</span><span class="trname">SBOM + signature</span><span class="trbar"><span style="width:100%"></span></span><span class="trval">attested</span></div>
-          </div>
-        </div>
-      </div>
+      <p class="compare__foot" data-reveal>
+        Both useful. They operate at different altitudes.
+      </p>
     </div>
   </section>
 
-  <!-- =========================================================
-       WAITLIST CTA
-       ========================================================= -->
+  <!-- WAITLIST -->
   <section class="cta" id="waitlist">
     <div class="container">
       <div class="cta__card" data-reveal>
-        <div class="cta__badge"><span class="dot dot--pulse"></span>Private beta · Q3 2026</div>
+        <div class="cta__badge"><span class="dot dot--pulse"></span>Design-partner cohort · Q2 2026</div>
         <h2 class="cta__title">
-          Stop tuning. <span class="grad-text">Start shipping.</span>
+          Stop tuning by hand. <span class="grad-text">Ship recipes that prove themselves.</span>
         </h2>
         <p class="cta__sub">
-          We're onboarding design-partner teams running real production inference. Tell us your stack &mdash;
-          we'll come back with a deployment plan and an early slot.
+          We're onboarding teams already running real production inference on vLLM.
+          Tell us your stack &mdash; we'll come back with a target recipe and an early slot.
         </p>
         <form class="cta__form" onsubmit="event.preventDefault(); window._aiSubmit(this);">
           <input type="email" required placeholder="you@company.com" class="cta__email" autocomplete="email" />
@@ -938,12 +1191,16 @@ deploy = Deployment(
           </button>
         </form>
         <p class="cta__fine">
-          No spam. We use the email only to reply about beta access.
+          No spam. We use the email only to reply about design-partner access.
         </p>
         <div class="cta__row">
           <a href="https://github.com/autoinference/autoinference" class="ghostlink" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.7-.3-5.5-1.3-5.5-6 0-1.3.5-2.4 1.3-3.2-.1-.4-.6-1.6.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.7 1.6.2 2.8.1 3.2.8.8 1.3 1.9 1.3 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3"/></svg>
+            <img src="https://cdn.simpleicons.org/github/A1A1B5" width="14" height="14" alt="" />
             github.com/autoinference
+          </a>
+          <a href="https://huggingface.co/autoinference" class="ghostlink" target="_blank" rel="noopener">
+            <img src="https://cdn.simpleicons.org/huggingface/FFD21E" width="14" height="14" alt="" />
+            huggingface.co/autoinference
           </a>
           <a href="mailto:hello@autoinference.org" class="ghostlink">
             <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
@@ -954,33 +1211,63 @@ deploy = Deployment(
     </div>
   </section>
 
-  <!-- =========================================================
-       INSTALL FOOTER
-       ========================================================= -->
+  <!-- INSTALL FOOTER — with real logos -->
   <section class="section section--install">
     <div class="container">
-      <div class="eyebrow" data-reveal>SDK · today (placeholder packages)</div>
+      <div class="eyebrow" data-reveal>// SDK · today (placeholder packages, real CLI ships with beta)</div>
       <h2 class="section__title" data-reveal>
-        The name is <span class="grad-text">already yours</span>, on every registry.
+        Already on <span class="grad-text">every registry</span>.
       </h2>
       <p class="section__lede" data-reveal>
-        v0.0.1 is published as placeholders across pip, uv, npm, cargo, and go.
-        Real SDK lands with the private beta.
+        v0.0.1 is published as placeholders across pip, uv, npm, cargo, go, and docker.
+        Real SDK lands with the design-partner beta.
       </p>
       <div class="installgrid">
-        <div class="installcard" data-reveal><span class="installcard__l">Python</span><code>pip install autoinference</code></div>
-        <div class="installcard" data-reveal><span class="installcard__l">uv</span><code>uv add autoinference</code></div>
-        <div class="installcard" data-reveal><span class="installcard__l">Node</span><code>npm install autoinference</code></div>
-        <div class="installcard" data-reveal><span class="installcard__l">Rust</span><code>cargo add autoinference</code></div>
-        <div class="installcard" data-reveal><span class="installcard__l">Go</span><code>go get github.com/autoinference/autoinference</code></div>
-        <div class="installcard" data-reveal><span class="installcard__l">Docker</span><code>docker pull autoinference/autoinference</code></div>
+        <div class="installcard" data-reveal>
+          <img src="https://cdn.simpleicons.org/python/3776AB" width="16" height="16" alt="" />
+          <span class="installcard__l">Python</span>
+          <code>pip install autoinference</code>
+        </div>
+        <div class="installcard" data-reveal>
+          <span class="lg-glyph lg-glyph--uv" style="width:16px;height:16px;font-size:10px;">uv</span>
+          <span class="installcard__l">uv</span>
+          <code>uv add autoinference</code>
+        </div>
+        <div class="installcard" data-reveal>
+          <img src="https://cdn.simpleicons.org/npm/CB3837" width="16" height="16" alt="" />
+          <span class="installcard__l">Node</span>
+          <code>npm install autoinference</code>
+        </div>
+        <div class="installcard" data-reveal>
+          <img src="https://cdn.simpleicons.org/rust/CE412B" width="16" height="16" alt="" />
+          <span class="installcard__l">Rust</span>
+          <code>cargo add autoinference</code>
+        </div>
+        <div class="installcard" data-reveal>
+          <img src="https://cdn.simpleicons.org/go/00ADD8" width="16" height="16" alt="" />
+          <span class="installcard__l">Go</span>
+          <code>go get github.com/autoinference/autoinference</code>
+        </div>
+        <div class="installcard" data-reveal>
+          <img src="https://cdn.simpleicons.org/docker/2496ED" width="16" height="16" alt="" />
+          <span class="installcard__l">Docker</span>
+          <code>docker pull autoinference/autoinference</code>
+        </div>
+        <div class="installcard" data-reveal>
+          <img src="https://cdn.simpleicons.org/homebrew/FBB040" width="16" height="16" alt="" />
+          <span class="installcard__l">brew</span>
+          <code>brew install autoinference/tap/autoinference</code>
+        </div>
+        <div class="installcard" data-reveal>
+          <img src="https://cdn.simpleicons.org/huggingface/FFD21E" width="16" height="16" alt="" />
+          <span class="installcard__l">HF Hub</span>
+          <code>huggingface.co/autoinference</code>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- =========================================================
-       FOOTER
-       ========================================================= -->
+  <!-- FOOTER -->
   <footer class="footer">
     <div class="container footer__inner">
       <div class="footer__brand">
@@ -989,33 +1276,35 @@ deploy = Deployment(
         </span>
         <div>
           <div class="footer__name">autoinference</div>
-          <div class="footer__line">Peak inference performance. Zero ML engineering.</div>
+          <div class="footer__line">An agentic auto-tuner for production LLM inference.</div>
+          <div class="footer__line footer__line--meta">v0.0.1-alpha · MIT-licensed core · inspired by Karpathy's autoresearch</div>
         </div>
       </div>
 
       <div class="footer__cols">
         <div class="footer__col">
           <div class="footer__h">Product</div>
-          <a href="#engines">Engines</a>
-          <a href="#how">How it works</a>
-          <a href="#performance">Performance</a>
+          <a href="#axes">Search space</a>
+          <a href="#architecture">Architecture</a>
           <a href="#validation">Validation</a>
-          <a href="#waitlist">Join waitlist</a>
+          <a href="#dashboard">Dashboard</a>
+          <a href="#compare">vs TokenPeak</a>
+          <a href="#waitlist">Request access</a>
         </div>
         <div class="footer__col">
           <div class="footer__h">Packages</div>
-          <a href="https://pypi.org/project/autoinference/" target="_blank" rel="noopener">PyPI</a>
-          <a href="https://www.npmjs.com/package/autoinference" target="_blank" rel="noopener">npm</a>
-          <a href="https://crates.io/crates/autoinference" target="_blank" rel="noopener">crates.io</a>
-          <a href="https://pkg.go.dev/github.com/autoinference/autoinference" target="_blank" rel="noopener">pkg.go.dev</a>
-          <a href="https://hub.docker.com/r/autoinference/autoinference" target="_blank" rel="noopener">Docker Hub</a>
+          <a href="https://pypi.org/project/autoinference/" target="_blank" rel="noopener"><img src="https://cdn.simpleicons.org/python/A1A1B5" width="12" height="12" alt="" /> PyPI</a>
+          <a href="https://www.npmjs.com/package/autoinference" target="_blank" rel="noopener"><img src="https://cdn.simpleicons.org/npm/A1A1B5" width="12" height="12" alt="" /> npm</a>
+          <a href="https://crates.io/crates/autoinference" target="_blank" rel="noopener"><img src="https://cdn.simpleicons.org/rust/A1A1B5" width="12" height="12" alt="" /> crates.io</a>
+          <a href="https://pkg.go.dev/github.com/autoinference/autoinference" target="_blank" rel="noopener"><img src="https://cdn.simpleicons.org/go/A1A1B5" width="12" height="12" alt="" /> pkg.go.dev</a>
+          <a href="https://hub.docker.com/r/autoinference/autoinference" target="_blank" rel="noopener"><img src="https://cdn.simpleicons.org/docker/A1A1B5" width="12" height="12" alt="" /> Docker Hub</a>
         </div>
         <div class="footer__col">
-          <div class="footer__h">Company</div>
-          <a href="https://github.com/autoinference/autoinference" target="_blank" rel="noopener">GitHub</a>
-          <a href="https://huggingface.co/autoinference" target="_blank" rel="noopener">Hugging Face</a>
-          <a href="https://x.com/autoinference_" target="_blank" rel="noopener">X / Twitter</a>
-          <a href="https://www.instagram.com/autoinference/" target="_blank" rel="noopener">Instagram</a>
+          <div class="footer__h">Community</div>
+          <a href="https://github.com/autoinference/autoinference" target="_blank" rel="noopener"><img src="https://cdn.simpleicons.org/github/A1A1B5" width="12" height="12" alt="" /> GitHub</a>
+          <a href="https://huggingface.co/autoinference" target="_blank" rel="noopener"><img src="https://cdn.simpleicons.org/huggingface/A1A1B5" width="12" height="12" alt="" /> Hugging Face</a>
+          <a href="https://x.com/autoinference_" target="_blank" rel="noopener"><img src="https://cdn.simpleicons.org/x/A1A1B5" width="12" height="12" alt="" /> X</a>
+          <a href="https://www.instagram.com/autoinference/" target="_blank" rel="noopener"><img src="https://cdn.simpleicons.org/instagram/A1A1B5" width="12" height="12" alt="" /> Instagram</a>
           <a href="mailto:hello@autoinference.org">hello@autoinference.org</a>
         </div>
       </div>
