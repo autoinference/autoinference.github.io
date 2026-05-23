@@ -23,6 +23,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://cdn.simpleicons.org" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="style.css" />
@@ -57,6 +58,7 @@
           </svg>
         </span>
         <span class="brand-name">autoinference</span>
+        <span class="brand-ver">v0.0.1-alpha</span>
       </a>
 
       <nav class="nav__links" aria-label="Primary">
@@ -64,11 +66,14 @@
         <a href="#how">How it works</a>
         <a href="#performance">Performance</a>
         <a href="#validation">Validation</a>
-        <a href="https://github.com/autoinference/autoinference" target="_blank" rel="noopener">GitHub<span class="ext">↗</span></a>
+        <a href="https://github.com/autoinference/autoinference" target="_blank" rel="noopener" class="navic">
+          <img src="https://cdn.simpleicons.org/github/A1A1B5" width="14" height="14" alt="" />
+          GitHub
+        </a>
       </nav>
 
       <div class="nav__cta">
-        <a href="#waitlist" class="btn btn--ghost">Sign in</a>
+        <a href="#install" class="btn btn--ghost">$ install</a>
         <a href="#waitlist" class="btn btn--primary">Join waitlist</a>
       </div>
 
@@ -83,11 +88,10 @@
        ========================================================= -->
   <section class="hero">
     <div class="container hero__inner">
-      <a href="#waitlist" class="badge" data-reveal>
-        <span class="badge__dot"></span>
-        <span class="badge__text">Coming soon — join the private beta</span>
-        <span class="badge__arrow" aria-hidden="true">→</span>
-      </a>
+      <div class="badge" data-reveal>
+        <span class="badge__chip">ALPHA</span>
+        <span class="badge__text">v0.0.1 · MIT-licensed · early access</span>
+      </div>
 
       <h1 class="hero__title" data-reveal>
         Peak inference performance.<br />
@@ -96,9 +100,33 @@
 
       <p class="hero__sub" data-reveal>
         Drop in any model and any hardware. Our agentic harness picks the optimal engine,
-        tunes every config, writes custom kernels, and stress-tests the result —
+        tunes every config, writes custom kernels, and stress-tests the result &mdash;
         so your GPUs run at the <em>limit of silicon</em>.
       </p>
+
+      <!-- CLI install card — Factory.ai pattern -->
+      <div class="install-hero" data-reveal id="install">
+        <div class="install-hero__tabs" role="tablist">
+          <button class="install-tab active" data-tab="pip" role="tab">pip</button>
+          <button class="install-tab" data-tab="uv" role="tab">uv</button>
+          <button class="install-tab" data-tab="brew" role="tab">brew</button>
+          <button class="install-tab" data-tab="npm" role="tab">npm</button>
+          <button class="install-tab" data-tab="cargo" role="tab">cargo</button>
+          <button class="install-tab" data-tab="docker" role="tab">docker</button>
+        </div>
+        <div class="install-hero__body">
+          <code class="install-cmd" data-cmd="pip">$ pip install autoinference</code>
+          <code class="install-cmd" data-cmd="uv" hidden>$ uv add autoinference</code>
+          <code class="install-cmd" data-cmd="brew" hidden>$ brew install autoinference/tap/autoinference</code>
+          <code class="install-cmd" data-cmd="npm" hidden>$ npm install autoinference</code>
+          <code class="install-cmd" data-cmd="cargo" hidden>$ cargo add autoinference</code>
+          <code class="install-cmd" data-cmd="docker" hidden>$ docker pull autoinference/autoinference</code>
+          <button class="install-copy" id="installCopy" aria-label="Copy install command">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" width="13" height="13"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span>Copy</span>
+          </button>
+        </div>
+      </div>
 
       <div class="hero__cta" data-reveal>
         <a href="#waitlist" class="btn btn--primary btn--lg">
@@ -284,42 +312,48 @@
   </section>
 
   <!-- =========================================================
-       LOGO BAR
+       LOGO STACK — engines / hardware / runtimes (with real logos)
        ========================================================= -->
   <section class="logobar" id="engines">
     <div class="container">
-      <p class="logobar__label">Engine-agnostic. Hardware-aware.</p>
-      <div class="logobar__marquee">
-        <div class="logobar__track">
-          <span class="logo-pill">vLLM</span>
-          <span class="logo-pill">SGLang</span>
-          <span class="logo-pill">TensorRT-LLM</span>
-          <span class="logo-pill">TokenSpeed</span>
-          <span class="logo-pill">llama.cpp</span>
-          <span class="logo-pill">TGI</span>
-          <span class="logo-pill">LMDeploy</span>
-          <span class="logo-pill">MLC-LLM</span>
-          <span class="logo-pill logo-pill--hw">NVIDIA H100</span>
-          <span class="logo-pill logo-pill--hw">H200</span>
-          <span class="logo-pill logo-pill--hw">B200</span>
-          <span class="logo-pill logo-pill--hw">AMD MI300X</span>
-          <span class="logo-pill logo-pill--hw">Intel Gaudi 3</span>
-          <span class="logo-pill logo-pill--hw">Apple Silicon</span>
-          <!-- duplicate for seamless loop -->
-          <span class="logo-pill">vLLM</span>
-          <span class="logo-pill">SGLang</span>
-          <span class="logo-pill">TensorRT-LLM</span>
-          <span class="logo-pill">TokenSpeed</span>
-          <span class="logo-pill">llama.cpp</span>
-          <span class="logo-pill">TGI</span>
-          <span class="logo-pill">LMDeploy</span>
-          <span class="logo-pill">MLC-LLM</span>
-          <span class="logo-pill logo-pill--hw">NVIDIA H100</span>
-          <span class="logo-pill logo-pill--hw">H200</span>
-          <span class="logo-pill logo-pill--hw">B200</span>
-          <span class="logo-pill logo-pill--hw">AMD MI300X</span>
-          <span class="logo-pill logo-pill--hw">Intel Gaudi 3</span>
-          <span class="logo-pill logo-pill--hw">Apple Silicon</span>
+      <p class="logobar__label">// tested across the inference stack</p>
+
+      <div class="logogrid">
+        <div class="logogrid__group">
+          <div class="logogrid__h">Engines</div>
+          <div class="logogrid__row">
+            <span class="lg-chip"><span class="lg-glyph lg-glyph--vllm">v</span>vLLM</span>
+            <span class="lg-chip"><span class="lg-glyph lg-glyph--sglang">S</span>SGLang</span>
+            <span class="lg-chip"><img src="https://cdn.simpleicons.org/nvidia/76B900" width="14" height="14" alt="" /> TensorRT-LLM</span>
+            <span class="lg-chip"><span class="lg-glyph lg-glyph--fi">F</span>FlashInfer</span>
+            <span class="lg-chip"><span class="lg-glyph lg-glyph--lmd">L</span>LMDeploy</span>
+            <span class="lg-chip"><span class="lg-glyph lg-glyph--tgi">T</span>TGI</span>
+            <span class="lg-chip"><img src="https://cdn.simpleicons.org/huggingface/FFD21E" width="14" height="14" alt="" /> text-generation-inference</span>
+          </div>
+        </div>
+
+        <div class="logogrid__group">
+          <div class="logogrid__h">Hardware</div>
+          <div class="logogrid__row">
+            <span class="lg-chip"><img src="https://cdn.simpleicons.org/nvidia/76B900" width="14" height="14" alt="" /> NVIDIA H100 / H200</span>
+            <span class="lg-chip"><img src="https://cdn.simpleicons.org/nvidia/76B900" width="14" height="14" alt="" /> NVIDIA B200 / GB200</span>
+            <span class="lg-chip"><img src="https://cdn.simpleicons.org/amd/ED1C24" width="14" height="14" alt="" /> AMD MI300X / MI355X</span>
+            <span class="lg-chip"><img src="https://cdn.simpleicons.org/intel/0071C5" width="14" height="14" alt="" /> Intel Gaudi 3</span>
+            <span class="lg-chip"><img src="https://cdn.simpleicons.org/googlecloud/4285F4" width="14" height="14" alt="" /> TPU v5p / v6e</span>
+            <span class="lg-chip"><img src="https://cdn.simpleicons.org/apple/A2AAAD" width="14" height="14" alt="" /> Apple Silicon</span>
+          </div>
+        </div>
+
+        <div class="logogrid__group">
+          <div class="logogrid__h">Runtimes</div>
+          <div class="logogrid__row">
+            <span class="lg-chip"><img src="https://cdn.simpleicons.org/pytorch/EE4C2C" width="14" height="14" alt="" /> PyTorch</span>
+            <span class="lg-chip"><span class="lg-glyph lg-glyph--cuda">C</span>CUDA · ROCm</span>
+            <span class="lg-chip"><span class="lg-glyph lg-glyph--triton">▲</span>Triton</span>
+            <span class="lg-chip"><span class="lg-glyph lg-glyph--ncc">N</span>NCCL · NVSwitch</span>
+            <span class="lg-chip"><img src="https://cdn.simpleicons.org/kubernetes/326CE5" width="14" height="14" alt="" /> Kubernetes</span>
+            <span class="lg-chip"><img src="https://cdn.simpleicons.org/docker/2496ED" width="14" height="14" alt="" /> Docker</span>
+          </div>
         </div>
       </div>
     </div>
@@ -330,7 +364,7 @@
        ========================================================= -->
   <section class="section section--tight">
     <div class="container">
-      <div class="eyebrow" data-reveal>The problem</div>
+      <div class="eyebrow" data-reveal>// the_problem</div>
       <h2 class="section__title" data-reveal>
         Modern inference is <span class="strike">just <em>spinning up vLLM</em></span><br />
         a <span class="grad-text">multi-axis optimization</span> problem.
@@ -365,7 +399,7 @@
        ========================================================= -->
   <section class="section">
     <div class="container">
-      <div class="eyebrow" data-reveal>The platform</div>
+      <div class="eyebrow" data-reveal>// the_platform</div>
       <h2 class="section__title" data-reveal>
         Four agents. One <span class="grad-text">autonomous pipeline</span>.
       </h2>
@@ -462,7 +496,7 @@
        ========================================================= -->
   <section class="section section--how" id="how">
     <div class="container">
-      <div class="eyebrow" data-reveal>How it works</div>
+      <div class="eyebrow" data-reveal>// how_it_works</div>
       <h2 class="section__title" data-reveal>
         Three inputs. <span class="grad-text">One deployment.</span>
       </h2>
@@ -609,7 +643,7 @@ deploy = Deployment(
        ========================================================= -->
   <section class="section section--perf" id="performance">
     <div class="container">
-      <div class="eyebrow" data-reveal>Performance</div>
+      <div class="eyebrow" data-reveal>// performance</div>
       <h2 class="section__title" data-reveal>
         Numbers we're targeting at GA — on <span class="grad-text">your existing hardware</span>.
       </h2>
@@ -705,7 +739,7 @@ deploy = Deployment(
     <div class="container">
       <div class="splitrow">
         <div class="splitrow__copy" data-reveal>
-          <div class="eyebrow">The console</div>
+          <div class="eyebrow">// the_console</div>
           <h2 class="section__title">
             Spin up <span class="grad-text">production inference</span><br/>
             in less time than a coffee break.
@@ -811,7 +845,7 @@ deploy = Deployment(
        ========================================================= -->
   <section class="section section--validation" id="validation">
     <div class="container">
-      <div class="eyebrow" data-reveal>Validation</div>
+      <div class="eyebrow" data-reveal>// validation</div>
       <h2 class="section__title" data-reveal>
         Battle-tested before <span class="grad-text">your users ever see it</span>.
       </h2>
@@ -959,7 +993,7 @@ deploy = Deployment(
        ========================================================= -->
   <section class="section section--install">
     <div class="container">
-      <div class="eyebrow" data-reveal>SDK · today (placeholder packages)</div>
+      <div class="eyebrow" data-reveal>// sdk · placeholder packages (real CLI ships with beta)</div>
       <h2 class="section__title" data-reveal>
         The name is <span class="grad-text">already yours</span>, on every registry.
       </h2>
@@ -968,12 +1002,46 @@ deploy = Deployment(
         Real SDK lands with the private beta.
       </p>
       <div class="installgrid">
-        <div class="installcard" data-reveal><span class="installcard__l">Python</span><code>pip install autoinference</code></div>
-        <div class="installcard" data-reveal><span class="installcard__l">uv</span><code>uv add autoinference</code></div>
-        <div class="installcard" data-reveal><span class="installcard__l">Node</span><code>npm install autoinference</code></div>
-        <div class="installcard" data-reveal><span class="installcard__l">Rust</span><code>cargo add autoinference</code></div>
-        <div class="installcard" data-reveal><span class="installcard__l">Go</span><code>go get github.com/autoinference/autoinference</code></div>
-        <div class="installcard" data-reveal><span class="installcard__l">Docker</span><code>docker pull autoinference/autoinference</code></div>
+        <div class="installcard" data-reveal>
+          <img src="https://cdn.simpleicons.org/python/3776AB" width="16" height="16" alt="" />
+          <span class="installcard__l">Python</span>
+          <code>pip install autoinference</code>
+        </div>
+        <div class="installcard" data-reveal>
+          <span class="lg-glyph lg-glyph--uv" style="width:16px;height:16px;font-size:9px;">uv</span>
+          <span class="installcard__l">uv</span>
+          <code>uv add autoinference</code>
+        </div>
+        <div class="installcard" data-reveal>
+          <img src="https://cdn.simpleicons.org/npm/CB3837" width="16" height="16" alt="" />
+          <span class="installcard__l">Node</span>
+          <code>npm install autoinference</code>
+        </div>
+        <div class="installcard" data-reveal>
+          <img src="https://cdn.simpleicons.org/rust/CE412B" width="16" height="16" alt="" />
+          <span class="installcard__l">Rust</span>
+          <code>cargo add autoinference</code>
+        </div>
+        <div class="installcard" data-reveal>
+          <img src="https://cdn.simpleicons.org/go/00ADD8" width="16" height="16" alt="" />
+          <span class="installcard__l">Go</span>
+          <code>go get github.com/autoinference/autoinference</code>
+        </div>
+        <div class="installcard" data-reveal>
+          <img src="https://cdn.simpleicons.org/docker/2496ED" width="16" height="16" alt="" />
+          <span class="installcard__l">Docker</span>
+          <code>docker pull autoinference/autoinference</code>
+        </div>
+        <div class="installcard" data-reveal>
+          <img src="https://cdn.simpleicons.org/homebrew/FBB040" width="16" height="16" alt="" />
+          <span class="installcard__l">brew</span>
+          <code>brew install autoinference/tap/autoinference</code>
+        </div>
+        <div class="installcard" data-reveal>
+          <img src="https://cdn.simpleicons.org/huggingface/FFD21E" width="16" height="16" alt="" />
+          <span class="installcard__l">HF</span>
+          <code>huggingface.co/autoinference</code>
+        </div>
       </div>
     </div>
   </section>
@@ -1004,18 +1072,18 @@ deploy = Deployment(
         </div>
         <div class="footer__col">
           <div class="footer__h">Packages</div>
-          <a href="https://pypi.org/project/autoinference/" target="_blank" rel="noopener">PyPI</a>
-          <a href="https://www.npmjs.com/package/autoinference" target="_blank" rel="noopener">npm</a>
-          <a href="https://crates.io/crates/autoinference" target="_blank" rel="noopener">crates.io</a>
-          <a href="https://pkg.go.dev/github.com/autoinference/autoinference" target="_blank" rel="noopener">pkg.go.dev</a>
-          <a href="https://hub.docker.com/r/autoinference/autoinference" target="_blank" rel="noopener">Docker Hub</a>
+          <a href="https://pypi.org/project/autoinference/" target="_blank" rel="noopener"><img src="https://cdn.simpleicons.org/python/A1A1B5" width="12" height="12" alt="" /> PyPI</a>
+          <a href="https://www.npmjs.com/package/autoinference" target="_blank" rel="noopener"><img src="https://cdn.simpleicons.org/npm/A1A1B5" width="12" height="12" alt="" /> npm</a>
+          <a href="https://crates.io/crates/autoinference" target="_blank" rel="noopener"><img src="https://cdn.simpleicons.org/rust/A1A1B5" width="12" height="12" alt="" /> crates.io</a>
+          <a href="https://pkg.go.dev/github.com/autoinference/autoinference" target="_blank" rel="noopener"><img src="https://cdn.simpleicons.org/go/A1A1B5" width="12" height="12" alt="" /> pkg.go.dev</a>
+          <a href="https://hub.docker.com/r/autoinference/autoinference" target="_blank" rel="noopener"><img src="https://cdn.simpleicons.org/docker/A1A1B5" width="12" height="12" alt="" /> Docker Hub</a>
         </div>
         <div class="footer__col">
-          <div class="footer__h">Company</div>
-          <a href="https://github.com/autoinference/autoinference" target="_blank" rel="noopener">GitHub</a>
-          <a href="https://huggingface.co/autoinference" target="_blank" rel="noopener">Hugging Face</a>
-          <a href="https://x.com/autoinference_" target="_blank" rel="noopener">X / Twitter</a>
-          <a href="https://www.instagram.com/autoinference/" target="_blank" rel="noopener">Instagram</a>
+          <div class="footer__h">Community</div>
+          <a href="https://github.com/autoinference/autoinference" target="_blank" rel="noopener"><img src="https://cdn.simpleicons.org/github/A1A1B5" width="12" height="12" alt="" /> GitHub</a>
+          <a href="https://huggingface.co/autoinference" target="_blank" rel="noopener"><img src="https://cdn.simpleicons.org/huggingface/A1A1B5" width="12" height="12" alt="" /> Hugging Face</a>
+          <a href="https://x.com/autoinference_" target="_blank" rel="noopener"><img src="https://cdn.simpleicons.org/x/A1A1B5" width="12" height="12" alt="" /> X</a>
+          <a href="https://www.instagram.com/autoinference/" target="_blank" rel="noopener"><img src="https://cdn.simpleicons.org/instagram/A1A1B5" width="12" height="12" alt="" /> Instagram</a>
           <a href="mailto:hello@autoinference.org">hello@autoinference.org</a>
         </div>
       </div>

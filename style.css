@@ -1425,3 +1425,235 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   }
   [data-reveal] { opacity: 1; transform: none; }
 }
+
+/* =========================================================================
+   v1.5 CLI-themed refactor — keep v1 content, add CLI/terminal aesthetic
+   ========================================================================= */
+
+/* ----- nav additions ----- */
+.brand-ver {
+  font-family: var(--font-mono); font-size: 10.5px; font-weight: 500;
+  color: var(--fg-3);
+  padding: 2px 7px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  margin-left: 4px;
+}
+.navic { display: inline-flex; align-items: center; gap: 6px; }
+.navic img { opacity: 0.75; }
+.btn--ghost { font-family: var(--font-mono); font-size: 13px; }
+
+/* ----- ALPHA chip in hero badge (replaces dot+arrow link badge) ----- */
+.badge {
+  cursor: default;
+}
+.badge__chip {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 2px 7px;
+  background: var(--grad-brand);
+  color: white;
+  font-family: var(--font-mono);
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 0.08em;
+  border-radius: 4px;
+  margin-right: 4px;
+}
+.badge__text { font-family: var(--font-mono); font-size: 12.5px; }
+
+/* ----- CLI install card in hero (Factory.ai pattern) ----- */
+.install-hero {
+  max-width: 620px;
+  margin: 0 auto 32px;
+  background: linear-gradient(180deg, rgba(20,20,32,0.92), rgba(11,11,20,0.96));
+  border: 1px solid var(--border-2);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: var(--shadow-2);
+  text-align: left;
+}
+.install-hero__tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  background: rgba(0,0,0,0.3);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.install-hero__tabs::-webkit-scrollbar { display: none; }
+.install-tab {
+  padding: 10px 16px;
+  font-family: var(--font-mono);
+  font-size: 12px; font-weight: 600;
+  color: var(--fg-3);
+  border: none; background: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+  letter-spacing: 0.01em;
+}
+.install-tab:hover { color: var(--fg-1); }
+.install-tab.active {
+  color: var(--cyan-400);
+  border-bottom-color: var(--cyan-400);
+  background: rgba(34,211,238,0.05);
+}
+.install-hero__body {
+  position: relative;
+  padding: 14px 18px;
+  display: flex; align-items: center; gap: 12px;
+}
+.install-cmd {
+  flex: 1;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--fg-0);
+  background: transparent;
+  overflow-x: auto;
+  white-space: nowrap;
+  padding: 0;
+  scrollbar-width: none;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+}
+.install-cmd::-webkit-scrollbar { display: none; }
+.install-cmd[hidden] { display: none; }
+.install-cmd::before {
+  content: '';
+  display: inline-block; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--green-400);
+  box-shadow: 0 0 6px rgba(52,211,153,0.6);
+  margin-right: 10px; vertical-align: middle;
+}
+.install-copy {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 11px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--fg-2);
+  font-family: var(--font-mono);
+  font-size: 11px; font-weight: 600;
+  flex-shrink: 0;
+  transition: all 0.15s ease;
+}
+.install-copy:hover { background: var(--surface-3); color: var(--fg-0); }
+.install-copy.copied { color: var(--green-400); border-color: rgba(52,211,153,0.3); }
+
+/* ----- logo grid (structured engines/hardware/runtimes) ----- */
+.logobar { padding: 60px 0 50px; }
+.logobar__label {
+  text-align: center; margin: 0 0 28px;
+  font-family: var(--font-mono);
+  font-size: 12px; color: var(--fg-3);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+.logogrid {
+  display: flex; flex-direction: column; gap: 22px;
+  max-width: 980px; margin: 0 auto;
+}
+.logogrid__group {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 22px;
+  align-items: center;
+}
+@media (max-width: 800px) {
+  .logogrid__group { grid-template-columns: 1fr; gap: 10px; }
+}
+.logogrid__h {
+  font-family: var(--font-mono);
+  font-size: 11px; color: var(--fg-3); font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.12em;
+  padding-right: 18px;
+  border-right: 1px solid var(--border);
+  text-align: right;
+}
+@media (max-width: 800px) {
+  .logogrid__h { border-right: none; padding-right: 0; text-align: left; }
+}
+.logogrid__row {
+  display: flex; gap: 8px; flex-wrap: wrap;
+}
+
+.lg-chip {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 7px 13px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  color: var(--fg-1);
+  font-size: 13px; font-weight: 500;
+  font-family: var(--font-mono);
+  letter-spacing: -0.01em;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+.lg-chip:hover { background: var(--surface-2); border-color: var(--border-strong); transform: translateY(-1px); }
+.lg-chip img { display: inline-block; flex-shrink: 0; }
+.lg-glyph {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 14px; height: 14px;
+  border-radius: 3px;
+  font-family: var(--font-mono);
+  font-size: 9px; font-weight: 800;
+  color: white;
+  flex-shrink: 0;
+}
+.lg-glyph--vllm   { background: linear-gradient(135deg, #F97316, #DC2626); }
+.lg-glyph--sglang { background: linear-gradient(135deg, #06B6D4, #3B82F6); }
+.lg-glyph--fi     { background: linear-gradient(135deg, #8B5CF6, #EC4899); }
+.lg-glyph--lmd    { background: linear-gradient(135deg, #10B981, #06B6D4); }
+.lg-glyph--tgi    { background: linear-gradient(135deg, #FFD21E, #F59E0B); color: #1a1a1a; }
+.lg-glyph--cuda   { background: #76B900; color: white; }
+.lg-glyph--triton { background: #7C3AED; }
+.lg-glyph--ncc    { background: linear-gradient(135deg, #22D3EE, #60A5FA); }
+.lg-glyph--uv     { background: #DE5FE9; color: white; font-size: 8px; }
+
+/* ----- eyebrow refinement (// comment style) ----- */
+.eyebrow {
+  font-family: var(--font-mono);
+  color: var(--violet-400);
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 12.5px;
+  font-weight: 500;
+}
+
+/* ----- installcard with logos ----- */
+.installcard {
+  display: flex; align-items: center; gap: 12px;
+}
+.installcard img,
+.installcard .lg-glyph {
+  flex-shrink: 0;
+}
+.installcard__l {
+  font-size: 11px; color: var(--fg-3); font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  font-family: var(--font-mono);
+  min-width: 50px;
+}
+
+/* ----- footer with link icons ----- */
+.footer__col a {
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.footer__col a img { opacity: 0.7; vertical-align: middle; flex-shrink: 0; }
+.footer__col a:hover img { opacity: 1; }
+
+/* ----- subtle terminal-aesthetic touches ----- */
+.mock__url { font-family: var(--font-mono); }
+.mock__url::before {
+  content: '$ ';
+  color: var(--green-400);
+  font-weight: 700;
+  margin-right: 2px;
+  display: none;  /* keep URL look on dashboard, enable on hover if desired */
+}
+
+/* "$ install" nav CTA visual */
+.btn--ghost { font-family: var(--font-mono); font-size: 13px; padding: 8px 12px; }
+.btn--ghost:hover { color: var(--cyan-400); }
+

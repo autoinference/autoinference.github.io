@@ -223,4 +223,46 @@
     el.textContent = new Date().getFullYear();
   });
 
+  /* ---------------------------------------------------------------------
+     CLI install tabs (hero install card)
+     --------------------------------------------------------------------- */
+  const tabs = document.querySelectorAll('.install-tab');
+  const cmds = document.querySelectorAll('.install-cmd');
+  if (tabs.length) {
+    tabs.forEach(t => {
+      t.addEventListener('click', () => {
+        const target = t.getAttribute('data-tab');
+        tabs.forEach(x => x.classList.toggle('active', x === t));
+        cmds.forEach(c => {
+          c.hidden = c.getAttribute('data-cmd') !== target;
+        });
+      });
+    });
+  }
+
+  /* ---------------------------------------------------------------------
+     Install copy button
+     --------------------------------------------------------------------- */
+  const copyBtn = document.getElementById('installCopy');
+  if (copyBtn) {
+    copyBtn.addEventListener('click', async () => {
+      const visible = document.querySelector('.install-cmd:not([hidden])');
+      if (!visible) return;
+      const text = visible.textContent.replace(/^\$\s*/, '').trim();
+      try {
+        await navigator.clipboard.writeText(text);
+        copyBtn.classList.add('copied');
+        const lbl = copyBtn.querySelector('span');
+        const orig = lbl.textContent;
+        lbl.textContent = 'Copied!';
+        setTimeout(() => {
+          copyBtn.classList.remove('copied');
+          lbl.textContent = orig;
+        }, 1800);
+      } catch (e) {
+        console.warn('Copy failed', e);
+      }
+    });
+  }
+
 })();
