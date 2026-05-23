@@ -241,6 +241,113 @@
   }
 
   /* ---------------------------------------------------------------------
+     ASCII spinner (Inception-style live indicator)
+     --------------------------------------------------------------------- */
+  const spinnerFrames = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'];
+  const spinner = document.getElementById('heroSpinner');
+  if (spinner) {
+    let i = 0;
+    setInterval(() => {
+      i = (i + 1) % spinnerFrames.length;
+      spinner.textContent = spinnerFrames[i];
+    }, 110);
+  }
+
+  /* ---------------------------------------------------------------------
+     Live timestamp in hero terminal
+     --------------------------------------------------------------------- */
+  const heroTime = document.getElementById('heroTime');
+  if (heroTime) {
+    const updateTime = () => {
+      const d = new Date();
+      const hh = String(d.getHours()).padStart(2, '0');
+      const mm = String(d.getMinutes()).padStart(2, '0');
+      const ss = String(d.getSeconds()).padStart(2, '0');
+      heroTime.textContent = `${hh}:${mm}:${ss}`;
+    };
+    updateTime();
+    setInterval(updateTime, 1000);
+  }
+
+  /* ---------------------------------------------------------------------
+     Hero terminal ASCII bars — fill on view
+     --------------------------------------------------------------------- */
+  const txBars = document.querySelectorAll('.tx-bar');
+  if (txBars.length && 'IntersectionObserver' in window) {
+    const ioBars = new IntersectionObserver((entries, obs) => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        const target = parseInt(e.target.getAttribute('data-target'), 10) || 50;
+        const fill = e.target.querySelector('.tx-bar__fill');
+        setTimeout(() => { fill.style.width = target + '%'; }, 200);
+        obs.unobserve(e.target);
+      });
+    }, { threshold: 0.3 });
+    txBars.forEach(b => ioBars.observe(b));
+  }
+
+  /* ---------------------------------------------------------------------
+     ASCII sparklines — animated character sequences (Inception vibe)
+     --------------------------------------------------------------------- */
+  const sparkChars = ['▁', '▂', '▃', '▄', '▅', '▆', '▇', '█'];
+  const sparks = document.querySelectorAll('.tx-spark');
+  sparks.forEach(el => {
+    // pick a center value per sparkline based on color hint
+    const color = el.getAttribute('data-spark');
+    const center = color === 'green' ? 1 : color === 'pink' ? 5 : color === 'violet' ? 6 : 5;
+    const len = 56;
+    const arr = Array.from({ length: len }, () => {
+      const jitter = Math.floor(Math.random() * 3) - 1;
+      return Math.min(7, Math.max(0, center + jitter));
+    });
+    const render = () => { el.textContent = arr.map(v => sparkChars[v]).join(''); };
+    render();
+    setInterval(() => {
+      arr.shift();
+      const jitter = Math.floor(Math.random() * 3) - 1;
+      arr.push(Math.min(7, Math.max(0, center + jitter)));
+      render();
+    }, 320);
+  });
+
+  /* ---------------------------------------------------------------------
+     Live stat jitter in hero terminal (realistic feel)
+     --------------------------------------------------------------------- */
+  const statTargets = {
+    throughput: { base: 14820, jitter: 40, fmt: v => v.toLocaleString() + ' tok/s' },
+    latency:    { base: 192,   jitter: 4,  fmt: v => v },
+    gpu:        { base: 94,    jitter: 1,  fmt: v => v },
+    cache:      { base: 87,    jitter: 1,  fmt: v => v },
+  };
+  Object.entries(statTargets).forEach(([k, cfg]) => {
+    const el = document.querySelector(`[data-stat="${k}"]`);
+    if (!el) return;
+    setInterval(() => {
+      const v = cfg.base + Math.round((Math.random() - 0.5) * cfg.jitter * 2);
+      el.textContent = cfg.fmt(v);
+    }, k === 'throughput' ? 2800 : 3500);
+  });
+
+  /* ---------------------------------------------------------------------
+     ASCII performance bars (fill on view)
+     --------------------------------------------------------------------- */
+  const perfBars = document.querySelectorAll('.ascii-perf__row');
+  if (perfBars.length && 'IntersectionObserver' in window) {
+    const ioPerfX = new IntersectionObserver((entries, obs) => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        const target = parseInt(e.target.getAttribute('data-target'), 10) || 50;
+        const fill = e.target.querySelector('.ascii-perf__fill');
+        const counter = e.target.querySelector('.counter');
+        setTimeout(() => { fill.style.width = target + '%'; }, 250);
+        if (counter) animateCounter(counter);
+        obs.unobserve(e.target);
+      });
+    }, { threshold: 0.3 });
+    perfBars.forEach(b => ioPerfX.observe(b));
+  }
+
+  /* ---------------------------------------------------------------------
      Install copy button
      --------------------------------------------------------------------- */
   const copyBtn = document.getElementById('installCopy');
