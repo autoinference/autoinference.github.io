@@ -29,10 +29,13 @@
 
   <!-- BACKGROUND LAYERS -->
   <div class="bg-grid" aria-hidden="true"></div>
-  <div class="bg-glow bg-glow--violet" aria-hidden="true"></div>
-  <div class="bg-glow bg-glow--cyan" aria-hidden="true"></div>
   <div class="bg-noise" aria-hidden="true"></div>
-  <div class="bg-scanlines" aria-hidden="true"></div>
+
+  <!-- ASCII terminal rain — animated background atmosphere -->
+  <div class="bg-rain" aria-hidden="true">
+    <pre class="bg-rain__col bg-rain__col--l" id="bgRainL"></pre>
+    <pre class="bg-rain__col bg-rain__col--r" id="bgRainR"></pre>
+  </div>
 
   <!-- NAV -->
   <header class="nav" id="nav">
@@ -154,7 +157,7 @@
             <!-- input box with ╭─╮ ╰─╯ borders, Claude Code style -->
             <div class="agentw__input">
               <span class="agentw__caret">&gt;</span>
-              <span class="agentw__cmd">deploy llama-3.3-70b on 8× H100 SXM</span>
+              <span class="agentw__cmd">deploy deepseek-v3.2-exp on 8× H100 SXM</span>
               <span class="cursor"></span>
             </div>
 
@@ -170,27 +173,32 @@
             </div>
 
             <div class="agentw__tool" style="--d:2">
+              <div class="agentw__toolH"><span class="agentw__bullet">●</span> <span class="agentw__toolN">Kernel Synthesis</span><span class="agentw__took">(2m 38s)</span></div>
+              <div class="agentw__toolR"><span class="agentw__indent">⎿</span> <span class="agentw__toolT">fused Triton kernel · <span class="agentw__up">4.2×</span> faster · 0-ulp drift</span></div>
+            </div>
+
+            <div class="agentw__tool" style="--d:3">
               <div class="agentw__toolH"><span class="agentw__bullet">●</span> <span class="agentw__toolN">Config Tuning</span><span class="agentw__took">(4m 12s)</span></div>
               <div class="agentw__toolR"><span class="agentw__indent">⎿</span> <span class="agentw__toolT"><span class="agentw__up">+3.4×</span> tok/s · <span class="agentw__up">−62%</span> p99 latency · <span class="agentw__up">94%</span> gpu util</span></div>
             </div>
 
-            <div class="agentw__tool" style="--d:3">
+            <div class="agentw__tool" style="--d:4">
               <div class="agentw__toolH"><span class="agentw__bullet">●</span> <span class="agentw__toolN">Validation Harness</span><span class="agentw__took">(1m 47s)</span></div>
               <div class="agentw__toolR"><span class="agentw__indent">⎿</span> <span class="agentw__toolT">load + correctness + security · <span class="agentw__ok">6/6 passed</span></span></div>
             </div>
 
             <!-- agent message with │ left border -->
-            <div class="agentw__msg" style="--d:4">
+            <div class="agentw__msg" style="--d:5">
               <div class="agentw__msgBar"></div>
               <div class="agentw__msgBody">
                 <p>Your deployment is ready.</p>
-                <p>Endpoint: <span class="agentw__link">api.autoinference.org/v1/llama-3.3-70b</span></p>
+                <p>Endpoint: <span class="agentw__link">api.autoinference.org/v1/deepseek-v3.2-exp</span></p>
                 <p>Want me to ship a canary first, or roll directly?</p>
               </div>
             </div>
 
             <!-- thinking spinner -->
-            <div class="agentw__thinking" style="--d:5">
+            <div class="agentw__thinking" style="--d:6">
               <span class="agentw__think" id="thinkSpinner">✶</span>
               <span class="agentw__thinkT">refining recommendation...</span>
             </div>
@@ -209,6 +217,23 @@
         <div class="float float--br" aria-hidden="true">
           <div class="float__metric">94<span>%</span></div>
           <div class="float__l">gpu saturated</div>
+        </div>
+        <!-- Extra popup widgets: Triton kernel + EAGLE-3 spec decode -->
+        <div class="float--mid-r" aria-hidden="true">
+          <div class="float__icon"></div>
+          <div>
+            <div class="float__tag">TRITON</div>
+            <div class="float__t">fused RMSNorm+RoPE</div>
+            <div class="float__s">4.2× faster · 0-ulp drift</div>
+          </div>
+        </div>
+        <div class="float--mid-l" aria-hidden="true">
+          <div class="float__icon"></div>
+          <div>
+            <div class="float__tag">SPEC DECODE</div>
+            <div class="float__t">EAGLE-3 selected</div>
+            <div class="float__s">0.92 accept · pos-1</div>
+          </div>
         </div>
       </div>
     </div>
@@ -401,7 +426,7 @@
             <pre><code><span class="kw">from</span> autoinference <span class="kw">import</span> Deployment
 
 deploy = Deployment(
-    model=<span class="str">"meta-llama/Llama-3.1-70B-Instruct"</span>,
+    model=<span class="str">"deepseek-ai/DeepSeek-V3.2-Exp"</span>,
     quantize=<span class="str">"auto"</span>,
 )</code></pre>
           </div>
@@ -525,7 +550,7 @@ deploy = Deployment(
             <span class="mock__dot mock__dot--r"></span>
             <span class="mock__dot mock__dot--y"></span>
             <span class="mock__dot mock__dot--g"></span>
-            <span class="mock__url">app.autoinference.org/deployments/llama-3.3-70b</span>
+            <span class="mock__url">app.autoinference.org/deployments/qwen3.5-72b-a17b</span>
             <span class="mock__chrome-meta">⌘K</span>
           </div>
           <div class="mock__body">
@@ -555,10 +580,10 @@ deploy = Deployment(
             <main class="mock__main">
               <div class="mock__topbar">
                 <div>
-                  <div class="mock__crumb">Deployments / <strong>llama-3.3-70b-instruct</strong></div>
+                  <div class="mock__crumb">Deployments / <strong>qwen3.5-72b-a17b</strong></div>
                   <div class="mock__title">
                     <span class="status-pill status-pill--live"><span class="ping"></span>Live</span>
-                    <h3>llama-3.3-70b-instruct</h3>
+                    <h3>qwen3.5-72b-a17b · fp8</h3>
                     <span class="mock__tag">prod-us-west</span>
                   </div>
                 </div>
@@ -671,6 +696,22 @@ deploy = Deployment(
         <div class="float float--br float--dashwarm-br" aria-hidden="true">
           <div class="float__metric">94<span>%</span></div>
           <div class="float__l">GPU saturated</div>
+        </div>
+        <div class="float--dashwarm-tr" aria-hidden="true">
+          <div class="float__icon"></div>
+          <div>
+            <div class="float__tag">FP8 KV CACHE</div>
+            <div class="float__t">fp8_e4m3 · paged</div>
+            <div class="float__s">2× effective capacity</div>
+          </div>
+        </div>
+        <div class="float--dashwarm-bl" aria-hidden="true">
+          <div class="float__icon"></div>
+          <div>
+            <div class="float__tag">CUDA GRAPH</div>
+            <div class="float__t">full decode captured</div>
+            <div class="float__s">−18% kernel launch overhead</div>
+          </div>
         </div>
       </div>
 

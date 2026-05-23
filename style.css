@@ -15,12 +15,12 @@
   --border-2: rgba(255, 230, 210, 0.10);
   --border-strong: rgba(255, 230, 210, 0.16);
 
-  /* text — warm cream tones */
-  --fg-0: #F2EAE0;
-  --fg-1: #D8CCBE;
-  --fg-2: #8E8175;
-  --fg-3: #5C5247;
-  --fg-4: #3A332D;
+  /* text — crisp neutrals (no yellow cast) */
+  --fg-0: #FAFAFA;
+  --fg-1: #D9D6D2;
+  --fg-2: #8E8B86;
+  --fg-3: #5C5A56;
+  --fg-4: #38373A;
 
   /* accents — restrained: orange as a single accent, used SPARINGLY */
   --violet-500: #C2410C;
@@ -98,12 +98,12 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .bg-grid {
   position: fixed; inset: 0; z-index: 0;
   pointer-events: none;
-  /* very subtle warm vignette — brighter near hero, darker at edges */
+  /* very subtle warm vignette near hero only — much reduced */
   background:
-    radial-gradient(ellipse 70% 50% at 50% 0%,
-      rgba(217, 119, 6, 0.08) 0%,
-      rgba(194, 65, 12, 0.03) 35%,
-      transparent 70%);
+    radial-gradient(ellipse 60% 40% at 50% -5%,
+      rgba(217, 119, 6, 0.04) 0%,
+      rgba(194, 65, 12, 0.015) 40%,
+      transparent 75%);
 }
 .bg-glow {
   position: fixed; z-index: 0;
@@ -112,12 +112,12 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 }
 .bg-glow--violet, .bg-glow--cyan { display: none; }
 
-/* Fine film grain — the "unique" texture that elevates the page */
+/* Fine film grain — neutral, no warm cast */
 .bg-noise {
   position: fixed; inset: 0; z-index: 1; pointer-events: none;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.92' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 0.92  0 0 0 0 0.84  0 0 0 0.045 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.92' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.04 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
   opacity: 1;
-  mix-blend-mode: soft-light;
+  mix-blend-mode: overlay;
 }
 
 /* Scanlines: removed entirely — they were noise on top of noise */
@@ -3156,6 +3156,211 @@ body {
   .agentw__tool { margin-bottom: 10px; }
   .agentw__toolH { font-size: 12.5px; }
   .agentw__toolT { font-size: 11.5px; }
+}
+
+/* =========================================================================
+   v2.0 — ASCII rain background + install grid fix + more floats
+   ========================================================================= */
+
+/* ASCII terminal rain — atmospheric background animation */
+.bg-rain {
+  position: fixed; inset: 0; z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  mask-image: linear-gradient(180deg, transparent 0%, black 12%, black 88%, transparent 100%);
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, black 12%, black 88%, transparent 100%);
+}
+.bg-rain__col {
+  position: absolute;
+  top: 0;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  line-height: 1.65;
+  color: var(--orange-400);
+  opacity: 0.06;
+  white-space: pre;
+  user-select: none;
+  will-change: transform;
+}
+.bg-rain__col--l {
+  left: 16px;
+  text-align: left;
+  animation: rain-up 95s linear infinite;
+}
+.bg-rain__col--r {
+  right: 16px;
+  text-align: right;
+  animation: rain-up 130s linear infinite;
+  animation-delay: -30s;
+}
+@keyframes rain-up {
+  0%   { transform: translateY(0); }
+  100% { transform: translateY(-50%); }
+}
+@media (max-width: 900px) {
+  .bg-rain__col--r { display: none; }
+  .bg-rain__col--l { font-size: 9px; opacity: 0.04; }
+}
+
+/* INSTALL GRID FIX — stack icon/label on top, code on full width below.
+   No horizontal overflow / scroll. */
+.installgrid {
+  margin-top: 30px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 10px;
+}
+.installcard {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+  background: transparent;
+  border: 1px solid rgba(255, 230, 210, 0.06);
+  border-radius: 4px;
+  min-width: 0;
+  overflow: hidden;
+}
+.installcard:hover {
+  background: rgba(255, 230, 210, 0.02);
+  border-color: rgba(255, 230, 210, 0.12);
+}
+.installcard > img,
+.installcard > .lg-glyph {
+  flex-shrink: 0;
+}
+.installcard__l {
+  font-size: 11px; color: var(--fg-3); font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  font-family: var(--font-mono);
+}
+.installcard code {
+  flex-basis: 100%;   /* breaks to its own row, full width */
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  color: var(--fg-1);
+  background: rgba(0, 0, 0, 0.25);
+  padding: 8px 12px;
+  border-radius: 3px;
+  border: 1px solid rgba(255, 230, 210, 0.04);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.installcard code::-webkit-scrollbar { display: none; }
+.installcard code::before {
+  content: '$ ';
+  color: var(--orange-400);
+  opacity: 0.5;
+  margin-right: 2px;
+}
+
+/* dashboard mockup — floats stay INSIDE viewport bounds */
+.dashwrap {
+  margin-top: 32px;
+  position: relative;
+  overflow: visible;
+}
+.float--dashwarm-tl { top: -12px; left: -12px; }
+.float--dashwarm-br { bottom: -12px; right: -8px; }
+@media (max-width: 900px) {
+  .float--dashwarm-tl { top: 8px; left: 8px; transform: scale(0.85); transform-origin: top left; }
+  .float--dashwarm-br { display: none; }
+}
+@media (max-width: 700px) {
+  .float--dashwarm-tl { display: none; }
+}
+
+/* extra floats: kernel / spec decode / CUDA wins around hero + dashboard */
+.float--kernel {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px;
+  background: rgba(20, 16, 14, 0.92);
+  border: 1px solid rgba(255, 230, 210, 0.10);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+}
+.float--kernel .float__icon { background: var(--orange-500); }
+.float--kernel .float__t { color: var(--fg-0); font-weight: 500; font-size: 12px; }
+.float--kernel .float__s { color: var(--fg-3); font-size: 11px; }
+
+/* hero terminal — add positions for new floats */
+.float--mid-r {
+  position: absolute;
+  top: 40%; right: -16px;
+  transform: translateY(-50%);
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px;
+  background: rgba(20, 16, 14, 0.92);
+  border: 1px solid rgba(255, 230, 210, 0.10);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  animation: float-card 6s ease-in-out infinite;
+  animation-delay: -1.5s;
+}
+.float--mid-l {
+  position: absolute;
+  top: 65%; left: -16px;
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px;
+  background: rgba(20, 16, 14, 0.92);
+  border: 1px solid rgba(255, 230, 210, 0.10);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  animation: float-card 6s ease-in-out infinite;
+  animation-delay: -3.5s;
+}
+@media (max-width: 1100px) {
+  .float--mid-r, .float--mid-l { display: none; }
+}
+
+/* dashboard extra floats */
+.float--dashwarm-tr {
+  position: absolute;
+  top: 50%; right: -12px;
+  transform: translateY(-50%);
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px;
+  background: rgba(20, 16, 14, 0.94);
+  border: 1px solid rgba(255, 230, 210, 0.10);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+}
+.float--dashwarm-bl {
+  position: absolute;
+  bottom: 28%; left: -12px;
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px;
+  background: rgba(20, 16, 14, 0.94);
+  border: 1px solid rgba(255, 230, 210, 0.10);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+}
+@media (max-width: 1100px) {
+  .float--dashwarm-tr, .float--dashwarm-bl { display: none; }
+}
+
+.float__tag {
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--orange-400);
+  font-family: var(--font-mono);
 }
 
 

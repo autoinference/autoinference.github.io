@@ -241,6 +241,74 @@
   }
 
   /* ---------------------------------------------------------------------
+     Background ASCII rain — generates two columns of procedural
+     terminal-style activity that scrolls slowly in the background
+     --------------------------------------------------------------------- */
+  function buildRain(elId, lineCount, seed) {
+    const el = document.getElementById(elId);
+    if (!el) return;
+    const verbs   = ['scan', 'probe', 'tune', 'verify', 'compile', 'profile', 'ramp', 'cache', 'rank', 'fuse', 'check', 'warm', 'sweep'];
+    const nouns   = ['workload', 'kernel', 'config', 'topology', 'engine', 'manifest', 'bench', 'graph', 'pipeline', 'batch'];
+    const blocks  = ['▒', '░', '▓', '█'];
+    const braille = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'];
+    const rules   = '─'.repeat(28);
+    const blank   = '';
+
+    // simple seeded RNG for stable, reproducible columns
+    let s = seed >>> 0;
+    function rand() {
+      s = (s * 1664525 + 1013904223) >>> 0;
+      return s / 4294967296;
+    }
+    function pick(arr) { return arr[Math.floor(rand() * arr.length)]; }
+
+    function bar() {
+      const filled = Math.floor(rand() * 24);
+      const empty  = 24 - filled;
+      return '▓'.repeat(filled) + '░'.repeat(empty) + '  ' + (filled * 4) + '%';
+    }
+    function timestamp() {
+      const hh = String(13 + Math.floor(rand() * 11)).padStart(2, '0');
+      const mm = String(Math.floor(rand() * 60)).padStart(2, '0');
+      const ss = String(Math.floor(rand() * 60)).padStart(2, '0');
+      return '[' + hh + ':' + mm + ':' + ss + ']';
+    }
+    function tool()    { return '● ' + pick(verbs) + ' ' + pick(nouns); }
+    function result()  { return '  ⎿ ok'; }
+    function ascii()   {
+      let out = '';
+      const n = 12 + Math.floor(rand() * 8);
+      for (let i = 0; i < n; i++) out += pick(blocks);
+      return out;
+    }
+    function spin()    { return pick(braille) + ' ' + pick(verbs) + '...'; }
+    function prompt()  { return '$ autoinference ' + pick(verbs); }
+
+    const generators = [
+      blank, blank, blank, blank,    // lots of breathing room
+      timestamp,
+      rules,
+      bar,
+      tool, result,
+      ascii,
+      spin,
+      prompt,
+    ];
+
+    const lines = [];
+    for (let i = 0; i < lineCount; i++) {
+      const g = generators[Math.floor(rand() * generators.length)];
+      lines.push(typeof g === 'function' ? g() : '');
+    }
+    // duplicate the content so the seamless loop works on the CSS translateY(-50%) animation
+    const text = lines.join('\n');
+    el.textContent = text + '\n' + text;
+  }
+
+  buildRain('bgRainL', 90, 12345);
+  buildRain('bgRainR', 90, 67890);
+
+  /* ---------------------------------------------------------------------
      Agent widget spinner (Claude Code CLI braille cycle)
      --------------------------------------------------------------------- */
   const spinnerFrames = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'];
