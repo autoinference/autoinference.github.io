@@ -137,104 +137,64 @@
         <div class="hero__meta-item"><span class="dot dot--cyan"></span><span>battle-tested</span></div>
       </div>
 
-      <!-- HERO TERMINAL — animated ASCII status (Inception-style animations) -->
+      <!-- HERO: AGENT WIDGET — Claude Code CLI / Codex CLI aesthetic -->
       <div class="hero__terminal" data-reveal>
-        <div class="termx">
-          <div class="termx__chrome">
-            <span class="mock__dot mock__dot--r"></span>
-            <span class="mock__dot mock__dot--y"></span>
-            <span class="mock__dot mock__dot--g"></span>
-            <span class="termx__title">
-              <span class="termx__user">autoinference</span>
-              <span class="termx__sep">·</span>
-              <span class="termx__path">live status</span>
-            </span>
-            <span class="termx__right">
-              <span class="spinner" id="heroSpinner">⠋</span>
-              <span class="termx__sub">tune</span>
+        <div class="agentw">
+          <div class="agentw__chrome">
+            <span class="agentw__star">✻</span>
+            <span class="agentw__name">autoinference</span>
+            <span class="agentw__ver">v0.0.1-alpha</span>
+            <span class="agentw__chromeR">
+              <span class="agentw__spin" id="agentSpinner">⠋</span>
+              <span class="agentw__status">optimizing</span>
             </span>
           </div>
-          <div class="termx__body">
-            <div class="tx-line"><span class="tx-prompt">$</span> <span class="tx-cmd">autoinference status</span></div>
-            <div class="tx-line tx-line--space"></div>
+          <div class="agentw__body">
 
-            <div class="tx-row">
-              <span class="tx-key">ENGINE</span>
-              <span class="tx-val">vLLM 0.11.x</span>
-              <span class="tx-pill tx-pill--live"><span class="tx-pill-dot"></span>active</span>
-            </div>
-            <div class="tx-row">
-              <span class="tx-key">HARDWARE</span>
-              <span class="tx-val">8× H200 SXM</span>
-              <span class="tx-pill tx-pill--ok"><span class="tx-pill-dot"></span>healthy</span>
-            </div>
-            <div class="tx-row">
-              <span class="tx-key">WORKLOAD</span>
-              <span class="tx-val">agentic_coding</span>
-              <span class="tx-pill tx-pill--ok"><span class="tx-pill-dot"></span>optimal</span>
+            <!-- input box with ╭─╮ ╰─╯ borders, Claude Code style -->
+            <div class="agentw__input">
+              <span class="agentw__caret">&gt;</span>
+              <span class="agentw__cmd">deploy llama-3.3-70b on 8× H100 SXM</span>
+              <span class="cursor"></span>
             </div>
 
-            <div class="tx-line tx-line--space"></div>
-            <div class="tx-rule">──────────────────────────────────────────────────────────</div>
-            <div class="tx-line tx-line--space"></div>
-
-            <!-- Animated ASCII bars + sparkline -->
-            <div class="tx-stat">
-              <div class="tx-stat__head">
-                <span class="tx-stat__lbl">THROUGHPUT</span>
-                <span class="tx-stat__val" data-stat="throughput">14,820 tok/s</span>
-              </div>
-              <div class="tx-bar" data-target="82">
-                <span class="tx-bar__fill" data-color="cyan"></span>
-              </div>
-              <div class="tx-spark" data-spark="cyan"></div>
+            <!-- tool calls — Claude Code ● Tool / ⎿ result pattern -->
+            <div class="agentw__tool" style="--d:0">
+              <div class="agentw__toolH"><span class="agentw__bullet">●</span> <span class="agentw__toolN">Hardware Probe</span><span class="agentw__took">(2.1s)</span></div>
+              <div class="agentw__toolR"><span class="agentw__indent">⎿</span> <span class="agentw__toolT">8× H100 SXM detected · NVLink mesh · 80 GB HBM</span></div>
             </div>
 
-            <div class="tx-stat">
-              <div class="tx-stat__head">
-                <span class="tx-stat__lbl">P99 LATENCY</span>
-                <span class="tx-stat__val"><span data-stat="latency">192</span> ms <span class="tx-stat__hint">slo 500</span></span>
-              </div>
-              <div class="tx-bar" data-target="22">
-                <span class="tx-bar__fill" data-color="green"></span>
-              </div>
-              <div class="tx-spark" data-spark="green"></div>
+            <div class="agentw__tool" style="--d:1">
+              <div class="agentw__toolH"><span class="agentw__bullet">●</span> <span class="agentw__toolN">Engine Selection</span><span class="agentw__took">(0.8s)</span></div>
+              <div class="agentw__toolR"><span class="agentw__indent">⎿</span> <span class="agentw__toolT">ranked 7 compatible engines · selected optimal</span></div>
             </div>
 
-            <div class="tx-stat">
-              <div class="tx-stat__head">
-                <span class="tx-stat__lbl">GPU UTILIZATION</span>
-                <span class="tx-stat__val"><span data-stat="gpu">94</span>%</span>
-              </div>
-              <div class="tx-bar" data-target="94">
-                <span class="tx-bar__fill" data-color="violet"></span>
-              </div>
-              <div class="tx-spark" data-spark="violet"></div>
+            <div class="agentw__tool" style="--d:2">
+              <div class="agentw__toolH"><span class="agentw__bullet">●</span> <span class="agentw__toolN">Config Tuning</span><span class="agentw__took">(4m 12s)</span></div>
+              <div class="agentw__toolR"><span class="agentw__indent">⎿</span> <span class="agentw__toolT"><span class="agentw__up">+3.4×</span> tok/s · <span class="agentw__up">−62%</span> p99 latency · <span class="agentw__up">94%</span> gpu util</span></div>
             </div>
 
-            <div class="tx-stat">
-              <div class="tx-stat__head">
-                <span class="tx-stat__lbl">PREFIX CACHE</span>
-                <span class="tx-stat__val"><span data-stat="cache">87</span>%</span>
-              </div>
-              <div class="tx-bar" data-target="87">
-                <span class="tx-bar__fill" data-color="pink"></span>
-              </div>
-              <div class="tx-spark" data-spark="pink"></div>
+            <div class="agentw__tool" style="--d:3">
+              <div class="agentw__toolH"><span class="agentw__bullet">●</span> <span class="agentw__toolN">Validation Harness</span><span class="agentw__took">(1m 47s)</span></div>
+              <div class="agentw__toolR"><span class="agentw__indent">⎿</span> <span class="agentw__toolT">load + correctness + security · <span class="agentw__ok">6/6 passed</span></span></div>
             </div>
 
-            <div class="tx-line tx-line--space"></div>
-            <div class="tx-rule">──────────────────────────────────────────────────────────</div>
-            <div class="tx-line tx-line--space"></div>
-
-            <div class="tx-line tx-line--foot">
-              <span class="tx-dim">last updated</span>
-              <span class="tx-time" id="heroTime">14:23:41</span>
-              <span class="tx-dim">·</span>
-              <span class="tx-dim">refreshing every</span>
-              <span class="tx-val tx-val--sm">3s</span>
+            <!-- agent message with │ left border -->
+            <div class="agentw__msg" style="--d:4">
+              <div class="agentw__msgBar"></div>
+              <div class="agentw__msgBody">
+                <p>Your deployment is ready.</p>
+                <p>Endpoint: <span class="agentw__link">api.autoinference.org/v1/llama-3.3-70b</span></p>
+                <p>Want me to ship a canary first, or roll directly?</p>
+              </div>
             </div>
-            <div class="tx-line"><span class="tx-prompt">$</span> <span class="cursor"></span></div>
+
+            <!-- thinking spinner -->
+            <div class="agentw__thinking" style="--d:5">
+              <span class="agentw__think" id="thinkSpinner">✶</span>
+              <span class="agentw__thinkT">refining recommendation...</span>
+            </div>
+
           </div>
         </div>
 
@@ -242,7 +202,7 @@
         <div class="float float--tl" aria-hidden="true">
           <div class="float__icon"></div>
           <div>
-            <div class="float__t">+241% tok/s</div>
+            <div class="float__t">+3.4× tok/s</div>
             <div class="float__s">vs default config</div>
           </div>
         </div>
@@ -546,101 +506,181 @@ deploy = Deployment(
     </div>
   </section>
 
-  <!-- WEBAPP — kept SaaS dashboard mockup with terminal chrome -->
+  <!-- WEBAPP — full v1 SaaS dashboard mockup (preserved, recolored to warm palette) -->
   <section class="section section--webapp" id="webapp">
     <div class="container">
-      <div class="splitrow">
-        <div class="splitrow__copy" data-reveal>
-          <div class="eyebrow">// the_webapp</div>
-          <h2 class="section__title">
-            The CLI is the source of truth.<br />
-            <span class="grad-text">The web is the lens.</span>
-          </h2>
-          <p class="section__lede">
-            Every CLI run streams to a versioned workspace. The web view renders the same data &mdash;
-            so you can audit, share, and trigger re-runs from anywhere. You never need it to ship.
-          </p>
-          <ul class="copylist">
-            <li><span class="check">✓</span>OpenAI-compatible REST endpoint, out of the box</li>
-            <li><span class="check">✓</span>Streaming, function calling, structured outputs</li>
-            <li><span class="check">✓</span>Versioned deployments with one-click rollback</li>
-            <li><span class="check">✓</span>Per-tenant rate limits + audit logs</li>
-            <li><span class="check">✓</span>Self-host or fully-managed</li>
-          </ul>
-        </div>
+      <div class="eyebrow" data-reveal>// the_webapp</div>
+      <h2 class="section__title" data-reveal>
+        The CLI is the source of truth. <span class="grad-text">The web is the lens.</span>
+      </h2>
+      <p class="section__lede" data-reveal>
+        Every CLI run streams to a versioned workspace. The web view renders the same data &mdash;
+        audit, share, and trigger re-runs from anywhere. You never need it to ship.
+      </p>
 
-        <div class="splitrow__mock" data-reveal>
-          <div class="mock mock--web" aria-hidden="true">
-            <div class="mock__chrome">
-              <span class="mock__dot mock__dot--r"></span>
-              <span class="mock__dot mock__dot--y"></span>
-              <span class="mock__dot mock__dot--g"></span>
-              <span class="mock__url">$ autoinference open --run r-1842</span>
-            </div>
-            <div class="mock__body">
-              <main class="mock__main">
-                <div class="mock__topbar">
-                  <div>
-                    <div class="mock__crumb">runs / <strong>r-1842</strong> / llama-3.1-70b</div>
-                    <div class="mock__title">
-                      <span class="status-pill status-pill--live"><span class="ping"></span>live</span>
-                      <h3>llama-3.1-70b-instruct</h3>
-                      <span class="mock__tag">prod-us-west</span>
+      <!-- v1 full dashboard mockup, preserved -->
+      <div class="dashwrap" data-reveal>
+        <div class="mock mock--hero mock--dashwarm" aria-hidden="true">
+          <div class="mock__chrome">
+            <span class="mock__dot mock__dot--r"></span>
+            <span class="mock__dot mock__dot--y"></span>
+            <span class="mock__dot mock__dot--g"></span>
+            <span class="mock__url">app.autoinference.org/deployments/llama-3.3-70b</span>
+            <span class="mock__chrome-meta">⌘K</span>
+          </div>
+          <div class="mock__body">
+            <aside class="mock__side">
+              <div class="mock__brand">
+                <span class="mock__brand-mark"></span>
+                <span>autoinference</span>
+              </div>
+              <nav class="mock__nav">
+                <a class="active"><span class="ic"></span>Deployments</a>
+                <a><span class="ic"></span>Models</a>
+                <a><span class="ic"></span>Hardware</a>
+                <a><span class="ic"></span>Kernels</a>
+                <a><span class="ic"></span>Benchmarks</a>
+                <a><span class="ic"></span>Logs</a>
+                <a><span class="ic"></span>Settings</a>
+              </nav>
+              <div class="mock__workspace">
+                <div class="mock__wsbubble">A</div>
+                <div>
+                  <div class="mock__wsname">autoinference</div>
+                  <div class="mock__wsplan">Production · Team</div>
+                </div>
+              </div>
+            </aside>
+
+            <main class="mock__main">
+              <div class="mock__topbar">
+                <div>
+                  <div class="mock__crumb">Deployments / <strong>llama-3.3-70b-instruct</strong></div>
+                  <div class="mock__title">
+                    <span class="status-pill status-pill--live"><span class="ping"></span>Live</span>
+                    <h3>llama-3.3-70b-instruct</h3>
+                    <span class="mock__tag">prod-us-west</span>
+                  </div>
+                </div>
+                <div class="mock__topbar-actions">
+                  <button class="chip"><span class="ic-sm"></span>Re-tune</button>
+                  <button class="chip chip--primary"><span class="ic-sm"></span>Deploy</button>
+                </div>
+              </div>
+
+              <div class="mock__statsrow">
+                <div class="statcard">
+                  <div class="statcard__label">Tokens/sec</div>
+                  <div class="statcard__value" data-count="14820">14,820</div>
+                  <div class="statcard__delta delta--up">+241% vs baseline</div>
+                  <svg class="spark" viewBox="0 0 100 30" preserveAspectRatio="none">
+                    <path d="M0 24 L10 22 L20 20 L30 18 L40 14 L50 12 L60 9 L70 7 L80 5 L90 4 L100 3" stroke="url(#sparkW1)" stroke-width="2" fill="none" stroke-linecap="round"/>
+                    <defs><linearGradient id="sparkW1" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#FBBF24"/><stop offset="1" stop-color="#F97316"/></linearGradient></defs>
+                  </svg>
+                </div>
+                <div class="statcard">
+                  <div class="statcard__label">P99 latency</div>
+                  <div class="statcard__value">42<span class="unit">ms</span></div>
+                  <div class="statcard__delta delta--down">−62% vs baseline</div>
+                  <svg class="spark" viewBox="0 0 100 30" preserveAspectRatio="none">
+                    <path d="M0 6 L10 8 L20 10 L30 12 L40 16 L50 18 L60 22 L70 24 L80 25 L90 26 L100 27" stroke="url(#sparkW2)" stroke-width="2" fill="none" stroke-linecap="round"/>
+                    <defs><linearGradient id="sparkW2" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#F97316"/><stop offset="1" stop-color="#EF4444"/></linearGradient></defs>
+                  </svg>
+                </div>
+                <div class="statcard">
+                  <div class="statcard__label">GPU utilization</div>
+                  <div class="statcard__value">94<span class="unit">%</span></div>
+                  <div class="statcard__delta delta--up">+38 pts</div>
+                  <svg class="spark" viewBox="0 0 100 30" preserveAspectRatio="none">
+                    <path d="M0 22 L10 18 L20 19 L30 14 L40 11 L50 8 L60 6 L70 5 L80 4 L90 3 L100 3" stroke="url(#sparkW3)" stroke-width="2" fill="none" stroke-linecap="round"/>
+                    <defs><linearGradient id="sparkW3" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#FB923C"/><stop offset="1" stop-color="#FBBF24"/></linearGradient></defs>
+                  </svg>
+                </div>
+                <div class="statcard">
+                  <div class="statcard__label">$ / 1M tokens</div>
+                  <div class="statcard__value">$0.47</div>
+                  <div class="statcard__delta delta--down">−47% spend</div>
+                  <svg class="spark" viewBox="0 0 100 30" preserveAspectRatio="none">
+                    <path d="M0 4 L10 6 L20 8 L30 11 L40 14 L50 17 L60 20 L70 22 L80 24 L90 25 L100 26" stroke="url(#sparkW4)" stroke-width="2" fill="none" stroke-linecap="round"/>
+                    <defs><linearGradient id="sparkW4" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#EF4444"/><stop offset="1" stop-color="#F97316"/></linearGradient></defs>
+                  </svg>
+                </div>
+              </div>
+
+              <div class="mock__grid">
+                <div class="panel">
+                  <div class="panel__head">
+                    <h4>Optimization run #1842</h4>
+                    <span class="panel__sub">live · agent thinking</span>
+                  </div>
+                  <div class="agentlog">
+                    <div class="agentlog__row"><span class="t">14:02:11</span><span class="tag tag--violet">plan</span><span>Profiling workload distribution</span></div>
+                    <div class="agentlog__row"><span class="t">14:02:18</span><span class="tag tag--blue">choose</span><span>Ranking compatible engines for your hardware</span></div>
+                    <div class="agentlog__row"><span class="t">14:02:31</span><span class="tag tag--cyan">tune</span><span>Sweeping configuration space&hellip;</span></div>
+                    <div class="agentlog__row"><span class="t">14:03:02</span><span class="tag tag--cyan">tune</span><span>Found optimal configuration</span></div>
+                    <div class="agentlog__row"><span class="t">14:03:14</span><span class="tag tag--pink">kernel</span><span>Synthesizing custom kernel for hot path&hellip;</span></div>
+                    <div class="agentlog__row"><span class="t">14:03:51</span><span class="tag tag--green">verify</span><span>Kernel verified bit-equivalent ✓</span></div>
+                    <div class="agentlog__row agentlog__row--active"><span class="t">14:04:09</span><span class="tag tag--orange">loadtest</span><span>Ramping concurrent users: 1,200 / 2,000 <span class="dotpulse"></span></span></div>
+                  </div>
+                </div>
+
+                <div class="panel panel--compact">
+                  <div class="panel__head">
+                    <h4>Engine ranking</h4>
+                  </div>
+                  <div class="enginepick">
+                    <div class="enginepick__row enginepick__row--win">
+                      <span class="enginepick__name">vLLM</span>
+                      <span class="enginepick__bar"><span style="width:96%"></span></span>
+                      <span class="enginepick__score">96</span>
+                    </div>
+                    <div class="enginepick__row">
+                      <span class="enginepick__name">SGLang</span>
+                      <span class="enginepick__bar"><span style="width:91%"></span></span>
+                      <span class="enginepick__score">91</span>
+                    </div>
+                    <div class="enginepick__row">
+                      <span class="enginepick__name">TensorRT-LLM</span>
+                      <span class="enginepick__bar"><span style="width:88%"></span></span>
+                      <span class="enginepick__score">88</span>
+                    </div>
+                    <div class="enginepick__row">
+                      <span class="enginepick__name">FlashInfer</span>
+                      <span class="enginepick__bar"><span style="width:84%"></span></span>
+                      <span class="enginepick__score">84</span>
+                    </div>
+                    <div class="enginepick__row">
+                      <span class="enginepick__name">LMDeploy</span>
+                      <span class="enginepick__bar"><span style="width:71%"></span></span>
+                      <span class="enginepick__score">71</span>
                     </div>
                   </div>
                 </div>
-
-                <div class="mock__statsrow">
-                  <div class="statcard">
-                    <div class="statcard__label">tok/s</div>
-                    <div class="statcard__value" data-count="14820">14,820</div>
-                    <div class="statcard__delta delta--up">+241% vs baseline</div>
-                  </div>
-                  <div class="statcard">
-                    <div class="statcard__label">p99 latency</div>
-                    <div class="statcard__value">192<span class="unit">ms</span></div>
-                    <div class="statcard__delta delta--down">−62% vs baseline</div>
-                  </div>
-                  <div class="statcard">
-                    <div class="statcard__label">gpu util</div>
-                    <div class="statcard__value">94<span class="unit">%</span></div>
-                    <div class="statcard__delta delta--up">+38 pts</div>
-                  </div>
-                  <div class="statcard">
-                    <div class="statcard__label">$/Mtok</div>
-                    <div class="statcard__value">$0.47</div>
-                    <div class="statcard__delta delta--down">−47%</div>
-                  </div>
-                </div>
-
-                <div class="mock__chartmini">
-                  <svg viewBox="0 0 600 100" preserveAspectRatio="none">
-                    <defs>
-                      <linearGradient id="webA" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0" stop-color="#22D3EE" stop-opacity="0.5"/>
-                        <stop offset="1" stop-color="#22D3EE" stop-opacity="0"/>
-                      </linearGradient>
-                    </defs>
-                    <path d="M0 90 L60 88 L120 85 L180 80 L240 75 L300 65 L360 55 L420 42 L480 30 L540 22 L600 18"
-                          stroke="#22D3EE" stroke-width="2.5" fill="none"/>
-                    <path d="M0 90 L60 88 L120 85 L180 80 L240 75 L300 65 L360 55 L420 42 L480 30 L540 22 L600 18 L600 100 L0 100 Z"
-                          fill="url(#webA)"/>
-                    <circle cx="600" cy="18" r="4" fill="#22D3EE"/>
-                  </svg>
-                </div>
-              </main>
-            </div>
-          </div>
-
-          <div class="float float--wizard" aria-hidden="true">
-            <span class="float__icon float__icon--ok"></span>
-            <div>
-              <div class="float__t">deployment live</div>
-              <div class="float__s">api.autoinference.org/v1/...</div>
-            </div>
+              </div>
+            </main>
           </div>
         </div>
+
+        <div class="float float--tl float--dashwarm-tl" aria-hidden="true">
+          <div class="float__icon"></div>
+          <div>
+            <div class="float__t">Kernel deployed</div>
+            <div class="float__s">+3.4× tok/s</div>
+          </div>
+        </div>
+        <div class="float float--br float--dashwarm-br" aria-hidden="true">
+          <div class="float__metric">94<span>%</span></div>
+          <div class="float__l">GPU saturated</div>
+        </div>
       </div>
+
+      <ul class="copylist copylist--center" data-reveal>
+        <li><span class="check">✓</span>OpenAI-compatible REST endpoint, out of the box</li>
+        <li><span class="check">✓</span>Streaming, function calling, structured outputs</li>
+        <li><span class="check">✓</span>Versioned deployments with one-click rollback</li>
+        <li><span class="check">✓</span>Per-tenant rate limits + audit logs</li>
+        <li><span class="check">✓</span>Self-host or fully-managed</li>
+      </ul>
     </div>
   </section>
 

@@ -4,47 +4,52 @@
 
 /* ----- Tokens -------------------------------------------------------- */
 :root {
-  /* surfaces */
-  --bg-0: #06060B;
-  --bg-1: #0B0B14;
-  --bg-2: #11111D;
-  --surface: rgba(255, 255, 255, 0.03);
-  --surface-2: rgba(255, 255, 255, 0.05);
-  --surface-3: rgba(255, 255, 255, 0.08);
-  --border: rgba(255, 255, 255, 0.08);
-  --border-2: rgba(255, 255, 255, 0.14);
-  --border-strong: rgba(255, 255, 255, 0.2);
+  /* surfaces — warm dark with red undertone */
+  --bg-0: #0A0707;
+  --bg-1: #110A09;
+  --bg-2: #1A0F0C;
+  --surface: rgba(255, 220, 200, 0.025);
+  --surface-2: rgba(255, 220, 200, 0.05);
+  --surface-3: rgba(255, 220, 200, 0.08);
+  --border: rgba(251, 146, 60, 0.10);
+  --border-2: rgba(251, 146, 60, 0.18);
+  --border-strong: rgba(251, 146, 60, 0.28);
 
-  /* text */
-  --fg-0: #FFFFFF;
-  --fg-1: #E5E5EC;
-  --fg-2: #A1A1B5;
-  --fg-3: #6B6B7B;
-  --fg-4: #45455A;
+  /* text — warm cream tones */
+  --fg-0: #F8EDE0;
+  --fg-1: #E8D5C0;
+  --fg-2: #A89888;
+  --fg-3: #6E5D52;
+  --fg-4: #44362F;
 
-  /* accents */
-  --violet-500: #8B5CF6;
-  --violet-400: #A78BFA;
-  --blue-500:   #3B82F6;
-  --blue-400:   #60A5FA;
-  --cyan-500:   #06B6D4;
-  --cyan-400:   #22D3EE;
-  --pink-400:   #F472B6;
-  --green-400:  #34D399;
+  /* accents — orange/red dominant, minimal green */
+  --violet-500: #DC2626; /* maps to red-600 */
+  --violet-400: #F97316; /* maps to orange-500 (used for primary accent) */
+  --blue-500:   #B91C1C; /* deep red */
+  --blue-400:   #EF4444; /* red-500 */
+  --cyan-500:   #F59E0B; /* amber-500 */
+  --cyan-400:   #FBBF24; /* amber-400 (used for highlights) */
+  --pink-400:   #FB923C; /* orange-400 */
+  --green-400:  #4ADE80; /* used VERY sparingly, only success */
   --orange-400: #FB923C;
+  --orange-500: #F97316;
+  --orange-600: #EA580C;
   --red-400:    #F87171;
+  --red-500:    #EF4444;
+  --amber-400:  #FBBF24;
+  --amber-500:  #F59E0B;
 
-  /* gradients */
-  --grad-brand: linear-gradient(135deg, #A78BFA 0%, #60A5FA 45%, #22D3EE 100%);
-  --grad-brand-soft: linear-gradient(135deg, rgba(167,139,250,0.18) 0%, rgba(96,165,250,0.14) 45%, rgba(34,211,238,0.18) 100%);
-  --grad-brand-strong: linear-gradient(135deg, #8B5CF6 0%, #3B82F6 50%, #06B6D4 100%);
+  /* gradients — amber → orange → red */
+  --grad-brand: linear-gradient(135deg, #FBBF24 0%, #F97316 50%, #EF4444 100%);
+  --grad-brand-soft: linear-gradient(135deg, rgba(251,191,36,0.16) 0%, rgba(249,115,22,0.14) 50%, rgba(239,68,68,0.16) 100%);
+  --grad-brand-strong: linear-gradient(135deg, #F59E0B 0%, #EA580C 50%, #DC2626 100%);
 
   /* shadows */
-  --shadow-1: 0 4px 12px rgba(0, 0, 0, 0.3);
-  --shadow-2: 0 10px 40px rgba(0, 0, 0, 0.45);
-  --shadow-3: 0 25px 80px rgba(0, 0, 0, 0.6);
-  --shadow-brand: 0 30px 100px -20px rgba(139, 92, 246, 0.5);
-  --shadow-cyan: 0 25px 80px -20px rgba(34, 211, 238, 0.45);
+  --shadow-1: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --shadow-2: 0 10px 40px rgba(0, 0, 0, 0.55);
+  --shadow-3: 0 25px 80px rgba(0, 0, 0, 0.7);
+  --shadow-brand: 0 30px 100px -20px rgba(249, 115, 22, 0.55);
+  --shadow-cyan: 0 25px 80px -20px rgba(239, 68, 68, 0.45);
 
   /* type */
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
@@ -109,12 +114,12 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   will-change: transform;
 }
 .bg-glow--violet {
-  background: radial-gradient(circle, rgba(139,92,246,0.55), transparent 65%);
+  background: radial-gradient(circle, rgba(249,115,22,0.45), transparent 65%);
   top: -300px; left: -250px;
   animation: float-1 22s ease-in-out infinite;
 }
 .bg-glow--cyan {
-  background: radial-gradient(circle, rgba(34,211,238,0.45), transparent 65%);
+  background: radial-gradient(circle, rgba(239,68,68,0.32), transparent 65%);
   top: 200px; right: -300px;
   animation: float-2 26s ease-in-out infinite;
 }
@@ -2252,5 +2257,391 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 
 /* mock__title H3 — keep but make a touch sharper */
 .mock__title h3 { letter-spacing: -0.018em; }
+
+/* =========================================================================
+   v2 CLAUDE-CODE-CLI styled AGENT WIDGET
+   Hero gets a widget that LOOKS like Claude Code / Codex CLI in action.
+   ========================================================================= */
+
+.agentw {
+  background: linear-gradient(180deg, #0F0807 0%, #080403 100%);
+  border: 1px solid rgba(251, 146, 60, 0.20);
+  border-radius: 12px;
+  box-shadow: var(--shadow-3), 0 0 80px -20px rgba(249, 115, 22, 0.35), 0 0 0 1px rgba(255,255,255,0.03) inset;
+  overflow: hidden;
+  font-family: var(--font-mono);
+  position: relative;
+}
+.agentw::after {
+  content: '';
+  position: absolute;
+  bottom: -60px; left: 10%; right: 10%; height: 100px;
+  background: radial-gradient(ellipse at center, rgba(249,115,22,0.45), transparent 70%);
+  filter: blur(40px);
+  z-index: -1;
+}
+
+/* chrome row */
+.agentw__chrome {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 18px;
+  background: rgba(0, 0, 0, 0.35);
+  border-bottom: 1px solid rgba(251, 146, 60, 0.10);
+  font-size: 12px;
+}
+.agentw__star {
+  color: var(--amber-400);
+  font-size: 16px;
+  text-shadow: 0 0 12px rgba(251, 191, 36, 0.6);
+  animation: agentstar 4s ease-in-out infinite;
+}
+@keyframes agentstar {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(0.95); }
+}
+.agentw__name { color: var(--fg-0); font-weight: 600; letter-spacing: -0.005em; }
+.agentw__ver {
+  color: var(--fg-3);
+  font-size: 11px;
+  padding: 1px 6px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 4px;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+.agentw__chromeR {
+  margin-left: auto;
+  display: inline-flex; align-items: center; gap: 8px;
+  color: var(--orange-400);
+  font-size: 11.5px;
+}
+.agentw__spin {
+  display: inline-block; width: 12px;
+  color: var(--orange-400);
+  font-size: 14px;
+  text-align: center;
+}
+.agentw__status {
+  text-transform: lowercase;
+  letter-spacing: 0.02em;
+  font-weight: 500;
+}
+
+/* body */
+.agentw__body {
+  padding: 24px 24px 22px;
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: var(--fg-1);
+  min-height: 540px;
+}
+@media (max-width: 700px) {
+  .agentw__body { padding: 18px 14px; font-size: 12px; min-height: 460px; }
+}
+
+/* input box — Claude Code style ╭─╮ ╰─╯ */
+.agentw__input {
+  display: flex; align-items: center; gap: 10px;
+  padding: 14px 16px;
+  border: 1px solid rgba(251, 146, 60, 0.30);
+  border-radius: 8px;
+  background: rgba(249, 115, 22, 0.04);
+  margin-bottom: 22px;
+  position: relative;
+}
+.agentw__input::before {
+  content: '╭';
+  position: absolute; top: -8px; left: -1px;
+  color: rgba(251, 146, 60, 0.30);
+  font-size: 14px;
+  background: var(--bg-0);
+  padding: 0 2px;
+}
+.agentw__caret {
+  color: var(--orange-400);
+  font-weight: 700;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+.agentw__cmd {
+  color: var(--fg-0);
+  font-weight: 500;
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* tool calls — Claude Code's ● bullet + ⎿ indent pattern */
+.agentw__tool {
+  margin-bottom: 14px;
+  opacity: 0;
+  transform: translateX(-6px);
+  animation: agenttool-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: calc(var(--d) * 0.35s + 0.6s);
+}
+@keyframes agenttool-in {
+  to { opacity: 1; transform: translateX(0); }
+}
+.agentw__toolH {
+  display: flex; align-items: baseline; gap: 8px;
+  font-size: 13.5px;
+}
+.agentw__bullet {
+  color: var(--orange-400);
+  font-size: 12px;
+  text-shadow: 0 0 8px rgba(251, 146, 60, 0.6);
+}
+.agentw__toolN {
+  color: var(--fg-0);
+  font-weight: 600;
+}
+.agentw__took {
+  color: var(--fg-3);
+  font-size: 11.5px;
+  margin-left: auto;
+}
+.agentw__toolR {
+  display: flex; gap: 8px;
+  padding-left: 18px;
+  margin-top: 2px;
+}
+.agentw__indent {
+  color: var(--fg-3);
+  font-size: 13px;
+  flex-shrink: 0;
+}
+.agentw__toolT {
+  color: var(--fg-2);
+  font-size: 12.5px;
+}
+.agentw__up {
+  color: var(--amber-400);
+  font-weight: 600;
+}
+.agentw__ok {
+  color: var(--green-400);
+  font-weight: 600;
+}
+
+/* agent message — │ left border */
+.agentw__msg {
+  display: flex; gap: 14px;
+  margin: 20px 0 16px;
+  opacity: 0;
+  transform: translateY(6px);
+  animation: agentmsg-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: calc(var(--d) * 0.35s + 0.6s);
+}
+@keyframes agentmsg-in {
+  to { opacity: 1; transform: translateY(0); }
+}
+.agentw__msgBar {
+  width: 2px;
+  background: linear-gradient(180deg, var(--orange-400), transparent);
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+.agentw__msgBody p {
+  margin: 0 0 6px;
+  color: var(--fg-1);
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+.agentw__msgBody p:last-child { margin-bottom: 0; }
+.agentw__link {
+  color: var(--orange-400);
+  text-decoration: none;
+  border-bottom: 1px dashed rgba(251, 146, 60, 0.3);
+}
+
+/* thinking indicator */
+.agentw__thinking {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 12.5px;
+  color: var(--fg-3);
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255,255,255,0.04);
+  opacity: 0;
+  animation: agentmsg-in 0.5s ease forwards;
+  animation-delay: calc(var(--d) * 0.35s + 0.6s);
+}
+.agentw__think {
+  display: inline-block;
+  color: var(--amber-400);
+  font-size: 15px;
+  text-shadow: 0 0 8px rgba(251, 191, 36, 0.5);
+}
+.agentw__thinkT { font-style: italic; }
+
+/* cursor in input box (inherits .cursor base, override color) */
+.agentw .cursor { background: var(--orange-400); }
+
+/* floats around the agent widget */
+.hero__terminal .float--tl .float__icon { background: linear-gradient(135deg, var(--amber-400), var(--orange-500)); }
+.hero__terminal .float--br .float__metric span { color: var(--amber-400); }
+
+/* =========================================================================
+   WEBAPP DASHBOARD — warm recoloring of v1 mockup
+   ========================================================================= */
+.section--webapp { padding: 110px 0; }
+.mock--dashwarm {
+  margin-top: 32px;
+  transform: rotateX(1.5deg);
+  transform-origin: center top;
+  box-shadow: var(--shadow-3), var(--shadow-cyan), 0 0 0 1px rgba(255,255,255,0.04) inset;
+}
+.mock--dashwarm::after {
+  content: '';
+  position: absolute;
+  bottom: -60px; left: 10%; right: 10%; height: 100px;
+  background: radial-gradient(ellipse at center, rgba(239,68,68,0.4), transparent 70%);
+  filter: blur(40px); z-index: -1;
+}
+.float--dashwarm-tl { top: -20px; left: -20px; }
+.float--dashwarm-br { bottom: -22px; right: -20px; }
+
+/* copylist centered for webapp section */
+.copylist--center {
+  margin: 36px auto 0;
+  max-width: 720px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+}
+
+/* =========================================================================
+   GLOBAL WARM RECOLORING — explicit overrides where hardcoded colors leak
+   ========================================================================= */
+
+/* status pills: 'live' now orange instead of green, since green is reserved */
+.status-pill--live {
+  background: rgba(249,115,22,0.12);
+  color: var(--orange-400);
+  border-color: rgba(249,115,22,0.3);
+}
+.status-pill--live .ping {
+  background: var(--orange-400);
+  box-shadow: 0 0 0 3px rgba(249,115,22,0.22);
+}
+
+/* keep status-pill--ok (success) in green — that's the "where it needs to be" green */
+.status-pill--ok {
+  background: rgba(74,222,128,0.10);
+  color: var(--green-400);
+  border-color: rgba(74,222,128,0.28);
+}
+
+/* dot colors */
+.dot--green  { background: var(--green-400); box-shadow: 0 0 8px rgba(74,222,128,0.6); }
+.dot--violet { background: var(--orange-400); box-shadow: 0 0 8px rgba(251,146,60,0.6); }
+.dot--cyan   { background: var(--amber-400); box-shadow: 0 0 8px rgba(251,191,36,0.6); }
+.dot--pulse  { background: var(--orange-400); box-shadow: 0 0 0 3px rgba(249,115,22,0.22); animation: pulse-dot 2s ease-in-out infinite; }
+
+/* badge dot */
+.badge__dot {
+  background: var(--amber-400);
+  box-shadow: 0 0 0 4px rgba(251,191,36,0.18);
+}
+@keyframes pulse-dot {
+  0%, 100% { box-shadow: 0 0 0 4px rgba(251,191,36,0.18); }
+  50% { box-shadow: 0 0 0 8px rgba(251,191,36,0.05); }
+}
+
+/* selection */
+::selection { background: rgba(249,115,22,0.35); color: white; }
+
+/* eyebrow — warm */
+.eyebrow { color: var(--orange-400); }
+
+/* footer link h's → orange */
+.footer__h { color: var(--orange-400); }
+
+/* tag colors in agentlog (warm versions) */
+.tag--violet { background: rgba(251,146,60,0.16); color: var(--orange-400); }
+.tag--blue   { background: rgba(239,68,68,0.16);  color: var(--red-400); }
+.tag--cyan   { background: rgba(251,191,36,0.16); color: var(--amber-400); }
+.tag--pink   { background: rgba(244,114,182,0.12); color: #F472B6; }
+.tag--green  { background: rgba(74,222,128,0.16); color: var(--green-400); }
+.tag--orange { background: rgba(251,146,60,0.16); color: var(--orange-400); }
+
+/* dotpulse → orange */
+.dotpulse { background: var(--orange-400); }
+
+/* agentlog__row--active → warm orange bg */
+.agentlog__row--active {
+  background: rgba(251,146,60,0.06);
+}
+
+/* sidebar nav active in dashboard → orange tint */
+.mock__nav a.active {
+  background: rgba(249,115,22,0.12);
+  box-shadow: inset 0 0 0 1px rgba(249,115,22,0.18);
+}
+
+/* enginepick win bar → warm grad */
+.enginepick__row--win .enginepick__bar span {
+  background: var(--grad-brand);
+  box-shadow: 0 0 12px rgba(251,146,60,0.4);
+}
+.enginepick__row--win .enginepick__score { color: var(--orange-400); }
+.enginepick__bar span {
+  background: linear-gradient(90deg, var(--orange-400), var(--amber-400));
+}
+
+/* wsbubble in sidebar */
+.mock__wsbubble { background: var(--grad-brand); }
+.mock__brand-mark { background: var(--grad-brand); }
+
+/* chip--primary → warm grad */
+.chip--primary { background: var(--grad-brand); color: white; }
+
+/* stat deltas */
+.delta--up   { color: var(--amber-400); }
+.delta--down { color: var(--orange-400); }
+
+/* install copy / install tabs — warm */
+.install-tab.active {
+  color: var(--orange-400);
+  border-bottom-color: var(--orange-400);
+  background: rgba(249,115,22,0.05);
+}
+.install-cmd::before {
+  background: var(--orange-400);
+  box-shadow: 0 0 6px rgba(249,115,22,0.6);
+}
+.install-copy.copied { color: var(--green-400); border-color: rgba(74,222,128,0.3); }
+
+/* hero terminal float--br metric color */
+.hero__terminal .float--br .float__metric span { color: var(--amber-400); }
+
+/* code blocks — warm keyword colors */
+.codeblock code .kw  { color: var(--orange-400); }
+.codeblock code .str { color: var(--green-400); }
+.codeblock code .num { color: var(--amber-400); }
+
+/* checkmarks in copylist */
+.check { background: rgba(74,222,128,0.15); color: var(--green-400); }
+
+/* terminal cards (.tcard) — warm accent line */
+.tcard:hover { border-color: rgba(251,146,60,0.3); }
+.tcheck { color: var(--green-400); }
+.tcard__statv { background: var(--grad-brand); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+/* ascii-perf chip "running" → orange */
+.ascii-perf__chip { background: rgba(249,115,22,0.12); color: var(--orange-400); border-color: rgba(249,115,22,0.25); }
+.ascii-perf__chip--ok { background: rgba(74,222,128,0.12); color: var(--green-400); border-color: rgba(74,222,128,0.3); }
+
+/* testterm: pill should be GREEN for passed (use green sparingly here as success indicator) */
+.testterm .tx-pill--ok { color: var(--green-400); border-color: rgba(74,222,128,0.35); background: rgba(74,222,128,0.08); }
+
+/* logobar label */
+.logobar__label { color: var(--fg-3); }
+
+/* pillar/axis tag pills (if visible) — warm */
+.ax-tag { color: var(--fg-2); }
+
 
 
