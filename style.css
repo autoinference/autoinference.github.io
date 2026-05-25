@@ -2696,12 +2696,51 @@ body {
   max-width: 640px;
   margin-bottom: 44px;
 }
+/* HIGHLIGHTER MARK — orange text + amber marker stroke + glow,
+   animates in left-to-right when the hero subhead enters view */
 .hero__sub em {
   font-style: normal;
-  color: var(--fg-0);
-  font-weight: 500;
-  background: none;
-  padding: 0;
+  color: var(--orange-400);
+  font-weight: 600;
+  /* the marker stroke: feathered amber gradient, bottom 72% of line height */
+  background-image: linear-gradient(
+    105deg,
+    rgba(251, 191, 36, 0.0)  0%,
+    rgba(251, 191, 36, 0.28) 8%,
+    rgba(251, 191, 36, 0.42) 50%,
+    rgba(251, 191, 36, 0.28) 92%,
+    rgba(251, 191, 36, 0.0)  100%
+  );
+  background-size: 0% 72%;
+  background-repeat: no-repeat;
+  background-position: 0 78%;
+  padding: 0 4px;
+  /* glow starts off; turns on after the stroke draws */
+  text-shadow: 0 0 0 transparent;
+  border-radius: 1px;
+  transition:
+    background-size 1.4s cubic-bezier(0.22, 1, 0.36, 1) 1.6s,
+    text-shadow     0.9s ease 2.5s,
+    color           0.6s ease 2.0s;
+  /* slight visual offset to feel hand-drawn */
+  letter-spacing: 0.005em;
+}
+.hero__sub.in em {
+  background-size: 100% 72%;
+  /* layered glow: tight + soft */
+  text-shadow:
+    0 0 12px rgba(217, 119, 6, 0.55),
+    0 0 28px rgba(217, 119, 6, 0.28),
+    0 0 1px  rgba(251, 191, 36, 0.4);
+}
+/* subtle imperfect-marker top edge — a slight clip skew */
+.hero__sub em::after {
+  content: '';
+  position: absolute;
+  pointer-events: none;
+}
+.hero__sub em {
+  position: relative;
 }
 
 /* badge — neutral chip, not orange */
