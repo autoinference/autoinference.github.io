@@ -2697,19 +2697,23 @@ body {
   margin-bottom: 44px;
 }
 /* HIGHLIGHTER MARK — animated marker stroke + glow.
-   Two flavors via class:
-     em.hl       → orange text + amber stroke + orange glow (normal emphasis)
-     em.hl-red   → red text + red stroke + red glow (high emphasis / important)
-   Animates in when the parent [data-reveal] gets .in class. */
-em.hl, em.hl-red {
+   Three flavors via class:
+     em.hl        → orange text + amber stroke + orange glow (normal emphasis)
+     em.hl-red    → red text + red stroke + red glow (high emphasis / important)
+     em.hl-white  → WHITE text + amber stroke + subtle amber halo
+                    (when you want the highlight to mark text without recoloring it)
+   Animates in when the parent [data-reveal] gets .in class.
+   Broader background (90% of line height) so the marker stroke reads as a
+   bold swipe rather than a thin underline. */
+em.hl, em.hl-red, em.hl-white {
   font-style: normal;
   font-weight: 600;
   position: relative;
-  padding: 0 4px;
-  border-radius: 1px;
-  background-size: 0% 72%;
+  padding: 0 5px;
+  border-radius: 2px;
+  background-size: 0% 90%;
   background-repeat: no-repeat;
-  background-position: 0 78%;
+  background-position: 0 60%;
   text-shadow: 0 0 0 transparent;
   letter-spacing: 0.005em;
   transition:
@@ -2724,14 +2728,14 @@ em.hl {
   background-image: linear-gradient(
     105deg,
     rgba(251, 191, 36, 0.0)  0%,
-    rgba(251, 191, 36, 0.28) 8%,
-    rgba(251, 191, 36, 0.42) 50%,
-    rgba(251, 191, 36, 0.28) 92%,
+    rgba(251, 191, 36, 0.30) 8%,
+    rgba(251, 191, 36, 0.46) 50%,
+    rgba(251, 191, 36, 0.30) 92%,
     rgba(251, 191, 36, 0.0)  100%
   );
 }
 [data-reveal].in em.hl {
-  background-size: 100% 72%;
+  background-size: 100% 90%;
   text-shadow:
     0 0 12px rgba(217, 119, 6, 0.55),
     0 0 28px rgba(217, 119, 6, 0.28),
@@ -2744,26 +2748,52 @@ em.hl-red {
   background-image: linear-gradient(
     105deg,
     rgba(239, 68, 68, 0.0)  0%,
-    rgba(239, 68, 68, 0.32) 8%,
-    rgba(239, 68, 68, 0.52) 50%,
-    rgba(239, 68, 68, 0.32) 92%,
+    rgba(239, 68, 68, 0.34) 8%,
+    rgba(239, 68, 68, 0.56) 50%,
+    rgba(239, 68, 68, 0.34) 92%,
     rgba(239, 68, 68, 0.0)  100%
   );
 }
 [data-reveal].in em.hl-red {
-  background-size: 100% 72%;
+  background-size: 100% 90%;
   text-shadow:
     0 0 14px rgba(239, 68, 68, 0.65),
     0 0 32px rgba(239, 68, 68, 0.32),
     0 0 1px  rgba(248, 113, 113, 0.5);
 }
 
+/* WHITE variant — text stays crisp white, only the highlighter draws in.
+   Used when you want to mark text as important without recoloring it. */
+em.hl-white {
+  color: var(--fg-0);
+  background-image: linear-gradient(
+    105deg,
+    rgba(251, 191, 36, 0.0)  0%,
+    rgba(251, 191, 36, 0.30) 8%,
+    rgba(251, 191, 36, 0.48) 50%,
+    rgba(251, 191, 36, 0.30) 92%,
+    rgba(251, 191, 36, 0.0)  100%
+  );
+}
+[data-reveal].in em.hl-white {
+  background-size: 100% 90%;
+  /* gentle amber halo — does NOT tint the white text */
+  text-shadow:
+    0 0 14px rgba(251, 191, 36, 0.30),
+    0 0 1px  rgba(255, 255, 255, 0.3);
+}
+
 /* When two highlighters share a paragraph, stagger the second so they
    read sequentially left-to-right rather than firing simultaneously. */
 [data-reveal] em.hl ~ em.hl,
 [data-reveal] em.hl ~ em.hl-red,
+[data-reveal] em.hl ~ em.hl-white,
 [data-reveal] em.hl-red ~ em.hl,
-[data-reveal] em.hl-red ~ em.hl-red {
+[data-reveal] em.hl-red ~ em.hl-red,
+[data-reveal] em.hl-red ~ em.hl-white,
+[data-reveal] em.hl-white ~ em.hl,
+[data-reveal] em.hl-white ~ em.hl-red,
+[data-reveal] em.hl-white ~ em.hl-white {
   transition-delay: 3.2s, 4.1s, 3.6s;
 }
 
