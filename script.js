@@ -299,17 +299,23 @@
     el.classList.add('rv-in');
 
     // Cursor: if this element is the LAST [data-scramble] in its title ancestor,
-    // append a blinking orange cursor at the end of the title and trigger it.
+    // inject a blinking orange cursor INSIDE the last .rv-w span so it
+    // stays together with the final word when the heading wraps.
     const titleEl = findTitleAncestor(el);
     if (titleEl) {
       const allInTitle = titleEl.querySelectorAll('[data-scramble]');
       const isLast = allInTitle[allInTitle.length - 1] === el;
-      if (isLast) {
-        let cursor = titleEl.querySelector(':scope > .line-cursor');
-        if (!cursor) {
-          cursor = document.createElement('span');
-          cursor.className = 'line-cursor';
-          cursor.setAttribute('aria-hidden', 'true');
+      if (isLast && !titleEl.querySelector('.line-cursor')) {
+        const cursor = document.createElement('span');
+        cursor.className = 'line-cursor';
+        cursor.setAttribute('aria-hidden', 'true');
+        const rvWords = el.querySelectorAll('.rv-w');
+        const lastWord = rvWords[rvWords.length - 1];
+        if (lastWord) {
+          // wrap last word + cursor together so they never break across lines
+          lastWord.style.whiteSpace = 'nowrap';
+          lastWord.appendChild(cursor);
+        } else {
           titleEl.appendChild(cursor);
         }
         const total = seqDelay + revealDurationFor(el);
