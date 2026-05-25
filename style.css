@@ -2,6 +2,15 @@
    autoinference — landing page styles
    ========================================================================= */
 
+/* ----- Self-hosted brand font (ari-w9500-display) -------------------- */
+@font-face {
+  font-family: 'AriW9500';
+  src: url('fonts/ari-w9500-display.ttf') format('truetype');
+  font-weight: 400 900;       /* the file is a single weight but accept any request */
+  font-style: normal;
+  font-display: swap;          /* show Silkscreen / fallback until the .ttf is decoded */
+}
+
 /* ----- Tokens -------------------------------------------------------- */
 :root {
   /* surfaces — warm dark, refined neutral foundation */
@@ -2676,7 +2685,7 @@ body {
   /* Pixel display font — matches the ari-w9500-display.ttf aesthetic.
      Silkscreen is the closest free Google Font; if the actual ari-w9500
      .ttf is added to /fonts later, swap the @font-face source. */
-  font-family: 'Silkscreen', 'Inter', monospace;
+  font-family: 'AriW9500', 'Silkscreen', 'Inter', monospace;
   font-weight: 700;
   font-size: 14px;
   letter-spacing: -0.01em;
@@ -2686,7 +2695,7 @@ body {
   top: 1px;
 }
 .footer__name {
-  font-family: 'Silkscreen', 'Inter', monospace;
+  font-family: 'AriW9500', 'Silkscreen', 'Inter', monospace;
   font-weight: 700;
   font-size: 13px;
   letter-spacing: 0;
@@ -3718,7 +3727,7 @@ body.preloading { overflow: hidden; }
 
 /* 8-bit pixel logo, blinking with orange glow */
 .preloader__logo {
-  font-family: 'Silkscreen', 'JetBrains Mono', monospace;
+  font-family: 'AriW9500', 'Silkscreen', 'JetBrains Mono', monospace;
   font-size: clamp(40px, 6vw, 68px);
   font-weight: 700;
   color: var(--orange-400);
