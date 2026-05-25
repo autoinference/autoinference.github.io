@@ -3859,68 +3859,36 @@ body.preloading { overflow: hidden; }
   font-family: var(--font-mono);
   line-height: 1.5;
 }
+/* Primary command display per tile — clickable to copy */
 .mcp-tile__cmd {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  color: var(--fg-2);
-  background: rgba(0, 0, 0, 0.35);
-  padding: 8px 10px;
-  border-radius: 7px;
-  border: 1px solid rgba(255, 230, 210, 0.04);
-  white-space: pre-wrap;
-  word-break: break-word;
   margin-top: auto;
-  line-height: 1.5;
+  padding: 12px 14px;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 230, 210, 0.06);
+  border-radius: 8px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  color: var(--fg-1);
+  line-height: 1.4;
+  white-space: nowrap;
+  overflow-x: auto;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+.mcp-tile__cmd:hover {
+  border-color: rgba(217, 119, 6, 0.40);
+  background: rgba(0, 0, 0, 0.6);
+  color: var(--fg-0);
+}
+.mcp-tile__cmd.copied {
+  border-color: rgba(0, 194, 68, 0.55);
+  background: rgba(0, 194, 68, 0.08);
+  color: var(--fg-0);
 }
 .mcp-tile__prompt {
   color: var(--orange-400);
   font-weight: 700;
-  margin-right: 6px;
-}
-
-/* Primary install button — the one-click action on each tile */
-.mcp-tile__btn {
-  display: inline-flex; align-items: center; justify-content: center;
-  gap: 6px;
-  margin-top: auto;
-  padding: 11px 16px;
-  background: rgba(217, 119, 6, 0.10);
-  border: 1px solid rgba(217, 119, 6, 0.40);
-  border-radius: 8px;
-  color: var(--orange-400);
-  font-family: var(--font-mono);
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  text-decoration: none;
-  cursor: pointer;
-  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.1s ease;
-}
-.mcp-tile__btn:hover {
-  background: rgba(217, 119, 6, 0.18);
-  border-color: rgba(217, 119, 6, 0.65);
-  color: #FBBF24;
-}
-.mcp-tile__btn:active { transform: translateY(1px); }
-.mcp-tile__btn.copied {
-  background: rgba(0, 194, 68, 0.12);
-  border-color: rgba(0, 194, 68, 0.50);
-  color: #00E054;
-}
-.mcp-tile__btnIcon {
-  font-weight: 700;
-  font-size: 14px;
-  line-height: 1;
-}
-.mcp-tile__hint {
-  display: block;
-  margin-top: 8px;
-  font-family: var(--font-mono);
-  font-size: 10.5px;
-  color: var(--fg-4);
-  line-height: 1.4;
-  text-align: center;
-  word-break: break-word;
+  margin-right: 8px;
 }
 
 /* terminal-style MCP demo widget */

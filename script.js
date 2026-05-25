@@ -678,15 +678,16 @@
         await navigator.clipboard.writeText(text);
         const origHTML = btn.innerHTML;
         btn.classList.add('copied');
-        if (btn.classList.contains('mcp-tile__btn')) {
-          btn.innerHTML = '<span class="mcp-tile__btnIcon">✓</span> Copied';
-        } else {
+        if (btn.classList.contains('mcp-npx__copy')) {
           btn.textContent = '✓ copied';
+          setTimeout(() => {
+            btn.classList.remove('copied');
+            btn.innerHTML = origHTML;
+          }, 1800);
+        } else {
+          // Tile cmd (and any future copy targets): CSS-only flash, preserve content
+          setTimeout(() => btn.classList.remove('copied'), 1200);
         }
-        setTimeout(() => {
-          btn.classList.remove('copied');
-          btn.innerHTML = origHTML;
-        }, 1800);
       } catch (e) {
         console.warn('Copy failed', e);
       }
