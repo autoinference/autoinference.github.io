@@ -2102,7 +2102,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .ascii-perf::before { display: none; }
 .ascii-perf__chrome {
   display: flex; align-items: center; gap: 8px;
-  padding: 11px 16px;
+  padding: 11px 28px;
   background: rgba(255, 230, 210, 0.02);
   border-bottom: 1px solid rgba(255, 230, 210, 0.05);
 }
@@ -3071,13 +3071,7 @@ em.hl-keepwhite .rv-w {
 /* .codeblock final IDE-themed aesthetic lives in the base ruleset above */
 
 /* ASCII performance — neutral, single subtle warm accent */
-.ascii-perf {
-  background: transparent;
-  border: 1px solid rgba(255, 230, 210, 0.06);
-  border-radius: 4px;
-  box-shadow: none;
-}
-.ascii-perf::before { display: none; }
+/* .ascii-perf terminal-window aesthetic baked into the base ruleset above */
 .ascii-perf__title { color: var(--fg-0); font-weight: 500; }
 .ascii-perf__sub { color: var(--fg-3); }
 .ascii-perf__chip {
