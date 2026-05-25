@@ -3371,20 +3371,30 @@ em.hl-white {
   .bg-rain__col--l { font-size: 10px; opacity: 0.16; left: 12px; }
 }
 
-/* INSTALL GRID FIX — stack icon/label on top, code on full width below.
-   No horizontal overflow / scroll. */
+/* INSTALL GRID — wider container + 3-up grid + full command visibility.
+   Per user feedback: code text was truncating; widen container so every
+   command fits in one line without ellipsis. */
+.section--install .container { max-width: 1440px; }
+
 .installgrid {
-  margin-top: 30px;
+  margin: 30px auto 0;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 10px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  align-items: stretch;
+}
+@media (max-width: 1000px) {
+  .installgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 640px) {
+  .installgrid { grid-template-columns: minmax(0, 1fr); }
 }
 .installcard {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 10px;
-  padding: 14px 18px;
+  padding: 16px 18px;
   background: transparent;
   border: 1px solid rgba(255, 230, 210, 0.06);
   border-radius: 4px;
@@ -3405,7 +3415,7 @@ em.hl-white {
   font-family: var(--font-mono);
 }
 .installcard code {
-  flex-basis: 100%;   /* breaks to its own row, full width */
+  flex-basis: 100%;      /* breaks to its own row, full width */
   display: block;
   font-family: var(--font-mono);
   font-size: 12.5px;
@@ -3414,9 +3424,11 @@ em.hl-white {
   padding: 8px 12px;
   border-radius: 3px;
   border: 1px solid rgba(255, 230, 210, 0.04);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  /* allow long commands to wrap onto a second line instead of truncating */
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  overflow: visible;
 }
 .installcard code::-webkit-scrollbar { display: none; }
 .installcard code::before {
