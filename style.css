@@ -3756,9 +3756,9 @@ body.preloading { overflow: hidden; }
 /* terminal-green loading bar — plain, solid, no stripes, no glow */
 .preloader__bar {
   width: clamp(280px, 36vw, 440px);
-  height: 3px;
+  height: 14px;
   background: rgba(255, 255, 255, 0.06);
-  border-radius: 2px;
+  border-radius: 1px;
   /* no overflow:hidden — lets the glow bleed onto the screen */
   margin: 0 auto;
   position: relative;
@@ -3766,15 +3766,15 @@ body.preloading { overflow: hidden; }
 .preloader__bar-fill {
   height: 100%;
   width: 0%;
-  border-radius: 2px;
-  background: #00A836;            /* deep terminal green — phosphor dark */
+  border-radius: 1px;
+  background: #008A2E;            /* deep terminal green — phosphor dark */
   /* layered glow: tight core → medium halo → wide screen bleed */
   box-shadow:
-    0 0 4px  rgba(0, 168, 54, 1),
-    0 0 12px rgba(0, 168, 54, 0.85),
-    0 0 32px rgba(0, 168, 54, 0.55),
-    0 0 70px rgba(0, 168, 54, 0.30),
-    0 0 130px rgba(0, 168, 54, 0.14);
+    0 0 6px  rgba(0, 138, 46, 1),
+    0 0 18px rgba(0, 138, 46, 0.85),
+    0 0 40px rgba(0, 138, 46, 0.55),
+    0 0 80px rgba(0, 138, 46, 0.32),
+    0 0 140px rgba(0, 138, 46, 0.16);
   animation: preLoadFill 2.4s cubic-bezier(0.42, 0, 0.4, 1) forwards;
 }
 @keyframes preLoadFill {
