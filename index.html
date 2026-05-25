@@ -751,47 +751,81 @@ deploy = Deployment(
         models on your infrastructure &mdash; without you ever opening a terminal.
       </p>
 
-      <!-- 4-tile grid of supported MCP clients -->
+      <!-- Universal npx install: one line, every editor -->
+      <div class="mcp-npx" data-reveal>
+        <div class="mcp-npx__head">
+          <span class="mcp-npx__tag">// one command · every editor</span>
+          <span class="mcp-npx__pkg">@autoinference/mcp</span>
+        </div>
+        <div class="mcp-npx__row">
+          <pre class="mcp-npx__cmd"><span class="mcp-npx__prompt">$</span> npx -y @autoinference/mcp</pre>
+          <button class="mcp-npx__copy" type="button" aria-label="Copy install command">⎘ copy</button>
+        </div>
+        <div class="mcp-npx__foot">
+          Spawns a local MCP server that exposes <code>autoinference.deploy</code>,
+          <code>autoinference.benchmark</code>, and <code>autoinference.summary_url</code> to any MCP-aware client.
+        </div>
+      </div>
+
+      <!-- 4-tile grid of supported MCP clients, each with its editor-native add command -->
       <div class="mcp-grid" data-reveal>
         <div class="mcp-tile">
           <div class="mcp-tile__head">
             <div class="mcp-tile__logo mcp-tile__logo--cc">
-              <img src="https://cdn.simpleicons.org/anthropic/D97706" width="20" height="20" alt="" />
+              <img src="https://cdn.simpleicons.org/claude/D97706" width="22" height="22" alt="Claude" />
             </div>
-            <div class="mcp-tile__name">Claude Code</div>
+            <div>
+              <div class="mcp-tile__name">Claude Code</div>
+              <div class="mcp-tile__desc">Anthropic's coding agent</div>
+            </div>
           </div>
-          <div class="mcp-tile__desc">Anthropic's coding agent</div>
-          <div class="mcp-tile__cmd"><span class="mcp-tile__prompt">$</span> claude mcp add autoinference</div>
+          <div class="mcp-tile__cmd"><span class="mcp-tile__prompt">$</span> claude mcp add autoinference \<br />&nbsp;&nbsp;&nbsp;&nbsp;-- npx -y @autoinference/mcp</div>
         </div>
         <div class="mcp-tile">
           <div class="mcp-tile__head">
             <div class="mcp-tile__logo mcp-tile__logo--cx">
-              <img src="https://cdn.simpleicons.org/openai/FAFAFA" width="20" height="20" alt="" />
+              <img src="https://cdn.simpleicons.org/openai/FAFAFA" width="22" height="22" alt="OpenAI" />
             </div>
-            <div class="mcp-tile__name">Codex</div>
+            <div>
+              <div class="mcp-tile__name">Codex</div>
+              <div class="mcp-tile__desc">OpenAI's coding CLI</div>
+            </div>
           </div>
-          <div class="mcp-tile__desc">OpenAI's coding CLI</div>
-          <div class="mcp-tile__cmd"><span class="mcp-tile__prompt">$</span> codex mcp add autoinference</div>
+          <div class="mcp-tile__cmd"><span class="mcp-tile__prompt">$</span> codex mcp add autoinference \<br />&nbsp;&nbsp;&nbsp;&nbsp;-- npx -y @autoinference/mcp</div>
         </div>
         <div class="mcp-tile">
           <div class="mcp-tile__head">
             <div class="mcp-tile__logo mcp-tile__logo--cr">
-              <span class="mcp-tile__glyph">▸_</span>
+              <img src="https://cdn.simpleicons.org/cursor/FAFAFA" width="22" height="22" alt="Cursor" />
             </div>
-            <div class="mcp-tile__name">Cursor</div>
+            <div>
+              <div class="mcp-tile__name">Cursor</div>
+              <div class="mcp-tile__desc">AI-native code editor</div>
+            </div>
           </div>
-          <div class="mcp-tile__desc">AI-native code editor</div>
-          <div class="mcp-tile__cmd"><span class="mcp-tile__prompt">$</span> cursor mcp add autoinference</div>
+          <div class="mcp-tile__cmd"><span class="mcp-tile__prompt">~/.cursor/mcp.json</span><br />"autoinference": <span class="mcp-tile__brc">{</span> "command": "npx",<br />&nbsp;&nbsp;"args": ["-y", "@autoinference/mcp"] <span class="mcp-tile__brc">}</span></div>
         </div>
         <div class="mcp-tile">
           <div class="mcp-tile__head">
             <div class="mcp-tile__logo mcp-tile__logo--ag">
-              <span class="mcp-tile__glyph">△</span>
+              <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+                <defs>
+                  <linearGradient id="agG" x1="0" y1="1" x2="1" y2="0">
+                    <stop offset="0" stop-color="#4285F4"/>
+                    <stop offset="0.5" stop-color="#EA4335"/>
+                    <stop offset="1" stop-color="#FBBC04"/>
+                  </linearGradient>
+                </defs>
+                <path d="M12 2 L22 20 L2 20 Z" fill="none" stroke="url(#agG)" stroke-width="2.2" stroke-linejoin="round"/>
+                <path d="M12 9 L12 16 M9 13 L15 13" stroke="url(#agG)" stroke-width="2" stroke-linecap="round"/>
+              </svg>
             </div>
-            <div class="mcp-tile__name">Antigravity</div>
+            <div>
+              <div class="mcp-tile__name">Antigravity</div>
+              <div class="mcp-tile__desc">Google's agentic IDE</div>
+            </div>
           </div>
-          <div class="mcp-tile__desc">Google's agentic IDE</div>
-          <div class="mcp-tile__cmd"><span class="mcp-tile__prompt">$</span> antigravity mcp install autoinference</div>
+          <div class="mcp-tile__cmd"><span class="mcp-tile__prompt">$</span> antigravity mcp install \<br />&nbsp;&nbsp;&nbsp;&nbsp;@autoinference/mcp</div>
         </div>
       </div>
 

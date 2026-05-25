@@ -666,4 +666,23 @@
     });
   }
 
+  /* ---------------------------------------------------------------------
+     MCP npx-install copy button
+     --------------------------------------------------------------------- */
+  document.querySelectorAll('.mcp-npx__copy').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const cmd = btn.closest('.mcp-npx').querySelector('.mcp-npx__cmd');
+      if (!cmd) return;
+      const text = cmd.textContent.replace(/^\$\s*/, '').trim();
+      try {
+        await navigator.clipboard.writeText(text);
+        const orig = btn.textContent;
+        btn.textContent = '✓ copied';
+        setTimeout(() => { btn.textContent = orig; }, 1800);
+      } catch (e) {
+        console.warn('Copy failed', e);
+      }
+    });
+  });
+
 })();
