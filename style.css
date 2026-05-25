@@ -948,34 +948,49 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .how__body p { margin: 0 0 14px; color: var(--fg-2); font-size: 15px; line-height: 1.6; }
 
 /* code block */
+/* code blocks — macOS terminal-window + IDE syntax theme */
 .codeblock {
-  background: linear-gradient(180deg, #0E0E18, #0A0A12);
-  border: 1px solid var(--border);
+  background: linear-gradient(180deg, #050505, #000000);
+  border: 1px solid rgba(255, 230, 210, 0.08);
   border-radius: 12px;
   overflow: hidden;
+  box-shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.85);
 }
 .codeblock__head {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 8px 14px;
-  background: rgba(255,255,255,0.02);
-  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 8px;
+  padding: 11px 16px;
+  background: rgba(255, 230, 210, 0.02);
+  border-bottom: 1px solid rgba(255, 230, 210, 0.05);
   font-family: var(--font-mono); font-size: 11px;
 }
-.codeblock__head .lang { color: var(--fg-3); text-transform: uppercase; letter-spacing: 0.08em; }
-.codeblock__head .copy { color: var(--fg-3); cursor: pointer; }
-.codeblock__head .copy:hover { color: var(--fg-1); }
+.codeblock__head .lang {
+  margin-left: 8px;
+  color: var(--fg-3);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+}
+.codeblock__head .copy {
+  margin-left: auto;
+  color: var(--fg-3);
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+.codeblock__head .copy:hover { color: var(--orange-400); }
+
 .codeblock pre {
-  margin: 0; padding: 16px 18px;
+  margin: 0; padding: 18px 20px;
   font-family: var(--font-mono);
-  font-size: 13px; line-height: 1.65;
-  color: var(--fg-1);
+  font-size: 13px; line-height: 1.7;
+  color: #E6EDF3;
   overflow-x: auto;
 }
-.codeblock code .kw  { color: var(--violet-400); font-weight: 500; }
-.codeblock code .str { color: var(--green-400); }
-.codeblock code .num { color: var(--cyan-400); }
-.codeblock code .cm  { color: var(--fg-3); font-style: italic; }
-.codeblock code .brc { color: var(--pink-400); }
+/* IDE-themed syntax palette — warm coral/amber on near-black */
+.codeblock code .kw  { color: #FF7B72; font-weight: 500; }   /* from, import, def, class    */
+.codeblock code .str { color: #FBBF24; }                     /* "string literals"           */
+.codeblock code .num { color: #79C0FF; }                     /* 200, 120                    */
+.codeblock code .cm  { color: #7C828A; font-style: italic; } /* # comments                  */
+.codeblock code .brc { color: #FFA657; }                     /* { } braces / dict delimiters */
 
 /* diagram */
 .how__diagram {
@@ -2289,12 +2304,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   letter-spacing: 0;
 }
 
-/* code blocks — terminal aesthetic */
-.codeblock {
-  border-radius: 10px;
-  background: linear-gradient(180deg, #0D0D17, #07070D);
-}
-.codeblock__head { background: rgba(255,255,255,0.025); }
+/* .codeblock terminal aesthetic baked into the base ruleset above */
 
 /* CTA card — slightly terminal */
 .cta__card {
@@ -2670,10 +2680,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 /* hero terminal float--br metric color */
 .hero__terminal .float--br .float__metric span { color: var(--amber-400); }
 
-/* code blocks — warm keyword colors */
-.codeblock code .kw  { color: var(--orange-400); }
-.codeblock code .str { color: var(--green-400); }
-.codeblock code .num { color: var(--amber-400); }
+/* .codeblock syntax palette baked into the base IDE theme above */
 
 /* checkmarks in copylist */
 .check { background: rgba(74,222,128,0.15); color: var(--green-400); }
@@ -3034,24 +3041,7 @@ em.hl-keepwhite .rv-w {
 .hstep__name { color: var(--orange-400); font-weight: 600; }  /* pick_a_model, state_your_hardware, hit_deploy — orange */
 .hstep__copy { color: var(--fg-2); }
 
-/* code blocks — refined */
-.codeblock {
-  background: #14100E;
-  border: 1px solid rgba(255, 230, 210, 0.06);
-  border-radius: 4px;
-}
-.codeblock__head {
-  background: rgba(0, 0, 0, 0.15);
-  border-bottom: 1px solid rgba(255, 230, 210, 0.05);
-}
-.codeblock__head .lang { color: var(--fg-3); }
-.codeblock__head .copy { color: var(--fg-3); }
-.codeblock pre { color: var(--fg-1); }
-.codeblock code .kw  { color: var(--orange-400); }
-.codeblock code .str { color: var(--fg-2); }
-.codeblock code .num { color: var(--fg-1); }
-.codeblock code .cm  { color: var(--fg-4); font-style: italic; }
-.codeblock code .brc { color: var(--fg-3); }
+/* .codeblock final IDE-themed aesthetic lives in the base ruleset above */
 
 /* ASCII performance — neutral, single subtle warm accent */
 .ascii-perf {
