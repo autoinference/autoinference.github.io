@@ -241,82 +241,43 @@
   }
 
   /* ---------------------------------------------------------------------
-     Scramble text animation — terminal-aesthetic cycle through random
-     glyphs then settle on the final character. Triggers on intersection
-     for [data-scramble] elements, and on hover for [data-scramble-hover].
+     Typewriter / text-completion animation — ChatGPT-style streaming
+     reveal. Triggers on first scroll into view for [data-scramble]
+     elements. No hover effect (let CSS color change handle hover).
      --------------------------------------------------------------------- */
-  const SCRAMBLE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  function scrambleEl(el, opts) {
+  function typeEl(el, opts) {
     opts = opts || {};
     if (!el.dataset.scrambleText) el.dataset.scrambleText = el.textContent;
     const finalText = el.dataset.scrambleText;
-    const chars     = opts.chars   || SCRAMBLE_CHARS;
-    const speed     = opts.speed   || 22;   // ms per frame (faster = subtler)
-    const stagger   = opts.stagger || 0.9;  // frames between char-starts (tighter sweep)
-    const lock      = opts.lock    || 5;    // frames a char scrambles before settling (shorter)
+    const speed = opts.speed || 24;   // ms per character
     const len = finalText.length;
-    const queue = new Array(len);
-    for (let i = 0; i < len; i++) {
-      queue[i] = {
-        ch:       finalText[i],
-        startAt:  Math.floor(i * stagger),
-        settleAt: Math.floor(i * stagger) + lock,
-      };
-    }
-    let frame = 0;
-    if (el._scrambleTimer) clearTimeout(el._scrambleTimer);
+    if (el._typeTimer) clearTimeout(el._typeTimer);
+    el.textContent = '';
+    let i = 0;
     function tick() {
-      let out = '';
-      let done = 0;
-      for (let i = 0; i < len; i++) {
-        const q = queue[i];
-        if (frame >= q.settleAt) {
-          out += q.ch;
-          done++;
-        } else if (frame >= q.startAt) {
-          if (q.ch === ' ' || q.ch === '\n') {
-            out += q.ch;
-          } else {
-            out += chars.charAt(Math.floor(Math.random() * chars.length));
-          }
-        } else {
-          out += ' ';
-        }
-      }
-      el.textContent = out;
-      if (done < len) {
-        frame++;
-        el._scrambleTimer = setTimeout(tick, speed);
-      } else {
-        el.textContent = finalText;
+      i++;
+      el.textContent = finalText.substring(0, i);
+      if (i < len) {
+        el._typeTimer = setTimeout(tick, speed);
       }
     }
     tick();
   }
 
-  // intersection-triggered scramble (on first scroll into view)
-  const scrTargets = document.querySelectorAll('[data-scramble]');
-  if (scrTargets.length && 'IntersectionObserver' in window) {
-    const ioScr = new IntersectionObserver((entries, obs) => {
+  // intersection-triggered typewriter (on first scroll into view)
+  const typeTargets = document.querySelectorAll('[data-scramble]');
+  if (typeTargets.length && 'IntersectionObserver' in window) {
+    const ioType = new IntersectionObserver((entries, obs) => {
       entries.forEach(e => {
         if (e.isIntersecting) {
-          scrambleEl(e.target);
+          typeEl(e.target);
           obs.unobserve(e.target);
         }
       });
     }, { threshold: 0.35 });
-    scrTargets.forEach(t => ioScr.observe(t));
-  } else {
-    scrTargets.forEach(t => { /* IO unavailable — leave text as-is */ });
+    typeTargets.forEach(t => ioType.observe(t));
   }
-
-  // hover-triggered scramble (nav links + ghost links, quick + tight)
-  const hoverScr = document.querySelectorAll('[data-scramble-hover]');
-  hoverScr.forEach(el => {
-    el.addEventListener('mouseenter', () => {
-      scrambleEl(el, { speed: 18, stagger: 0.4, lock: 2 });
-    });
-  });
+  // hover-scramble attribute is now a no-op (kept in HTML for backwards-compat)
 
   /* ---------------------------------------------------------------------
      Background ASCII rain — generates two columns of procedural
