@@ -3159,6 +3159,38 @@ body {
 }
 
 /* =========================================================================
+   PREMIUM WORD REVEAL — each word fades + lifts + unblurs, staggered.
+   The 1.2s per-word transition with 100ms stagger means multiple words
+   are mid-fade at once, producing a smooth wash rather than a typewriter.
+   ========================================================================= */
+.rv-w {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(12px);
+  filter: blur(8px);
+  will-change: opacity, transform, filter;
+  transition:
+    opacity   1.2s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 1.2s cubic-bezier(0.22, 1, 0.36, 1),
+    filter    1.2s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: calc(var(--wi, 0) * 110ms + 150ms);
+}
+.rv-in .rv-w {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+/* let the parent's gradient flow into per-word spans */
+.grad-text .rv-w {
+  background: inherit;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+/* prevent layout shifts: reserve space even when blurred */
+[data-scramble] { display: inline-block; }
+
+/* =========================================================================
    v2.0 — ASCII rain background + install grid fix + more floats
    ========================================================================= */
 

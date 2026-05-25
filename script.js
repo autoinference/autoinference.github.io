@@ -241,51 +241,40 @@
   }
 
   /* ---------------------------------------------------------------------
-     Typewriter / text-completion animation — ChatGPT-style streaming
-     reveal. Triggers on first scroll into view for [data-scramble]
-     elements. No hover effect (let CSS color change handle hover).
+     Premium word-by-word reveal — blur → clear, lift → settle, fade in.
+     Each word transitions for ~1s with a 100ms stagger, so multiple words
+     are mid-fade at once, producing a smooth left-to-right wash rather
+     than a mechanical typewriter. Linear / Vercel / Stripe pattern.
      --------------------------------------------------------------------- */
-  function typeEl(el, opts) {
-    opts = opts || {};
+  function revealEl(el) {
+    if (el.dataset.revealed === '1') return;
     if (!el.dataset.scrambleText) el.dataset.scrambleText = el.textContent;
-    const finalText = el.dataset.scrambleText;
-    const speed     = opts.speed     || 55;   // ms per character — deliberate, premium pace
-    const startWait = opts.startWait || 200;  // ms before typing begins (lets fade-in settle)
-    const easeTail  = opts.easeTail  != null ? opts.easeTail : 0.35;  // last 35% of chars slow down
-    const easeMax   = opts.easeMax   || 1.7;  // up to 1.7× base speed by the final char
-    const len = finalText.length;
-    if (el._typeTimer) clearTimeout(el._typeTimer);
-    el.textContent = '';
-
-    let i = 0;
-    function tick() {
-      i++;
-      el.textContent = finalText.substring(0, i);
-      if (i < len) {
-        const remaining = len - i;
-        const easeWindow = Math.max(1, len * easeTail);
-        const slowFactor = remaining < easeWindow
-          ? 1 + (1 - remaining / easeWindow) * (easeMax - 1)
-          : 1;
-        el._typeTimer = setTimeout(tick, speed * slowFactor);
-      }
-    }
-    // small initial delay so the parent's fade-in completes first — premium feel
-    el._typeTimer = setTimeout(tick, startWait);
+    const text = el.dataset.scrambleText;
+    const words = text.split(' ');
+    // wrap each word in a span with --wi index for staggered CSS transitions
+    el.innerHTML = words.map((w, i) => {
+      // escape HTML to be safe
+      const safe = w.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+      return '<span class="rv-w" style="--wi:' + i + '">' + safe + '</span>';
+    }).join(' ');
+    el.dataset.revealed = '1';
+    // force a reflow then add the .rv-in class so transitions fire
+    void el.offsetWidth;
+    el.classList.add('rv-in');
   }
 
-  // intersection-triggered typewriter (on first scroll into view)
-  const typeTargets = document.querySelectorAll('[data-scramble]');
-  if (typeTargets.length && 'IntersectionObserver' in window) {
-    const ioType = new IntersectionObserver((entries, obs) => {
+  // intersection-triggered reveal (one-time per element)
+  const rvTargets = document.querySelectorAll('[data-scramble]');
+  if (rvTargets.length && 'IntersectionObserver' in window) {
+    const ioRv = new IntersectionObserver((entries, obs) => {
       entries.forEach(e => {
         if (e.isIntersecting) {
-          typeEl(e.target);
+          revealEl(e.target);
           obs.unobserve(e.target);
         }
       });
-    }, { threshold: 0.35 });
-    typeTargets.forEach(t => ioType.observe(t));
+    }, { threshold: 0.3 });
+    rvTargets.forEach(t => ioRv.observe(t));
   }
   // hover-scramble attribute is now a no-op (kept in HTML for backwards-compat)
 
