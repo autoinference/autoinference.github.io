@@ -2254,13 +2254,13 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   border-bottom: 1px solid var(--border);
 }
 .testterm__body {
-  padding: 22px 26px;
+  padding: 22px 32px;
   font-size: 13px;
   line-height: 1.7;
   min-height: 360px;
 }
 @media (max-width: 700px) {
-  .testterm__body { font-size: 11px; padding: 16px 14px; }
+  .testterm__body { font-size: 11px; padding: 16px 18px; }
 }
 
 .testrowx {
