@@ -3198,14 +3198,14 @@ body {
    Sized in em so it scales naturally with the heading's font-size. */
 .line-cursor {
   display: inline-block;
-  width: 0.5em;
+  width: 0.32em;
   height: 0.85em;
   background: var(--orange-400);
-  margin-left: 0.16em;
+  margin-left: 0.14em;
   vertical-align: -0.06em;
   opacity: 0;
   border-radius: 1px;
-  box-shadow: 0 0 12px rgba(217, 119, 6, 0.45);
+  box-shadow: 0 0 10px rgba(217, 119, 6, 0.4);
   transition: opacity 0.6s ease;
 }
 .line-cursor.in {
