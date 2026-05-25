@@ -3657,5 +3657,120 @@ em.hl-keepwhite .rv-w {
 /* bullet: tiny, refined */
 .agentw__bullet { font-size: 9px; line-height: 1.5; }
 
+/* =========================================================================
+   PRELOADER — full-screen boot sequence
+   Multiple ASCII rain columns (faster than the home-page rain) +
+   blinking 8-bit pixel logo + terminal-green loading bar.
+   ========================================================================= */
+body.preloading { overflow: hidden; }
+
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #06060B;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: opacity 0.8s ease, visibility 0s ease 0.8s;
+}
+.preloader.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* rain — many columns, slightly faster than the home-page rain (~28-58s vs 95-130s) */
+.preloader__rain {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.preloader__col {
+  position: absolute;
+  top: 0;
+  margin: 0;
+  padding: 0;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 11px;
+  line-height: 1.7;
+  color: var(--orange-400);
+  opacity: 0.22;
+  text-shadow: 0 0 6px rgba(249, 115, 22, 0.4);
+  white-space: pre;
+  user-select: none;
+  will-change: transform;
+}
+@keyframes preRainScroll {
+  0%   { transform: translateY(0); }
+  100% { transform: translateY(-50%); }
+}
+
+/* center — logo + bar + status */
+.preloader__center {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 24px;
+}
+
+/* 8-bit pixel logo, blinking with orange glow */
+.preloader__logo {
+  font-family: 'Silkscreen', 'JetBrains Mono', monospace;
+  font-size: clamp(40px, 6vw, 68px);
+  font-weight: 700;
+  color: var(--orange-400);
+  text-shadow:
+    0 0 14px rgba(249, 115, 22, 0.6),
+    0 0 32px rgba(249, 115, 22, 0.32),
+    0 0 1px  rgba(251, 191, 36, 0.5);
+  letter-spacing: -0.01em;
+  text-transform: lowercase;
+  margin-bottom: 36px;
+  animation: preLogoBlink 1.2s steps(1, end) infinite;
+}
+@keyframes preLogoBlink {
+  0%, 72%      { opacity: 1; }
+  72.01%, 100% { opacity: 0.28; }
+}
+
+/* terminal green loading bar */
+.preloader__bar {
+  width: clamp(240px, 30vw, 360px);
+  height: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(74, 222, 128, 0.35);
+  border-radius: 2px;
+  overflow: hidden;
+  margin: 0 auto;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.3) inset;
+}
+.preloader__bar-fill {
+  height: 100%;
+  width: 0%;
+  background-image: repeating-linear-gradient(90deg,
+    var(--green-400) 0 6px,
+    transparent 6px 8px);
+  box-shadow: 0 0 10px rgba(74, 222, 128, 0.45);
+  animation: preLoadFill 2.4s cubic-bezier(0.42, 0, 0.4, 1) forwards;
+}
+@keyframes preLoadFill {
+  0%   { width: 0%; }
+  60%  { width: 78%; }   /* deliberate slow-down near the end */
+  100% { width: 100%; }
+}
+
+.preloader__status {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 11px;
+  color: var(--fg-3);
+  margin-top: 16px;
+  letter-spacing: 0.05em;
+  text-transform: lowercase;
+  min-height: 1.3em;
+}
+
 
 

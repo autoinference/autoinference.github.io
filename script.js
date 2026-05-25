@@ -2,6 +2,115 @@
    autoinference — landing page interactions + animations
    ========================================================================= */
 
+/* ---------------------------------------------------------------------
+   PRELOADER — runs immediately on script load.
+   Builds many rain columns + manages the hide timing.
+   --------------------------------------------------------------------- */
+(function preloader() {
+  const rainEl = document.getElementById('preRain');
+  const preEl  = document.getElementById('preloader');
+  const statusEl = document.getElementById('preStatus');
+  if (!preEl) return;
+
+  // build N columns of ASCII rain across the screen width
+  if (rainEl) {
+    const VERBS = ['scan','probe','tune','verify','compile','profile','ramp','cache','rank','fuse','check','warm','sweep','load','init'];
+    const NOUNS = ['workload','kernel','config','topology','engine','manifest','bench','graph','pipeline','batch','runtime','manifest'];
+    const BLOCKS = ['▒','░','▓','█'];
+    const BRAILLE = ['⠋','⠙','⠹','⠸','⠼','⠴','⠦','⠧','⠇','⠏'];
+
+    function mkRng(seed) {
+      let s = seed >>> 0;
+      return function () { s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296; };
+    }
+
+    function buildLines(seed, lineCount) {
+      const rand = mkRng(seed);
+      const pick = arr => arr[Math.floor(rand() * arr.length)];
+      const lines = [];
+      for (let i = 0; i < lineCount; i++) {
+        const r = rand();
+        if (r < 0.32) { lines.push(''); }
+        else if (r < 0.42) {
+          const hh = String(Math.floor(rand() * 24)).padStart(2, '0');
+          const mm = String(Math.floor(rand() * 60)).padStart(2, '0');
+          const ss = String(Math.floor(rand() * 60)).padStart(2, '0');
+          lines.push('[' + hh + ':' + mm + ':' + ss + ']');
+        }
+        else if (r < 0.52) { lines.push('─'.repeat(18 + Math.floor(rand() * 14))); }
+        else if (r < 0.62) {
+          const f = Math.floor(rand() * 18);
+          lines.push('▓'.repeat(f) + '░'.repeat(18 - f));
+        }
+        else if (r < 0.74) { lines.push('● ' + pick(VERBS) + ' ' + pick(NOUNS)); }
+        else if (r < 0.80) { lines.push('  ⎿ ok'); }
+        else if (r < 0.90) {
+          let out = '';
+          const n = 10 + Math.floor(rand() * 10);
+          for (let j = 0; j < n; j++) out += pick(BLOCKS);
+          lines.push(out);
+        }
+        else { lines.push(pick(BRAILLE) + ' ' + pick(VERBS) + '...'); }
+      }
+      const text = lines.join('\n');
+      return text + '\n' + text; // duplicate for seamless loop
+    }
+
+    // Compute column count based on viewport width (~140px per column)
+    const vw = window.innerWidth || 1200;
+    const numCols = Math.max(6, Math.min(14, Math.floor(vw / 140)));
+    const colWidth = 100 / numCols;
+
+    for (let i = 0; i < numCols; i++) {
+      const col = document.createElement('pre');
+      col.className = 'preloader__col';
+      col.style.left = (i * colWidth) + '%';
+      // 28-58 seconds per loop — slightly faster than home-page rain (95-130s)
+      const duration = 28 + (i * 4.5) % 28 + Math.random() * 10;
+      const delay = -Math.random() * 30;
+      col.style.animation = 'preRainScroll ' + duration.toFixed(1) + 's linear infinite';
+      col.style.animationDelay = delay.toFixed(1) + 's';
+      col.textContent = buildLines(13579 + i * 977, 70);
+      rainEl.appendChild(col);
+    }
+  }
+
+  // Cycle a few status messages while loading
+  const statuses = [
+    'initializing runtime...',
+    'profiling hardware...',
+    'loading recipes...',
+    'warming kernels...',
+    'ready.',
+  ];
+  let statusIdx = 0;
+  const statusTimer = setInterval(function () {
+    statusIdx++;
+    if (statusEl && statusIdx < statuses.length) {
+      statusEl.textContent = statuses[statusIdx];
+    }
+    if (statusIdx >= statuses.length - 1) clearInterval(statusTimer);
+  }, 520);
+
+  // Hide preloader: at least MIN_DISPLAY after page becomes interactive
+  const MIN_DISPLAY = 2400;
+  const start = performance.now();
+  function hidePreloader() {
+    const elapsed = performance.now() - start;
+    const wait = Math.max(0, MIN_DISPLAY - elapsed);
+    setTimeout(function () {
+      preEl.classList.add('hidden');
+      document.body.classList.remove('preloading');
+      // remove from DOM after fade transition completes
+      setTimeout(function () {
+        if (preEl.parentNode) preEl.parentNode.removeChild(preEl);
+      }, 900);
+    }, wait);
+  }
+  if (document.readyState === 'complete') hidePreloader();
+  else window.addEventListener('load', hidePreloader);
+})();
+
 (function () {
   'use strict';
 

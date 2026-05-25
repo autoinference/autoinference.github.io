@@ -25,7 +25,21 @@
 
   <link rel="stylesheet" href="style.css" />
 </head>
-<body>
+<body class="preloading">
+
+  <!-- ===========================================================
+       PRELOADER — full-screen boot sequence
+       =========================================================== -->
+  <div class="preloader" id="preloader" aria-hidden="true">
+    <div class="preloader__rain" id="preRain"></div>
+    <div class="preloader__center">
+      <div class="preloader__logo">autoinference</div>
+      <div class="preloader__bar">
+        <div class="preloader__bar-fill"></div>
+      </div>
+      <div class="preloader__status" id="preStatus">initializing runtime...</div>
+    </div>
+  </div>
 
   <!-- BACKGROUND LAYERS -->
   <div class="bg-grid" aria-hidden="true"></div>
