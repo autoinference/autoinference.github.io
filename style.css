@@ -2739,8 +2739,13 @@ body {
   position: absolute;
   pointer-events: none;
 }
-.hero__sub em {
-  position: relative;
+.hero__sub em { position: relative; }
+
+/* Stagger the SECOND em so highlights happen sequentially, not in parallel.
+   First em draws ~1.6s–3.0s, glow ignites 2.5s–3.4s.
+   Second em starts after first finishes its stroke. */
+.hero__sub em:nth-of-type(2) {
+  transition-delay: 3.2s, 4.1s, 3.6s;
 }
 
 /* badge — neutral chip, not orange */
