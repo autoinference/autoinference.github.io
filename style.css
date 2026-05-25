@@ -655,21 +655,32 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .float--wizard {
   top: -16px; right: -16px;
 }
-.float__icon {
-  width: 32px; height: 32px;
-  background: linear-gradient(135deg, var(--pink-400), var(--violet-400));
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(244,114,182,0.4);
-}
+/* Live indicator dot — small red glowing rhythmic blinker on floating widgets */
+.float__icon,
 .float__icon--ok {
-  background: linear-gradient(135deg, var(--green-400), var(--cyan-400));
-  box-shadow: 0 4px 12px rgba(52,211,153,0.4);
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: #FF3344;
+  box-shadow: 0 0 8px rgba(255, 51, 68, 0.85),
+              0 0 0 0 rgba(255, 51, 68, 0.55);
+  animation: liveBlink 1.4s ease-in-out infinite;
+  flex-shrink: 0;
   position: relative;
+  /* push down a touch so it sits aligned with the first text row */
+  margin-top: 5px;
 }
-.float__icon--ok::after {
-  content: '✓'; position: absolute; inset: 0;
-  display: flex; align-items: center; justify-content: center;
-  color: white; font-weight: 700; font-size: 16px;
+.float__icon--ok::after { content: none; }
+@keyframes liveBlink {
+  0%, 100% {
+    opacity: 1;
+    box-shadow: 0 0 8px  rgba(255, 51, 68, 0.85),
+                0 0 0 0  rgba(255, 51, 68, 0.55);
+  }
+  50% {
+    opacity: 0.55;
+    box-shadow: 0 0 12px rgba(255, 51, 68, 0.55),
+                0 0 0 7px rgba(255, 51, 68, 0.00);
+  }
 }
 .float__t { font-weight: 600; color: var(--fg-0); font-size: 13px; }
 .float__s { font-size: 11.5px; color: var(--fg-2); font-family: var(--font-mono); }
@@ -2530,7 +2541,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .agentw .cursor { background: var(--orange-400); }
 
 /* floats around the agent widget */
-.hero__terminal .float--tl .float__icon { background: linear-gradient(135deg, var(--amber-400), var(--orange-500)); }
+/* .hero__terminal .float--tl .float__icon now inherits the red live blinker */
 .hero__terminal .float--br .float__metric span { color: var(--amber-400); }
 
 /* =========================================================================
@@ -3216,8 +3227,7 @@ em.hl-keepwhite .rv-w {
   border: 1px solid rgba(255, 230, 210, 0.10);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
-.float__icon { background: var(--orange-500); box-shadow: none; }
-.float__icon--ok { background: var(--green-400); box-shadow: none; }
+/* .float__icon final aesthetic (red live blinker) lives in the base ruleset above */
 .float__t { color: var(--fg-0); font-weight: 500; }
 .float__s { color: var(--fg-3); }
 .float__metric { color: var(--fg-0); font-weight: 600; }
@@ -3527,7 +3537,7 @@ em.hl-keepwhite .rv-w {
   font-family: var(--font-mono);
   font-size: 11.5px;
 }
-.float--kernel .float__icon { background: var(--orange-500); }
+/* .float--kernel .float__icon now inherits the red live blinker */
 .float--kernel .float__t { color: var(--fg-0); font-weight: 500; font-size: 12px; }
 .float--kernel .float__s { color: var(--fg-3); font-size: 11px; }
 
