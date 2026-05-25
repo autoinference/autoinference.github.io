@@ -2668,7 +2668,31 @@ body {
 }
 .nav__links a { color: var(--fg-2); }
 .nav__links a:hover { color: var(--fg-0); }
-.brand-name { background: none; -webkit-background-clip: initial; background-clip: initial; color: var(--fg-0); }
+.brand-name {
+  background: none;
+  -webkit-background-clip: initial;
+  background-clip: initial;
+  color: var(--fg-0);
+  /* Pixel display font — matches the ari-w9500-display.ttf aesthetic.
+     Silkscreen is the closest free Google Font; if the actual ari-w9500
+     .ttf is added to /fonts later, swap the @font-face source. */
+  font-family: 'Silkscreen', 'Inter', monospace;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: -0.01em;
+  text-transform: lowercase;
+  /* nudge baseline so the chunky pixel font aligns with the mark */
+  position: relative;
+  top: 1px;
+}
+.footer__name {
+  font-family: 'Silkscreen', 'Inter', monospace;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0;
+  text-transform: lowercase;
+  color: var(--fg-0);
+}
 .brand-ver { color: var(--fg-3); background: rgba(255,230,210,0.04); border-color: rgba(255,230,210,0.06); }
 
 /* nav CTA: subtler — primary becomes warm cream button (not orange gradient) */
