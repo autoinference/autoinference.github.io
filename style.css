@@ -3176,21 +3176,22 @@ body {
   margin: 0;
   padding: 0;
   font-family: var(--font-mono);
-  font-size: 10.5px;
+  font-size: 11px;
   line-height: 1.65;
   color: var(--orange-400);
-  opacity: 0.06;
+  opacity: 0.22;
+  text-shadow: 0 0 6px rgba(249, 115, 22, 0.4);
   white-space: pre;
   user-select: none;
   will-change: transform;
 }
 .bg-rain__col--l {
-  left: 16px;
+  left: 24px;
   text-align: left;
   animation: rain-up 95s linear infinite;
 }
 .bg-rain__col--r {
-  right: 16px;
+  right: 24px;
   text-align: right;
   animation: rain-up 130s linear infinite;
   animation-delay: -30s;
@@ -3201,7 +3202,7 @@ body {
 }
 @media (max-width: 900px) {
   .bg-rain__col--r { display: none; }
-  .bg-rain__col--l { font-size: 9px; opacity: 0.04; }
+  .bg-rain__col--l { font-size: 10px; opacity: 0.16; left: 12px; }
 }
 
 /* INSTALL GRID FIX — stack icon/label on top, code on full width below.

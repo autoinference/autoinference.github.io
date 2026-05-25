@@ -241,6 +241,84 @@
   }
 
   /* ---------------------------------------------------------------------
+     Scramble text animation — terminal-aesthetic cycle through random
+     glyphs then settle on the final character. Triggers on intersection
+     for [data-scramble] elements, and on hover for [data-scramble-hover].
+     --------------------------------------------------------------------- */
+  const SCRAMBLE_CHARS = '01!<>-_/[]{}=+*^?#%&@$\\|~';
+  function scrambleEl(el, opts) {
+    opts = opts || {};
+    if (!el.dataset.scrambleText) el.dataset.scrambleText = el.textContent;
+    const finalText = el.dataset.scrambleText;
+    const chars     = opts.chars   || SCRAMBLE_CHARS;
+    const speed     = opts.speed   || 32;   // ms per frame
+    const stagger   = opts.stagger || 1.4;  // frames between char-starts
+    const lock      = opts.lock    || 10;   // frames a char scrambles before settling
+    const len = finalText.length;
+    const queue = new Array(len);
+    for (let i = 0; i < len; i++) {
+      queue[i] = {
+        ch:       finalText[i],
+        startAt:  Math.floor(i * stagger),
+        settleAt: Math.floor(i * stagger) + lock,
+      };
+    }
+    let frame = 0;
+    if (el._scrambleTimer) clearTimeout(el._scrambleTimer);
+    function tick() {
+      let out = '';
+      let done = 0;
+      for (let i = 0; i < len; i++) {
+        const q = queue[i];
+        if (frame >= q.settleAt) {
+          out += q.ch;
+          done++;
+        } else if (frame >= q.startAt) {
+          if (q.ch === ' ' || q.ch === '\n') {
+            out += q.ch;
+          } else {
+            out += chars.charAt(Math.floor(Math.random() * chars.length));
+          }
+        } else {
+          out += ' ';
+        }
+      }
+      el.textContent = out;
+      if (done < len) {
+        frame++;
+        el._scrambleTimer = setTimeout(tick, speed);
+      } else {
+        el.textContent = finalText;
+      }
+    }
+    tick();
+  }
+
+  // intersection-triggered scramble (on first scroll into view)
+  const scrTargets = document.querySelectorAll('[data-scramble]');
+  if (scrTargets.length && 'IntersectionObserver' in window) {
+    const ioScr = new IntersectionObserver((entries, obs) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          scrambleEl(e.target);
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.35 });
+    scrTargets.forEach(t => ioScr.observe(t));
+  } else {
+    scrTargets.forEach(t => { /* IO unavailable — leave text as-is */ });
+  }
+
+  // hover-triggered scramble (nav links + ghost links, quick + tight)
+  const hoverScr = document.querySelectorAll('[data-scramble-hover]');
+  hoverScr.forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      scrambleEl(el, { speed: 22, stagger: 0.6, lock: 4 });
+    });
+  });
+
+  /* ---------------------------------------------------------------------
      Background ASCII rain — generates two columns of procedural
      terminal-style activity that scrolls slowly in the background
      --------------------------------------------------------------------- */
