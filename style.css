@@ -1944,20 +1944,41 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 
 /* =========================================================================
    HOW IT WORKS — terminal-style steps
+   3-up grid that never overflows. Wider container for this section so
+   the three code-block widgets have breathing room.
    ========================================================================= */
-.hsteps {
-  margin-top: 30px;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
+.section--how .container {
+  max-width: 1440px;  /* wider than the default 1240 so code blocks aren't crammed */
 }
-@media (max-width: 1000px) { .hsteps { grid-template-columns: 1fr; } }
+.hsteps {
+  margin: 30px auto 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));  /* minmax(0,..) lets columns shrink below content size */
+  gap: 24px;
+  align-items: stretch;
+  justify-content: center;
+}
+@media (max-width: 1000px) {
+  .hsteps { grid-template-columns: minmax(0, 1fr); max-width: 640px; }
+}
 
 .hstep {
-  padding: 20px 22px;
+  padding: 24px 24px;
   background: rgba(10,10,18,0.5);
   border: 1px solid var(--border);
   border-radius: 10px;
+  min-width: 0;                /* critical: allow grid child to shrink below content */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;            /* belt-and-suspenders: nothing pokes out */
+}
+
+/* contain code blocks to their column — wrap long lines instead of overflowing */
+.hstep .codeblock { min-width: 0; max-width: 100%; overflow: hidden; }
+.hstep .codeblock pre {
+  white-space: pre-wrap;       /* wrap long lines like URLs */
+  word-break: break-word;      /* allow URLs to break at any character if needed */
+  overflow-x: hidden;
 }
 .hstep__head {
   display: flex; align-items: baseline; gap: 8px;
@@ -2678,9 +2699,10 @@ body {
 .hero__title {
   font-weight: 600;
   letter-spacing: -0.04em;
-  line-height: 1.02;
+  line-height: 1.1;        /* was 1.02 — give descenders (g, y, p) room */
   color: var(--fg-0);
-  margin-bottom: 28px;
+  margin-bottom: 44px;     /* was 28px — more breathing space before sub */
+  padding-bottom: 0.08em;  /* extra room for descenders on last line */
 }
 /* gradient text — used ONCE in hero only, much subtler */
 .grad-text {
@@ -2703,15 +2725,17 @@ body {
      em.hl-white  → WHITE text + amber stroke + subtle amber halo
                     (when you want the highlight to mark text without recoloring it)
    Animates in when the parent [data-reveal] gets .in class.
-   Broader background (90% of line height) so the marker stroke reads as a
-   bold swipe rather than a thin underline. */
+   SOLID color stroke (no edge fade) so the highlighter reads consistent
+   end-to-end. Generous padding (7px) so the stroke clearly covers the
+   first and last letters. */
 em.hl, em.hl-red, em.hl-white {
   font-style: normal;
   font-weight: 600;
   position: relative;
-  padding: 0 5px;
+  padding: 0 7px;
+  margin: 0 -1px;
   border-radius: 2px;
-  background-size: 0% 90%;
+  background-size: 0% 92%;
   background-repeat: no-repeat;
   background-position: 0 60%;
   text-shadow: 0 0 0 transparent;
@@ -2722,61 +2746,51 @@ em.hl, em.hl-red, em.hl-white {
     color           0.6s ease 2.0s;
 }
 
-/* orange variant */
+/* orange variant — solid amber band */
 em.hl {
   color: var(--orange-400);
   background-image: linear-gradient(
-    105deg,
-    rgba(251, 191, 36, 0.0)  0%,
-    rgba(251, 191, 36, 0.30) 8%,
-    rgba(251, 191, 36, 0.46) 50%,
-    rgba(251, 191, 36, 0.30) 92%,
-    rgba(251, 191, 36, 0.0)  100%
+    90deg,
+    rgba(251, 191, 36, 0.46),
+    rgba(251, 191, 36, 0.46)
   );
 }
 [data-reveal].in em.hl {
-  background-size: 100% 90%;
+  background-size: 100% 92%;
   text-shadow:
     0 0 12px rgba(217, 119, 6, 0.55),
     0 0 28px rgba(217, 119, 6, 0.28),
     0 0 1px  rgba(251, 191, 36, 0.4);
 }
 
-/* red variant — for "more important" emphasis */
+/* red variant — solid red band, for "more important" emphasis */
 em.hl-red {
   color: #F87171;
   background-image: linear-gradient(
-    105deg,
-    rgba(239, 68, 68, 0.0)  0%,
-    rgba(239, 68, 68, 0.34) 8%,
-    rgba(239, 68, 68, 0.56) 50%,
-    rgba(239, 68, 68, 0.34) 92%,
-    rgba(239, 68, 68, 0.0)  100%
+    90deg,
+    rgba(239, 68, 68, 0.55),
+    rgba(239, 68, 68, 0.55)
   );
 }
 [data-reveal].in em.hl-red {
-  background-size: 100% 90%;
+  background-size: 100% 92%;
   text-shadow:
     0 0 14px rgba(239, 68, 68, 0.65),
     0 0 32px rgba(239, 68, 68, 0.32),
     0 0 1px  rgba(248, 113, 113, 0.5);
 }
 
-/* WHITE variant — text stays crisp white, only the highlighter draws in.
-   Used when you want to mark text as important without recoloring it. */
+/* WHITE variant — solid amber band, text stays crisp white. */
 em.hl-white {
   color: var(--fg-0);
   background-image: linear-gradient(
-    105deg,
-    rgba(251, 191, 36, 0.0)  0%,
-    rgba(251, 191, 36, 0.30) 8%,
-    rgba(251, 191, 36, 0.48) 50%,
-    rgba(251, 191, 36, 0.30) 92%,
-    rgba(251, 191, 36, 0.0)  100%
+    90deg,
+    rgba(251, 191, 36, 0.48),
+    rgba(251, 191, 36, 0.48)
   );
 }
 [data-reveal].in em.hl-white {
-  background-size: 100% 90%;
+  background-size: 100% 92%;
   /* gentle amber halo — does NOT tint the white text */
   text-shadow:
     0 0 14px rgba(251, 191, 36, 0.30),
