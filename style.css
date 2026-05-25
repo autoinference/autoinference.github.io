@@ -3476,28 +3476,48 @@ em.hl-keepwhite .rv-w {
   text-transform: uppercase; letter-spacing: 0.08em;
   font-family: var(--font-mono);
 }
-.installcard code {
-  flex-basis: 100%;      /* breaks to its own row, full width */
+/* command box — flex row with code + copy button side-by-side */
+.installcard__cmd {
+  flex-basis: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 6px 6px 6px 10px;
+  border-radius: 5px;
+  border: 1px solid rgba(255, 230, 210, 0.05);
+  min-width: 0;
+}
+.installcard__cmd code {
+  flex: 1;
+  min-width: 0;
   display: block;
+  background: transparent;
+  border: none;
+  padding: 0;
   font-family: var(--font-mono);
   font-size: 12.5px;
   color: var(--fg-1);
-  background: rgba(0, 0, 0, 0.25);
-  padding: 8px 12px;
-  border-radius: 3px;
-  border: 1px solid rgba(255, 230, 210, 0.04);
-  /* allow long commands to wrap onto a second line instead of truncating */
-  white-space: pre-wrap;
-  word-break: break-word;
-  overflow-wrap: anywhere;
-  overflow: visible;
+  white-space: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
 }
-.installcard code::-webkit-scrollbar { display: none; }
-.installcard code::before {
+.installcard__cmd code::-webkit-scrollbar { display: none; }
+.installcard__cmd code::before {
   content: '$ ';
-  color: var(--orange-400);
-  opacity: 0.5;
-  margin-right: 2px;
+  color: #00C244;
+  font-weight: 700;
+  margin-right: 4px;
+  text-shadow: 0 0 6px rgba(0, 194, 68, 0.35);
+}
+.installcard__cmd .copybtn {
+  width: 24px;
+  height: 24px;
+}
+/* tighten the outer card now that cmd box is compact */
+.installcard {
+  padding: 12px 16px;
+  gap: 10px;
 }
 
 /* dashboard mockup — floats stay INSIDE viewport bounds */
@@ -4140,16 +4160,7 @@ body.preloading { overflow: hidden; }
 }
 .copybtn svg { display: block; }
 
-/* install card grows a copy button on the right edge */
-.installcard {
-  position: relative;
-}
-.installcard code {
-  padding-right: 8px;
-}
-.installcard .copybtn {
-  margin-left: auto;
-}
+/* .installcard copy-button layout now lives inside .installcard__cmd above */
 
 /* validation/test terminal — match the pure-black gradient of other terminal widgets */
 .testterm,
