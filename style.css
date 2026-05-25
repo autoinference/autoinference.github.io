@@ -3826,10 +3826,7 @@ body.preloading { overflow: hidden; }
 }
 .mcp-tile__head {
   display: flex; align-items: center; gap: 12px;
-  margin-bottom: 4px;
-}
-.mcp-tile__head > div:last-child {
-  display: flex; flex-direction: column; gap: 2px; min-width: 0;
+  margin-bottom: 2px;
 }
 .mcp-tile__logo {
   width: 38px; height: 38px;
@@ -3859,36 +3856,35 @@ body.preloading { overflow: hidden; }
   font-family: var(--font-mono);
   line-height: 1.5;
 }
-/* Primary command display per tile — clickable to copy */
+/* Primary command display per tile — clickable to copy, whole command visible */
 .mcp-tile__cmd {
   margin-top: auto;
-  padding: 12px 14px;
+  padding: 11px 12px;
   background: rgba(0, 0, 0, 0.45);
   border: 1px solid rgba(255, 230, 210, 0.06);
   border-radius: 8px;
   font-family: var(--font-mono);
-  font-size: 12.5px;
-  color: var(--fg-1);
-  line-height: 1.4;
-  white-space: nowrap;
-  overflow-x: auto;
+  font-size: 11.5px;
+  color: var(--fg-0);
+  line-height: 1.5;
+  white-space: normal;
+  word-break: break-word;
   cursor: pointer;
   transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
 }
 .mcp-tile__cmd:hover {
   border-color: rgba(217, 119, 6, 0.40);
   background: rgba(0, 0, 0, 0.6);
-  color: var(--fg-0);
 }
 .mcp-tile__cmd.copied {
   border-color: rgba(0, 194, 68, 0.55);
   background: rgba(0, 194, 68, 0.08);
-  color: var(--fg-0);
 }
 .mcp-tile__prompt {
-  color: var(--orange-400);
+  color: #00C244;            /* terminal green $ — matches universal install card */
   font-weight: 700;
   margin-right: 8px;
+  text-shadow: 0 0 6px rgba(0, 194, 68, 0.35);
 }
 
 /* terminal-style MCP demo widget */
@@ -3990,8 +3986,9 @@ body.preloading { overflow: hidden; }
 .mcp-npx__tag {
   font-family: var(--font-mono);
   font-size: 11px;
-  color: var(--fg-3);
+  color: var(--orange-400);
   letter-spacing: 0.02em;
+  font-weight: 600;
 }
 .mcp-npx__pkg {
   font-family: var(--font-mono);
@@ -4047,9 +4044,10 @@ body.preloading { overflow: hidden; }
   min-width: 0;
 }
 .mcp-npx__prompt {
-  color: var(--orange-400);
+  color: #00C244;            /* terminal green $ — matches the loading bar / classic CRT phosphor */
   font-weight: 700;
   margin-right: 10px;
+  text-shadow: 0 0 6px rgba(0, 194, 68, 0.35);
 }
 .mcp-npx__copy {
   background: rgba(255, 230, 210, 0.04);
