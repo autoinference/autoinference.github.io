@@ -523,6 +523,12 @@ deploy = Deployment(
 
       <!-- ASCII bar chart panel -->
       <div class="ascii-perf" data-reveal>
+        <div class="ascii-perf__chrome">
+          <span class="mock__dot mock__dot--r"></span>
+          <span class="mock__dot mock__dot--y"></span>
+          <span class="mock__dot mock__dot--g"></span>
+          <span class="ascii-perf__chromeT">autoinference &middot; bench</span>
+        </div>
         <div class="ascii-perf__head">
           <div class="ascii-perf__title">
             <span class="tx-dim">$</span> autoinference bench --vs default
@@ -784,7 +790,7 @@ deploy = Deployment(
             </div>
             <div class="mcp-npx__row">
               <pre class="mcp-npx__cmd"><span class="mcp-npx__prompt">$</span> npx autoinference</pre>
-              <button class="mcp-npx__copy" type="button" data-copy="npx autoinference" aria-label="Copy install command">⎘ copy</button>
+              <button class="copybtn" type="button" data-copy="npx autoinference" aria-label="Copy install command"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" width="13" height="13"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
             </div>
           </div>
 
@@ -795,7 +801,7 @@ deploy = Deployment(
             </div>
             <div class="mcp-npx__row">
               <pre class="mcp-npx__cmd"><span class="mcp-npx__prompt">$</span> npx skill add @autoinference/skill</pre>
-              <button class="mcp-npx__copy" type="button" data-copy="npx skill add @autoinference/skill" aria-label="Copy install command">⎘ copy</button>
+              <button class="copybtn" type="button" data-copy="npx skill add @autoinference/skill" aria-label="Copy install command"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" width="13" height="13"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
             </div>
           </div>
         </div>
