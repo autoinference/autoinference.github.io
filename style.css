@@ -2936,8 +2936,8 @@ em.hl-white {
   transform: none;
   background: rgba(255, 230, 210, 0.015);
 }
-.tcard__id { color: var(--fg-3); }
-.tcard__name { color: var(--fg-0); font-weight: 500; }
+.tcard__id   { color: var(--green-400); font-weight: 600; }   /* [01] [02] [03] [04] — terminal green */
+.tcard__name { color: var(--orange-400); font-weight: 600; }  /* engine_selection, config_tuning, etc. — orange */
 .tcard__body { color: var(--fg-2); }
 .tcard__list { border-top-color: rgba(255, 230, 210, 0.06); }
 .tcard__row { color: var(--fg-2); }
@@ -2959,8 +2959,8 @@ em.hl-white {
   border-radius: 4px;
   padding: 24px 26px;
 }
-.hstep__id { color: var(--fg-3); }
-.hstep__name { color: var(--fg-0); font-weight: 500; }
+.hstep__id   { color: var(--green-400); font-weight: 600; }   /* [01] [02] [03] — terminal green */
+.hstep__name { color: var(--orange-400); font-weight: 600; }  /* pick_a_model, state_your_hardware, hit_deploy — orange */
 .hstep__copy { color: var(--fg-2); }
 
 /* code blocks — refined */
