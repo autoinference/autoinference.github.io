@@ -64,14 +64,14 @@
   function animateCounter(el) {
     const target = parseFloat(el.getAttribute('data-target') || '0');
     const isFloat = String(target).indexOf('.') !== -1;
-    const duration = 1600;
+    const duration = 2400;  // slower, more deliberate count-up
     const start = performance.now();
     const startVal = 0;
 
     function tick(now) {
       const t = Math.min(1, (now - start) / duration);
-      // ease-out cubic
-      const eased = 1 - Math.pow(1 - t, 3);
+      // ease-out quartic — even smoother deceleration than cubic
+      const eased = 1 - Math.pow(1 - t, 4);
       const v = startVal + (target - startVal) * eased;
       el.textContent = isFloat ? v.toFixed(1) : Math.round(v).toLocaleString();
       if (t < 1) requestAnimationFrame(tick);
@@ -249,19 +249,29 @@
     opts = opts || {};
     if (!el.dataset.scrambleText) el.dataset.scrambleText = el.textContent;
     const finalText = el.dataset.scrambleText;
-    const speed = opts.speed || 24;   // ms per character
+    const speed     = opts.speed     || 55;   // ms per character — deliberate, premium pace
+    const startWait = opts.startWait || 200;  // ms before typing begins (lets fade-in settle)
+    const easeTail  = opts.easeTail  != null ? opts.easeTail : 0.35;  // last 35% of chars slow down
+    const easeMax   = opts.easeMax   || 1.7;  // up to 1.7× base speed by the final char
     const len = finalText.length;
     if (el._typeTimer) clearTimeout(el._typeTimer);
     el.textContent = '';
+
     let i = 0;
     function tick() {
       i++;
       el.textContent = finalText.substring(0, i);
       if (i < len) {
-        el._typeTimer = setTimeout(tick, speed);
+        const remaining = len - i;
+        const easeWindow = Math.max(1, len * easeTail);
+        const slowFactor = remaining < easeWindow
+          ? 1 + (1 - remaining / easeWindow) * (easeMax - 1)
+          : 1;
+        el._typeTimer = setTimeout(tick, speed * slowFactor);
       }
     }
-    tick();
+    // small initial delay so the parent's fade-in completes first — premium feel
+    el._typeTimer = setTimeout(tick, startWait);
   }
 
   // intersection-triggered typewriter (on first scroll into view)
