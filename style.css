@@ -2051,12 +2051,23 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   overflow: hidden;            /* belt-and-suspenders: nothing pokes out */
 }
 
-/* contain code blocks to their column — wrap long lines instead of overflowing */
-.hstep .codeblock { min-width: 0; max-width: 100%; overflow: hidden; }
+/* contain code blocks to their column — wrap long lines instead of overflowing
+   + stretch each codeblock to fill the remaining column height so all 3 cards
+   end at the same vertical line (symmetric grid even when line counts differ) */
+.hstep .codeblock {
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  flex: 1 1 auto;
+  margin-top: auto;            /* push the codeblock to the column's bottom edge */
+  display: flex;
+  flex-direction: column;
+}
 .hstep .codeblock pre {
   white-space: pre-wrap;       /* wrap long lines like URLs */
   word-break: break-word;      /* allow URLs to break at any character if needed */
   overflow-x: hidden;
+  flex: 1;                     /* fill the codeblock height so the dark surface reaches the bottom */
 }
 .hstep__head {
   display: flex; align-items: baseline; gap: 8px;
