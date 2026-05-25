@@ -77,6 +77,7 @@
         <a href="#how" data-scramble-hover>how_it_works</a>
         <a href="#performance" data-scramble-hover>performance</a>
         <a href="#webapp" data-scramble-hover>webapp</a>
+        <a href="#mcp" data-scramble-hover>mcp</a>
         <a href="#validation" data-scramble-hover>validation</a>
         <a href="https://github.com/autoinference/autoinference" target="_blank" rel="noopener" class="navic">
           <img src="https://cdn.simpleicons.org/github/A1A1B5" width="14" height="14" alt="" />
@@ -737,6 +738,121 @@ deploy = Deployment(
     </div>
   </section>
 
+  <!-- MCP INTEGRATION — autoinference as an MCP server for AI coding agents -->
+  <section class="section section--mcp" id="mcp">
+    <div class="container">
+      <div class="eyebrow" data-reveal>// mcp_integration</div>
+      <h2 class="section__title" data-reveal>
+        Or skip the CLI &mdash; <span class="grad-text" data-scramble>call it from your agent</span>
+      </h2>
+      <p class="section__lede" data-reveal>
+        autoinference is published as an <em class="hl-white">MCP server</em> on every major registry.
+        Install it once and your <em class="hl">agentic coding tool</em> can deploy, re-tune, and benchmark
+        models on your infrastructure &mdash; without you ever opening a terminal.
+      </p>
+
+      <!-- 4-tile grid of supported MCP clients -->
+      <div class="mcp-grid" data-reveal>
+        <div class="mcp-tile">
+          <div class="mcp-tile__head">
+            <div class="mcp-tile__logo mcp-tile__logo--cc">
+              <img src="https://cdn.simpleicons.org/anthropic/D97706" width="20" height="20" alt="" />
+            </div>
+            <div class="mcp-tile__name">Claude Code</div>
+          </div>
+          <div class="mcp-tile__desc">Anthropic's coding agent</div>
+          <div class="mcp-tile__cmd"><span class="mcp-tile__prompt">$</span> claude mcp add autoinference</div>
+        </div>
+        <div class="mcp-tile">
+          <div class="mcp-tile__head">
+            <div class="mcp-tile__logo mcp-tile__logo--cx">
+              <img src="https://cdn.simpleicons.org/openai/FAFAFA" width="20" height="20" alt="" />
+            </div>
+            <div class="mcp-tile__name">Codex</div>
+          </div>
+          <div class="mcp-tile__desc">OpenAI's coding CLI</div>
+          <div class="mcp-tile__cmd"><span class="mcp-tile__prompt">$</span> codex mcp add autoinference</div>
+        </div>
+        <div class="mcp-tile">
+          <div class="mcp-tile__head">
+            <div class="mcp-tile__logo mcp-tile__logo--cr">
+              <span class="mcp-tile__glyph">▸_</span>
+            </div>
+            <div class="mcp-tile__name">Cursor</div>
+          </div>
+          <div class="mcp-tile__desc">AI-native code editor</div>
+          <div class="mcp-tile__cmd"><span class="mcp-tile__prompt">$</span> cursor mcp add autoinference</div>
+        </div>
+        <div class="mcp-tile">
+          <div class="mcp-tile__head">
+            <div class="mcp-tile__logo mcp-tile__logo--ag">
+              <span class="mcp-tile__glyph">△</span>
+            </div>
+            <div class="mcp-tile__name">Antigravity</div>
+          </div>
+          <div class="mcp-tile__desc">Google's agentic IDE</div>
+          <div class="mcp-tile__cmd"><span class="mcp-tile__prompt">$</span> antigravity mcp install autoinference</div>
+        </div>
+      </div>
+
+      <!-- Terminal showing an MCP tool call inside an agent session -->
+      <div class="mcp-demo" data-reveal>
+        <div class="mcp-demo__chrome">
+          <span class="mock__dot mock__dot--r"></span>
+          <span class="mock__dot mock__dot--y"></span>
+          <span class="mock__dot mock__dot--g"></span>
+          <span class="mcp-demo__t">claude code · agent session · autoinference mcp connected</span>
+        </div>
+        <div class="mcp-demo__body">
+          <div class="mcp-demo__user">
+            <span class="mcp-demo__prompt">&gt;</span>
+            deploy kimi-2.6 on our 8× B300 box, optimize for p99 &lt; 50ms
+          </div>
+
+          <div class="mcp-demo__call">
+            <span class="mcp-demo__bullet">●</span>
+            <span class="mcp-demo__tool">autoinference.deploy</span>
+            <span class="mcp-demo__args">(model="kimi-2.6", hardware="8x B300", slo={"p99_ms": 50})</span>
+            <span class="mcp-demo__took">(6m 24s)</span>
+          </div>
+          <div class="mcp-demo__result">
+            <span class="mcp-demo__indent">⎿</span>
+            <span>SGLang · NVFP4 · EAGLE-3 · <span class="mcp-demo__up">+3.4×</span> tok/s · <span class="mcp-demo__up">42ms</span> p99 · <span class="mcp-demo__up">94%</span> util</span>
+          </div>
+
+          <div class="mcp-demo__call">
+            <span class="mcp-demo__bullet">●</span>
+            <span class="mcp-demo__tool">autoinference.summary_url</span>
+            <span class="mcp-demo__took">(0.1s)</span>
+          </div>
+          <div class="mcp-demo__result">
+            <span class="mcp-demo__indent">⎿</span>
+            <span class="mcp-demo__link">dashboard.autoinference.org/acme/kimi-2.6/a7f3e9c1</span>
+          </div>
+
+          <div class="mcp-demo__agent">
+            <div class="mcp-demo__agentBar"></div>
+            <div class="mcp-demo__agentBody">
+              Deployment is live on your cluster. I picked SGLang over vLLM because
+              Kimi 2.6's MoE all-to-all path is more mature in SGLang on Blackwell.
+              Want me to wire it into your gateway?
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Registry chips at bottom -->
+      <div class="mcp-registries" data-reveal>
+        <span class="mcp-registries__l">// pulled from</span>
+        <span class="lg-chip">Anthropic MCP Registry</span>
+        <span class="lg-chip">Smithery</span>
+        <span class="lg-chip">mcp.so</span>
+        <span class="lg-chip">Hugging Face MCP Hub</span>
+        <span class="lg-chip">Glama</span>
+      </div>
+    </div>
+  </section>
+
   <!-- VALIDATION — terminal-style test output + retained test panel mockup -->
   <section class="section section--validation" id="validation">
     <div class="container">
@@ -993,6 +1109,7 @@ deploy = Deployment(
           <a href="#how">how_it_works</a>
           <a href="#performance">performance</a>
           <a href="#webapp">webapp</a>
+          <a href="#mcp">mcp</a>
           <a href="#validation">validation</a>
           <a href="#waitlist">join_waitlist</a>
         </div>
