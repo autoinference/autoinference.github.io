@@ -171,14 +171,14 @@
             <!-- input box with ╭─╮ ╰─╯ borders, Claude Code style -->
             <div class="agentw__input">
               <span class="agentw__caret">&gt;</span>
-              <span class="agentw__cmd">deploy deepseek-v3.2-exp on 8× H100 SXM</span>
+              <span class="agentw__cmd">deploy kimi-2.6 on 8× B300</span>
               <span class="cursor"></span>
             </div>
 
             <!-- tool calls — Claude Code ● Tool / ⎿ result pattern (clean, 5 summary tools) -->
             <div class="agentw__tool" style="--d:0">
               <div class="agentw__toolH"><span class="agentw__bullet">●</span> <span class="agentw__toolN">Hardware Probe</span><span class="agentw__took">(2.1s)</span></div>
-              <div class="agentw__toolR"><span class="agentw__indent">⎿</span> <span class="agentw__toolT">8× H100 SXM detected · NVLink mesh · 80 GB HBM</span></div>
+              <div class="agentw__toolR"><span class="agentw__indent">⎿</span> <span class="agentw__toolT">8× B300 detected · NVLink-5 mesh · 288 GB HBM3e/GPU</span></div>
             </div>
 
             <div class="agentw__tool" style="--d:1">
@@ -188,7 +188,7 @@
 
             <div class="agentw__tool" style="--d:2">
               <div class="agentw__toolH"><span class="agentw__bullet">●</span> <span class="agentw__toolN">Kernel Synthesis</span><span class="agentw__took">(2m 38s)</span></div>
-              <div class="agentw__toolR"><span class="agentw__indent">⎿</span> <span class="agentw__toolT">fused Triton kernel · <span class="agentw__up">4.2×</span> faster · 0-ulp drift</span></div>
+              <div class="agentw__toolR"><span class="agentw__indent">⎿</span> <span class="agentw__toolT">NVFP4 fused RMSNorm+RoPE · <span class="agentw__up">4.2×</span> faster · 0-ulp drift</span></div>
             </div>
 
             <div class="agentw__tool" style="--d:3">
@@ -206,7 +206,7 @@
               <div class="agentw__msgBar"></div>
               <div class="agentw__msgBody">
                 <p>Your deployment is ready.</p>
-                <p>Endpoint: <span class="agentw__link">api.autoinference.org/v1/deepseek-v3.2-exp</span></p>
+                <p>Endpoint: <span class="agentw__link">api.autoinference.org/v1/kimi-2.6</span></p>
                 <p>Want me to ship a canary first, or roll directly?</p>
               </div>
             </div>
@@ -274,7 +274,7 @@
           <div class="logogrid__h">hardware</div>
           <div class="logogrid__row">
             <span class="lg-chip"><img src="https://cdn.simpleicons.org/nvidia/76B900" width="14" height="14" alt="" /> NVIDIA H100 / H200</span>
-            <span class="lg-chip"><img src="https://cdn.simpleicons.org/nvidia/76B900" width="14" height="14" alt="" /> NVIDIA B200 / GB200</span>
+            <span class="lg-chip"><img src="https://cdn.simpleicons.org/nvidia/76B900" width="14" height="14" alt="" /> NVIDIA B200 / B300 / GB200</span>
             <span class="lg-chip"><img src="https://cdn.simpleicons.org/amd/ED1C24" width="14" height="14" alt="" /> AMD MI300X / MI355X</span>
             <span class="lg-chip"><img src="https://cdn.simpleicons.org/intel/0071C5" width="14" height="14" alt="" /> Intel Gaudi 3</span>
             <span class="lg-chip"><img src="https://cdn.simpleicons.org/googlecloud/4285F4" width="14" height="14" alt="" /> TPU v5p / v6e</span>
@@ -438,7 +438,7 @@
             <pre><code><span class="kw">from</span> autoinference <span class="kw">import</span> Deployment
 
 deploy = Deployment(
-    model=<span class="str">"deepseek-ai/DeepSeek-V3.2-Exp"</span>,
+    model=<span class="str">"zai-org/GLM-5.1"</span>,
     quantize=<span class="str">"auto"</span>,
 )</code></pre>
           </div>
@@ -459,8 +459,8 @@ deploy = Deployment(
               <span class="copy">⎘ copy</span>
             </div>
             <pre><code>deploy.target(
-    hardware=<span class="str">"8x H100 SXM"</span>,
-    interconnect=<span class="str">"NVLink"</span>,
+    hardware=<span class="str">"8x B300"</span>,
+    interconnect=<span class="str">"NVLink-5"</span>,
     slo=<span class="brc">{</span><span class="str">"p99_latency_ms"</span>: <span class="num">200</span>, <span class="str">"min_qps"</span>: <span class="num">120</span><span class="brc">}</span>,
 )</code></pre>
           </div>
@@ -481,7 +481,7 @@ deploy = Deployment(
               <span class="copy">⎘ copy</span>
             </div>
             <pre><code>endpoint = deploy.run()
-<span class="cm"># → https://api.autoinference.org/v1/deepseek-v3.2-exp
+<span class="cm"># → https://api.autoinference.org/v1/glm-5.1
 # → tested, hardened, optimized for your exact workload</span></code></pre>
           </div>
         </div>
@@ -497,7 +497,7 @@ deploy = Deployment(
         Numbers we're targeting at GA &mdash; on <span class="grad-text" data-scramble>your existing hardware</span>
       </h2>
       <p class="section__lede" data-reveal>
-        Internal benchmarks on DeepSeek-V3.2-Exp, batch=192, NVIDIA H100 SXM.
+        Internal benchmarks on DeepSeek-V4-Pro, batch=192, NVIDIA B300.
         Comparison vs out-of-the-box default config.
       </p>
 
@@ -562,7 +562,7 @@ deploy = Deployment(
             <span class="mock__dot mock__dot--r"></span>
             <span class="mock__dot mock__dot--y"></span>
             <span class="mock__dot mock__dot--g"></span>
-            <span class="mock__url">app.autoinference.org/deployments/qwen3.5-72b-a17b</span>
+            <span class="mock__url">app.autoinference.org/deployments/deepseek-v4-pro</span>
             <span class="mock__chrome-meta">⌘K</span>
           </div>
           <div class="mock__body">
@@ -592,11 +592,11 @@ deploy = Deployment(
             <main class="mock__main">
               <div class="mock__topbar">
                 <div>
-                  <div class="mock__crumb">Deployments / <strong>qwen3.5-72b-a17b</strong></div>
+                  <div class="mock__crumb">Deployments / <strong>deepseek-v4-pro</strong></div>
                   <div class="mock__title">
                     <span class="status-pill status-pill--live"><span class="ping"></span>Live</span>
-                    <h3>qwen3.5-72b-a17b · fp8</h3>
-                    <span class="mock__tag">prod-us-west</span>
+                    <h3>deepseek-v4-pro · fp8 · 256× H200</h3>
+                    <span class="mock__tag">prod-us-west · 32 nodes</span>
                   </div>
                 </div>
                 <div class="mock__topbar-actions">
@@ -607,8 +607,8 @@ deploy = Deployment(
 
               <div class="mock__statsrow">
                 <div class="statcard">
-                  <div class="statcard__label">Tokens/sec</div>
-                  <div class="statcard__value" data-count="14820">14,820</div>
+                  <div class="statcard__label">Tokens/sec (agg.)</div>
+                  <div class="statcard__value" data-count="184200">184,200</div>
                   <div class="statcard__delta delta--up">+241% vs baseline</div>
                   <svg class="spark" viewBox="0 0 100 30" preserveAspectRatio="none">
                     <path d="M0 24 L10 22 L20 20 L30 18 L40 14 L50 12 L60 9 L70 7 L80 5 L90 4 L100 3" stroke="url(#sparkW1)" stroke-width="2" fill="none" stroke-linecap="round"/>
@@ -651,11 +651,11 @@ deploy = Deployment(
                     <span class="panel__sub">live · agent thinking</span>
                   </div>
                   <div class="agentlog">
-                    <div class="agentlog__row"><span class="t">14:02:11</span><span class="tag tag--violet">plan</span><span>Profiling workload distribution</span></div>
-                    <div class="agentlog__row"><span class="t">14:02:18</span><span class="tag tag--blue">choose</span><span>Ranking compatible engines for your hardware</span></div>
-                    <div class="agentlog__row"><span class="t">14:02:31</span><span class="tag tag--cyan">tune</span><span>Sweeping configuration space&hellip;</span></div>
-                    <div class="agentlog__row"><span class="t">14:03:02</span><span class="tag tag--cyan">tune</span><span>Found optimal configuration</span></div>
-                    <div class="agentlog__row"><span class="t">14:03:14</span><span class="tag tag--pink">kernel</span><span>Synthesizing custom kernel for hot path&hellip;</span></div>
+                    <div class="agentlog__row"><span class="t">14:02:11</span><span class="tag tag--violet">plan</span><span>Profiling workload · MoE w/ MLA + MTP heads</span></div>
+                    <div class="agentlog__row"><span class="t">14:02:18</span><span class="tag tag--blue">choose</span><span>Engine: SGLang · TP=8 · EP=32 across 32 nodes</span></div>
+                    <div class="agentlog__row"><span class="t">14:02:31</span><span class="tag tag--cyan">tune</span><span>Sweeping DeepEP all-to-all topology&hellip;</span></div>
+                    <div class="agentlog__row"><span class="t">14:03:02</span><span class="tag tag--cyan">tune</span><span>FlashMLA + paged FP8 KV · 2 MTP heads enabled</span></div>
+                    <div class="agentlog__row"><span class="t">14:03:14</span><span class="tag tag--pink">kernel</span><span>Compiling DeepGEMM FP8 grouped GEMM&hellip;</span></div>
                     <div class="agentlog__row"><span class="t">14:03:51</span><span class="tag tag--green">verify</span><span>Kernel verified bit-equivalent ✓</span></div>
                     <div class="agentlog__row agentlog__row--active"><span class="t">14:04:09</span><span class="tag tag--orange">loadtest</span><span>Ramping concurrent users: 1,200 / 2,000 <span class="dotpulse"></span></span></div>
                   </div>
@@ -667,29 +667,29 @@ deploy = Deployment(
                   </div>
                   <div class="enginepick">
                     <div class="enginepick__row enginepick__row--win">
-                      <span class="enginepick__name">vLLM</span>
+                      <span class="enginepick__name">SGLang</span>
                       <span class="enginepick__bar"><span style="width:96%"></span></span>
                       <span class="enginepick__score">96</span>
                     </div>
                     <div class="enginepick__row">
-                      <span class="enginepick__name">SGLang</span>
-                      <span class="enginepick__bar"><span style="width:91%"></span></span>
-                      <span class="enginepick__score">91</span>
+                      <span class="enginepick__name">vLLM</span>
+                      <span class="enginepick__bar"><span style="width:92%"></span></span>
+                      <span class="enginepick__score">92</span>
                     </div>
                     <div class="enginepick__row">
                       <span class="enginepick__name">TensorRT-LLM</span>
-                      <span class="enginepick__bar"><span style="width:88%"></span></span>
-                      <span class="enginepick__score">88</span>
+                      <span class="enginepick__bar"><span style="width:87%"></span></span>
+                      <span class="enginepick__score">87</span>
                     </div>
                     <div class="enginepick__row">
                       <span class="enginepick__name">FlashInfer</span>
-                      <span class="enginepick__bar"><span style="width:84%"></span></span>
-                      <span class="enginepick__score">84</span>
+                      <span class="enginepick__bar"><span style="width:78%"></span></span>
+                      <span class="enginepick__score">78</span>
                     </div>
                     <div class="enginepick__row">
                       <span class="enginepick__name">LMDeploy</span>
-                      <span class="enginepick__bar"><span style="width:71%"></span></span>
-                      <span class="enginepick__score">71</span>
+                      <span class="enginepick__bar"><span style="width:69%"></span></span>
+                      <span class="enginepick__score">69</span>
                     </div>
                   </div>
                 </div>
@@ -712,17 +712,17 @@ deploy = Deployment(
         <div class="float--dashwarm-tr" aria-hidden="true">
           <div class="float__icon"></div>
           <div>
-            <div class="float__tag">FP8 KV CACHE</div>
-            <div class="float__t">fp8_e4m3 · paged</div>
-            <div class="float__s">2× effective capacity</div>
+            <div class="float__tag">MLA KV CACHE</div>
+            <div class="float__t">fp8 · paged</div>
+            <div class="float__s">~10× smaller vs MHA</div>
           </div>
         </div>
         <div class="float--dashwarm-bl" aria-hidden="true">
           <div class="float__icon"></div>
           <div>
-            <div class="float__tag">CUDA GRAPH</div>
-            <div class="float__t">full decode captured</div>
-            <div class="float__s">−18% kernel launch overhead</div>
+            <div class="float__tag">MTP DRAFTER</div>
+            <div class="float__t">2 heads · native</div>
+            <div class="float__s">1.78× decode speedup</div>
           </div>
         </div>
       </div>

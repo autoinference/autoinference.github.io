@@ -3090,8 +3090,10 @@ em.hl-keepwhite .rv-w {
 
 /* dashboard mockup — restraint pass */
 .mock--dashwarm {
+  /* dark-black surface (overrides base .mock navy-tinted gradient) */
+  background: linear-gradient(180deg, #050505, #000000);
   border: 1px solid rgba(255, 230, 210, 0.08);
-  box-shadow: 0 30px 80px -30px rgba(0,0,0,0.7);
+  box-shadow: 0 30px 80px -30px rgba(0,0,0,0.85);
 }
 .mock--dashwarm::after { display: none; }
 .mock__chrome {
