@@ -2341,26 +2341,26 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
    ========================================================================= */
 
 .agentw {
-  background: #14100E;
+  background: linear-gradient(180deg, #050505, #000000);
   border: 1px solid rgba(255, 230, 210, 0.08);
-  border-radius: 10px;
-  box-shadow:
-    0 1px 0 rgba(255, 230, 210, 0.04) inset,
-    0 30px 60px -30px rgba(0, 0, 0, 0.7);
+  border-radius: 12px;
+  box-shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.85);
   overflow: hidden;
   font-family: var(--font-mono);
   position: relative;
 }
 .agentw::after { display: none; }
 
-/* chrome row */
+/* chrome row — macOS-style with traffic-light dots + warm-tint bar */
 .agentw__chrome {
-  display: flex; align-items: center; gap: 10px;
-  padding: 14px 20px;
-  background: transparent;
-  border-bottom: 1px solid rgba(255, 230, 210, 0.06);
+  display: flex; align-items: center; gap: 8px;
+  padding: 11px 16px;
+  background: rgba(255, 230, 210, 0.02);
+  border-bottom: 1px solid rgba(255, 230, 210, 0.05);
   font-size: 12px;
 }
+/* small gap between the last traffic-light dot and the autoinference star */
+.agentw__chrome .mock__dot + .agentw__star { margin-left: 6px; }
 .agentw__star {
   color: var(--orange-400);
   font-size: 14px;
