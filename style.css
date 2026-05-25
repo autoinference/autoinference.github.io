@@ -3173,7 +3173,9 @@ body {
     opacity   1.2s cubic-bezier(0.22, 1, 0.36, 1),
     transform 1.2s cubic-bezier(0.22, 1, 0.36, 1),
     filter    1.2s cubic-bezier(0.22, 1, 0.36, 1);
-  transition-delay: calc(var(--wi, 0) * 110ms + 150ms);
+  /* sequential reveal: seq-delay = time prior sibling [data-scramble] elements take.
+     For a first/only element, seq-delay is 0ms (fallback). */
+  transition-delay: calc(var(--seq-delay, 0ms) + var(--wi, 0) * 110ms + 150ms);
 }
 .rv-in .rv-w {
   opacity: 1;
@@ -3189,6 +3191,29 @@ body {
 }
 /* prevent layout shifts: reserve space even when blurred */
 [data-scramble] { display: inline-block; }
+
+/* Hero blinking cursor — appears after both H1 lines complete revealing.
+   Same orange as the rest of the accents (--orange-400). */
+.hero-cursor {
+  display: inline-block;
+  width: 0.55em;
+  height: 0.85em;
+  background: var(--orange-400);
+  margin-left: 0.18em;
+  vertical-align: -0.08em;
+  opacity: 0;
+  border-radius: 1px;
+  box-shadow: 0 0 12px rgba(217, 119, 6, 0.45);
+  transition: opacity 0.6s ease;
+}
+.hero-cursor.in {
+  opacity: 1;
+  animation: hero-cursor-blink 1.05s steps(1, end) infinite;
+}
+@keyframes hero-cursor-blink {
+  0%, 50%   { opacity: 1; }
+  50.01%, 100% { opacity: 0; }
+}
 
 /* =========================================================================
    v2.0 — ASCII rain background + install grid fix + more floats

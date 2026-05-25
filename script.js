@@ -246,21 +246,56 @@
      are mid-fade at once, producing a smooth left-to-right wash rather
      than a mechanical typewriter. Linear / Vercel / Stripe pattern.
      --------------------------------------------------------------------- */
+  // Per-word reveal timing (must mirror CSS)
+  const WORD_STAGGER = 110;     // ms between word starts (matches --wi * 110ms in CSS)
+  const WORD_DURATION = 1200;   // ms per-word transition (matches CSS)
+  const REVEAL_START_DELAY = 150;  // ms initial delay before first word starts
+
+  function revealDurationFor(el) {
+    const text = el.dataset.scrambleText || el.textContent || '';
+    const wc = text.trim().split(/\s+/).length;
+    return REVEAL_START_DELAY + (Math.max(0, wc - 1)) * WORD_STAGGER + WORD_DURATION;
+  }
+
   function revealEl(el) {
     if (el.dataset.revealed === '1') return;
     if (!el.dataset.scrambleText) el.dataset.scrambleText = el.textContent;
     const text = el.dataset.scrambleText;
     const words = text.split(' ');
+
+    // Compute sequential delay: wait for prior [data-scramble] siblings in same parent to finish
+    let seqDelay = 0;
+    const parent = el.parentElement;
+    if (parent) {
+      const all = parent.querySelectorAll(':scope > [data-scramble]');
+      for (const sib of all) {
+        if (sib === el) break;
+        seqDelay += revealDurationFor(sib);
+      }
+    }
+    el.style.setProperty('--seq-delay', seqDelay + 'ms');
+
     // wrap each word in a span with --wi index for staggered CSS transitions
     el.innerHTML = words.map((w, i) => {
-      // escape HTML to be safe
       const safe = w.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
       return '<span class="rv-w" style="--wi:' + i + '">' + safe + '</span>';
     }).join(' ');
     el.dataset.revealed = '1';
-    // force a reflow then add the .rv-in class so transitions fire
     void el.offsetWidth;
     el.classList.add('rv-in');
+
+    // If this element is the LAST [data-scramble] inside the hero title,
+    // schedule the blinking cursor to fade in right after the final word settles.
+    if (parent && parent.classList.contains('hero__title')) {
+      const sibs = parent.querySelectorAll(':scope > [data-scramble]');
+      if (sibs[sibs.length - 1] === el) {
+        const cursor = document.getElementById('heroCursor');
+        if (cursor) {
+          const total = seqDelay + revealDurationFor(el);
+          setTimeout(() => cursor.classList.add('in'), Math.max(0, total - 200));
+        }
+      }
+    }
   }
 
   // intersection-triggered reveal (one-time per element)
