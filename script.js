@@ -245,15 +245,15 @@
      glyphs then settle on the final character. Triggers on intersection
      for [data-scramble] elements, and on hover for [data-scramble-hover].
      --------------------------------------------------------------------- */
-  const SCRAMBLE_CHARS = '01!<>-_/[]{}=+*^?#%&@$\\|~';
+  const SCRAMBLE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   function scrambleEl(el, opts) {
     opts = opts || {};
     if (!el.dataset.scrambleText) el.dataset.scrambleText = el.textContent;
     const finalText = el.dataset.scrambleText;
     const chars     = opts.chars   || SCRAMBLE_CHARS;
-    const speed     = opts.speed   || 32;   // ms per frame
-    const stagger   = opts.stagger || 1.4;  // frames between char-starts
-    const lock      = opts.lock    || 10;   // frames a char scrambles before settling
+    const speed     = opts.speed   || 22;   // ms per frame (faster = subtler)
+    const stagger   = opts.stagger || 0.9;  // frames between char-starts (tighter sweep)
+    const lock      = opts.lock    || 5;    // frames a char scrambles before settling (shorter)
     const len = finalText.length;
     const queue = new Array(len);
     for (let i = 0; i < len; i++) {
@@ -314,7 +314,7 @@
   const hoverScr = document.querySelectorAll('[data-scramble-hover]');
   hoverScr.forEach(el => {
     el.addEventListener('mouseenter', () => {
-      scrambleEl(el, { speed: 22, stagger: 0.6, lock: 4 });
+      scrambleEl(el, { speed: 18, stagger: 0.4, lock: 2 });
     });
   });
 

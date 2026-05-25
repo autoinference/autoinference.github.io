@@ -161,115 +161,44 @@
               <span class="cursor"></span>
             </div>
 
-            <!-- tool calls — Claude Code ● Tool / ⎿ result pattern, densified -->
-
-            <!-- Group 0: warm-start + hardware probe -->
+            <!-- tool calls — Claude Code ● Tool / ⎿ result pattern (clean, 5 summary tools) -->
             <div class="agentw__tool" style="--d:0">
-              <div class="agentw__toolH"><span class="agentw__bullet">●</span> <span class="agentw__toolN">Read</span><span class="agentw__paren">(./recipes.lock)</span></div>
-              <div class="agentw__toolR"><span class="agentw__indent">⎿</span> <span class="agentw__toolT">3 prior runs · warm-starting from <span class="agentw__hi">r-1821</span></span></div>
-            </div>
-
-            <div class="agentw__tool" style="--d:0">
-              <div class="agentw__toolH"><span class="agentw__bullet">●</span> <span class="agentw__toolN">Bash</span><span class="agentw__paren">(nvidia-smi topo -m)</span></div>
-              <div class="agentw__toolR"><span class="agentw__indent">⎿</span> <span class="agentw__toolT">NV4 NV4 NV4 NV4 NV4 NV4 NV4 — NVSwitch full mesh</span></div>
-            </div>
-
-            <div class="agentw__tool" style="--d:0">
-              <div class="agentw__toolH"><span class="agentw__bullet">●</span> <span class="agentw__toolN">Bash</span><span class="agentw__paren">(nccl-bench all_reduce -b 8M -e 8G)</span></div>
-              <div class="agentw__toolR"><span class="agentw__indent">⎿</span> <span class="agentw__toolT">peak <span class="agentw__hi">380 GB/s</span> · linearity 0.94 · no skew</span></div>
-            </div>
-
-            <div class="agentw__tool agentw__tool--summary" style="--d:1">
               <div class="agentw__toolH"><span class="agentw__bullet">●</span> <span class="agentw__toolN">Hardware Probe</span><span class="agentw__took">(2.1s)</span></div>
-              <div class="agentw__toolR"><span class="agentw__indent">⎿</span> <span class="agentw__toolT">fingerprint: <span class="agentw__hi">h100-8gpu-nvswitch</span> · 80 GB HBM · NVLink 4</span></div>
+              <div class="agentw__toolR"><span class="agentw__indent">⎿</span> <span class="agentw__toolT">8× H100 SXM detected · NVLink mesh · 80 GB HBM</span></div>
             </div>
 
-            <!-- Group 1: engine selection -->
             <div class="agentw__tool" style="--d:1">
-              <div class="agentw__toolH"><span class="agentw__bullet">●</span> <span class="agentw__toolN">Read</span><span class="agentw__paren">(./catalogs/engines.v0.11.4.json)</span></div>
-              <div class="agentw__toolR"><span class="agentw__indent">⎿</span> <span class="agentw__toolT">7 candidates loaded · 5 supported on SM90</span></div>
-            </div>
-
-            <div class="agentw__tool agentw__tool--summary" style="--d:2">
               <div class="agentw__toolH"><span class="agentw__bullet">●</span> <span class="agentw__toolN">Engine Selection</span><span class="agentw__took">(0.8s)</span></div>
-              <div class="agentw__toolR"><span class="agentw__indent">⎿</span> <span class="agentw__toolT">vLLM 0.11.4 → <span class="agentw__up">96</span>   SGLang 0.4.2 → 91   TRT-LLM 12.0 → 88</span></div>
-              <div class="agentw__toolR"><span class="agentw__indent">⎿</span> <span class="agentw__toolT">FlashInfer → 84    LMDeploy → 71</span></div>
-            </div>
-
-            <!-- Group 2: kernel synthesis -->
-            <div class="agentw__tool" style="--d:2">
-              <div class="agentw__toolH"><span class="agentw__bullet">●</span> <span class="agentw__toolN">Bash</span><span class="agentw__paren">(triton compile --target sm_90 --autotune)</span></div>
-              <div class="agentw__toolR"><span class="agentw__indent">⎿</span> <span class="agentw__toolT">36 kernels compiled · 4 fused into hot path</span></div>
+              <div class="agentw__toolR"><span class="agentw__indent">⎿</span> <span class="agentw__toolT">ranked 7 compatible engines · selected optimal</span></div>
             </div>
 
             <div class="agentw__tool" style="--d:2">
-              <div class="agentw__toolH"><span class="agentw__bullet">●</span> <span class="agentw__toolN">Verify</span><span class="agentw__paren">(./tests/kernel/numerical.py)</span></div>
-              <div class="agentw__toolR"><span class="agentw__indent">⎿</span> <span class="agentw__toolT"><span class="agentw__ok">0 ulp drift</span> on 10,000 samples · bit-equivalent</span></div>
-            </div>
-
-            <div class="agentw__tool agentw__tool--summary" style="--d:3">
               <div class="agentw__toolH"><span class="agentw__bullet">●</span> <span class="agentw__toolN">Kernel Synthesis</span><span class="agentw__took">(2m 38s)</span></div>
-              <div class="agentw__toolR"><span class="agentw__indent">⎿</span> <span class="agentw__toolT">fused RMSNorm+RoPE · <span class="agentw__up">4.2×</span> faster · 0-ulp drift</span></div>
-            </div>
-
-            <!-- Group 3: config tuning -->
-            <div class="agentw__tool" style="--d:3">
-              <div class="agentw__toolH"><span class="agentw__bullet">●</span> <span class="agentw__toolN">Bench</span><span class="agentw__paren">(smoke=60s, n=200, 4 anchors)</span></div>
-              <div class="agentw__toolR"><span class="agentw__indent">⎿</span> <span class="agentw__toolT">A1: 11,240   <span class="agentw__up">A2: 14,820 ▲</span>   A3: 12,510   A4: 13,990</span></div>
+              <div class="agentw__toolR"><span class="agentw__indent">⎿</span> <span class="agentw__toolT">fused Triton kernel · <span class="agentw__up">4.2×</span> faster · 0-ulp drift</span></div>
             </div>
 
             <div class="agentw__tool" style="--d:3">
-              <div class="agentw__toolH"><span class="agentw__bullet">●</span> <span class="agentw__toolN">Bench</span><span class="agentw__paren">(short=5m, sweep batch × seqs × kv)</span></div>
-              <div class="agentw__toolR"><span class="agentw__indent">⎿</span> <span class="agentw__toolT">8 candidates explored · 1 winner certified</span></div>
-            </div>
-
-            <div class="agentw__tool agentw__tool--summary" style="--d:4">
               <div class="agentw__toolH"><span class="agentw__bullet">●</span> <span class="agentw__toolN">Config Tuning</span><span class="agentw__took">(4m 12s)</span></div>
               <div class="agentw__toolR"><span class="agentw__indent">⎿</span> <span class="agentw__toolT"><span class="agentw__up">+3.4×</span> tok/s · <span class="agentw__up">−62%</span> p99 latency · <span class="agentw__up">94%</span> gpu util</span></div>
             </div>
 
-            <!-- Group 4: validation harness -->
             <div class="agentw__tool" style="--d:4">
-              <div class="agentw__toolH"><span class="agentw__bullet">●</span> <span class="agentw__toolN">Bench</span><span class="agentw__paren">(soak=30m, ramp 10→200 conc)</span></div>
-              <div class="agentw__toolR"><span class="agentw__indent">⎿</span> <span class="agentw__toolT">no memory drift · no NCCL stalls · KV stable</span></div>
-            </div>
-
-            <div class="agentw__tool" style="--d:4">
-              <div class="agentw__toolH"><span class="agentw__bullet">●</span> <span class="agentw__toolN">Run</span><span class="agentw__paren">(./suites/quality.py)</span></div>
-              <div class="agentw__toolR"><span class="agentw__indent">⎿</span> <span class="agentw__toolT">MMLU-Pro <span class="agentw__hi">0.78</span> · GSM8K <span class="agentw__hi">0.89</span> · IFEval <span class="agentw__hi">0.84</span> — <span class="agentw__ok">no regression</span></span></div>
-            </div>
-
-            <div class="agentw__tool" style="--d:4">
-              <div class="agentw__toolH"><span class="agentw__bullet">●</span> <span class="agentw__toolN">Run</span><span class="agentw__paren">(./suites/security.py)</span></div>
-              <div class="agentw__toolR"><span class="agentw__indent">⎿</span> <span class="agentw__toolT">OWASP LLM-01..10 · <span class="agentw__ok">147/147</span> blocked</span></div>
-            </div>
-
-            <div class="agentw__tool agentw__tool--summary" style="--d:5">
               <div class="agentw__toolH"><span class="agentw__bullet">●</span> <span class="agentw__toolN">Validation Harness</span><span class="agentw__took">(1m 47s)</span></div>
               <div class="agentw__toolR"><span class="agentw__indent">⎿</span> <span class="agentw__toolT">load + correctness + security · <span class="agentw__ok">6/6 passed</span></span></div>
             </div>
 
-            <!-- Group 5: write artifacts -->
-            <div class="agentw__tool" style="--d:5">
-              <div class="agentw__toolH"><span class="agentw__bullet">●</span> <span class="agentw__toolN">Write</span><span class="agentw__paren">(./out/r-1842/)</span></div>
-              <div class="agentw__toolR"><span class="agentw__indent">⎿</span> <span class="agentw__toolT">recipe.yaml + docker-compose.yml + helm-chart/ + tuning_report.md</span></div>
-            </div>
-
             <!-- agent message with │ left border -->
-            <div class="agentw__msg" style="--d:6">
+            <div class="agentw__msg" style="--d:5">
               <div class="agentw__msgBar"></div>
               <div class="agentw__msgBody">
                 <p>Your deployment is ready.</p>
                 <p>Endpoint: <span class="agentw__link">api.autoinference.org/v1/deepseek-v3.2-exp</span></p>
-                <p>Throughput envelope: <span class="agentw__hi">14,820 ± 240</span> tok/s <span class="agentw__dim">(95% CI)</span></p>
-                <p>Quality drift vs BF16 reference: <span class="agentw__hi">0.4%</span> <span class="agentw__dim">(under 1% threshold)</span></p>
-                <p>Recipe bundle exported to <span class="agentw__link">./out/r-1842/</span></p>
-                <p>Want me to ship a canary <span class="agentw__dim">(10% rollout)</span>, or roll directly?</p>
+                <p>Want me to ship a canary first, or roll directly?</p>
               </div>
             </div>
 
             <!-- thinking spinner -->
-            <div class="agentw__thinking" style="--d:7">
+            <div class="agentw__thinking" style="--d:6">
               <span class="agentw__think" id="thinkSpinner">✶</span>
               <span class="agentw__thinkT">refining recommendation...</span>
             </div>
