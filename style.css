@@ -2811,6 +2811,20 @@ em.hl-white {
   transition-delay: 3.2s, 4.1s, 3.6s;
 }
 
+/* Modifier — keep the highlighter color but force the TEXT to stay white.
+   Combine with .hl-red (or any variant) to get the highlight pop without
+   recoloring the text. Used on hero "limit of silicon" so the red marker
+   stands out while the words remain crisp white for readability. */
+em.hl-red.hl-keepwhite {
+  color: var(--fg-0) !important;
+}
+[data-reveal].in em.hl-red.hl-keepwhite {
+  /* drop the red text-glow (would tint white text); keep a soft amber halo */
+  text-shadow:
+    0 0 14px rgba(239, 68, 68, 0.32),
+    0 0 1px  rgba(255, 255, 255, 0.35);
+}
+
 /* badge — neutral chip, not orange */
 .badge {
   background: rgba(255, 230, 210, 0.03);
