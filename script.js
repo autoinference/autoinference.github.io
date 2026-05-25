@@ -14,7 +14,8 @@
 
   // build N columns of ASCII rain across the screen width
   if (rainEl) {
-    // ~5x richer vocabulary so lines rarely repeat
+    // Massive vocabulary — verbs + nouns + adjectives so combinations
+    // very rarely repeat. ~85 verbs × ~80 nouns × ~30 templates ≈ 200k possibilities.
     const VERBS = [
       'scan','probe','tune','verify','compile','profile','ramp','cache','rank','fuse',
       'check','warm','sweep','load','init','build','link','allocate','schedule','dispatch',
@@ -22,7 +23,9 @@
       'unroll','vectorize','prefetch','evict','hash','sort','merge','split','balance','route',
       'monitor','trace','sample','throttle','queue','drain','flush','sync','snapshot','restore',
       'replay','capture','emit','ingest','render','validate','certify','attest','audit','mirror',
-      'shadow','refresh','rebalance','recompile','rehash','reorder','realign'
+      'shadow','refresh','rebalance','recompile','rehash','reorder','realign','quantize','calibrate',
+      'inline','splice','rewire','prune','distill','export','import','seed','spawn','await',
+      'detach','attach','pause','resume','tag','untag','assert','negotiate','escalate'
     ];
     const NOUNS = [
       'workload','kernel','config','topology','engine','manifest','bench','graph','pipeline','batch',
@@ -31,14 +34,10 @@
       'channel','partition','shard','fragment','payload','request','frame','layer','head','block',
       'dim','axis','shape','stride','slice','embedding','prompt','token','vocab','span','cursor',
       'frontier','oracle','ledger','attention','mlp','ffn','gate','expert','register','context',
-      'index','catalog','digest','signature','probe','sentinel'
+      'index','catalog','digest','signature','sentinel','snapshot','warmup','prefill','decode',
+      'rollout','quantizer','bandwidth','latency','barrier','semaphore','heap','arena'
     ];
-    const BLOCKS = ['▒','░','▓','█'];
-    const BRAILLE = ['⠋','⠙','⠹','⠸','⠼','⠴','⠦','⠧','⠇','⠏'];
-    const STATUSES = ['ok','done','pass','warn','skip','live','idle'];
-    const BRACKETS = ['[OK]','[--]','<DONE>','[ok]','[pass]'];
-    const PATH_HEADS = ['src','lib','core','agent','tools','cache','out','bin','etc','tmp'];
-    const PATH_TAILS = ['kernel.cu','attn.py','config.yaml','recipe.json','probe.sh','tune.ts','plan.md','run.log','sweep.bin'];
+    const STATUSES = ['ok','done','pass','warn','skip','live','idle','ready','wait','hold'];
     const HEX = '0123456789abcdef';
 
     function mkRng(seed) {
@@ -49,64 +48,68 @@
     function buildLines(seed, lineCount) {
       const rand = mkRng(seed);
       const pick = arr => arr[Math.floor(rand() * arr.length)];
-      const ri  = (max) => Math.floor(rand() * max);
+      const ri = (max) => Math.floor(rand() * max);
 
-      function timestamp() {
+      function ts() {
         return '[' + String(ri(24)).padStart(2,'0') + ':' + String(ri(60)).padStart(2,'0') + ':' + String(ri(60)).padStart(2,'0') + ']';
       }
       function hex(n) { let s = ''; for (let i = 0; i < n; i++) s += HEX[ri(16)]; return s; }
-      function bar() {
-        const w = 14 + ri(8); const f = ri(w);
-        return '▓'.repeat(f) + '░'.repeat(w - f);
-      }
-      function blockRun() {
-        let s = ''; const n = 9 + ri(10);
-        for (let j = 0; j < n; j++) s += pick(BLOCKS);
-        return s;
-      }
+      function bar(w) { const W = w || 10 + ri(6); const f = ri(W); return '▓'.repeat(f) + '░'.repeat(W - f); }
+      function pad2(n) { return String(n).padStart(2, '0'); }
 
-      // 18 distinct templates — combined with 60+ verbs × 60+ nouns =
-      // tens of thousands of unique line possibilities, so repetition is rare
-      const templates = [
-        () => '',                                                          // blank breathing room
-        () => '',
-        () => '',
-        () => '',
-        () => '',
-        () => timestamp(),
-        () => timestamp() + ' ' + pick(VERBS),
-        () => '─'.repeat(14 + ri(12)),
-        () => bar(),
-        () => bar() + '  ' + (ri(100)) + '%',
+      // 30 distinct templates — combined with 85 verbs × 80 nouns ≈ 200k+
+      // unique outputs. Heavily weighted toward blank lines for sparseness.
+      const tpls = [
+        // ~50% blank — visual breathing
+        () => '', () => '', () => '', () => '', () => '', () => '', () => '', () => '',
+        () => '', () => '', () => '', () => '', () => '',
+        // timestamps & rules
+        () => ts(),
+        () => '─'.repeat(8 + ri(6)),
+        () => '┄'.repeat(8 + ri(6)),
+        // tool / result rows
+        () => '● ' + pick(VERBS),
         () => '● ' + pick(VERBS) + ' ' + pick(NOUNS),
-        () => '● ' + pick(VERBS) + '(' + pick(NOUNS) + ')',
         () => '  ⎿ ' + pick(STATUSES),
-        () => '  ⎿ ' + ri(9999) + 'ms',
+        () => '  ⎿ ' + ri(999) + 'ms',
+        () => '  ⎿ ' + (ri(99)) + '.' + pad2(ri(99)) + 'MB',
         () => '  ⎿ ' + pick(NOUNS) + ': ' + pick(STATUSES),
-        () => blockRun(),
-        () => pick(BRAILLE) + ' ' + pick(VERBS) + ' ' + pick(NOUNS) + '...',
-        () => pick(VERBS) + '/' + pick(NOUNS),
-        () => pick(BRACKETS) + ' ' + pick(NOUNS),
-        () => pick(PATH_HEADS) + '/' + pick(PATH_TAILS),
-        () => '0x' + hex(6) + ' ' + pick(VERBS),
-        () => pick(VERBS) + ' → ' + pick(NOUNS),
-        () => '> ' + pick(VERBS) + ' --' + pick(NOUNS),
-        () => pick(NOUNS) + '#' + ri(9999),
-        () => '↳ ' + pick(VERBS) + ' ' + (ri(100)) + '%',
+        // bars / progress
+        () => bar() + ' ' + ri(100) + '%',
+        () => bar(),
+        // file paths + identifiers
+        () => 'src/' + pick(NOUNS) + '.py',
+        () => 'lib/' + pick(NOUNS) + '.cu',
+        () => 'out/' + pick(VERBS) + '-' + ri(9999),
+        () => pick(NOUNS) + '_' + ri(99) + '.bin',
+        // network/hex/version artifacts
+        () => '0x' + hex(6),
+        () => 'sha:' + hex(8),
+        () => 'v' + ri(9) + '.' + ri(99) + '.' + ri(99),
+        () => 'node-' + pad2(ri(64)),
+        () => '10.0.' + ri(255) + '.' + ri(255),
+        // command-like
+        () => '$ ' + pick(VERBS) + ' --' + pick(NOUNS),
+        () => '> ' + pick(VERBS) + ' ' + pick(NOUNS),
+        () => '↳ ' + pick(VERBS) + ' ' + ri(100) + '%',
+        // measurement-like
+        () => pick(NOUNS) + ': ' + (ri(99) + 1) + '.' + ri(9) + 'k',
+        () => 'p' + (50 + ri(50)) + ' = ' + ri(999) + 'ms'
       ];
 
       const lines = [];
       for (let i = 0; i < lineCount; i++) {
-        lines.push(pick(templates)());
+        lines.push(tpls[Math.floor(rand() * tpls.length)]());
       }
       const text = lines.join('\n');
       return text + '\n' + text; // duplicate for seamless loop
     }
 
-    // Fewer columns + wider spacing so they don't visually crowd each other.
-    // 240px per column → 5-7 columns on a typical desktop instead of 10-14.
+    // Significantly fewer columns + much wider per-column slots so there's
+    // clear empty space between them. 380px per slot → 3-5 columns max
+    // on any viewport. Each column body capped to 140px so it never spills.
     const vw = window.innerWidth || 1200;
-    const numCols = Math.max(4, Math.min(7, Math.floor(vw / 240)));
+    const numCols = Math.max(3, Math.min(5, Math.floor(vw / 380)));
     const colWidth = 100 / numCols;
 
     for (let i = 0; i < numCols; i++) {
@@ -115,12 +118,12 @@
       // center each column inside its allotted slot for even spacing
       col.style.left = ((i + 0.5) * colWidth) + '%';
       col.style.transform = 'translateX(-50%)';
-      const duration = 30 + (i * 5.5) % 26 + Math.random() * 12;
+      const duration = 38 + (i * 7) % 30 + Math.random() * 14;
       const delay = -Math.random() * 30;
       col.style.animation = 'preRainScroll ' + duration.toFixed(1) + 's linear infinite';
       col.style.animationDelay = delay.toFixed(1) + 's';
-      // each column gets a wildly different seed so content is highly distinct
-      col.textContent = buildLines(13579 + i * 9737 + Math.floor(Math.random() * 100000), 110);
+      // wildly distinct seed per column so the procedural content diverges
+      col.textContent = buildLines(13579 + i * 9737 + Math.floor(Math.random() * 100000), 140);
       rainEl.appendChild(col);
     }
   }
@@ -505,66 +508,93 @@
   function buildRain(elId, lineCount, seed) {
     const el = document.getElementById(elId);
     if (!el) return;
-    const verbs   = ['scan', 'probe', 'tune', 'verify', 'compile', 'profile', 'ramp', 'cache', 'rank', 'fuse', 'check', 'warm', 'sweep'];
-    const nouns   = ['workload', 'kernel', 'config', 'topology', 'engine', 'manifest', 'bench', 'graph', 'pipeline', 'batch'];
-    const blocks  = ['▒', '░', '▓', '█'];
-    const braille = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'];
-    const rules   = '─'.repeat(28);
-    const blank   = '';
+    // Same expanded vocabulary as the preloader rain
+    const verbs = [
+      'scan','probe','tune','verify','compile','profile','ramp','cache','rank','fuse',
+      'check','warm','sweep','load','init','build','link','allocate','schedule','dispatch',
+      'broadcast','gather','reduce','partition','replicate','materialize','optimize','fold',
+      'unroll','vectorize','prefetch','evict','hash','sort','merge','split','balance','route',
+      'monitor','trace','sample','throttle','queue','drain','flush','sync','snapshot','restore',
+      'replay','capture','emit','ingest','render','validate','certify','attest','audit','mirror',
+      'shadow','refresh','rebalance','recompile','rehash','reorder','realign','quantize','calibrate',
+      'inline','splice','rewire','prune','distill','export','import','seed','spawn','await',
+      'detach','attach','pause','resume','tag','untag','assert','negotiate','escalate'
+    ];
+    const nouns = [
+      'workload','kernel','config','topology','engine','manifest','bench','graph','pipeline','batch',
+      'runtime','recipe','tensor','allocator','scheduler','planner','executor','anchor','lattice',
+      'vertex','node','cluster','fabric','mesh','ring','tree','dag','queue','buffer','stream',
+      'channel','partition','shard','fragment','payload','request','frame','layer','head','block',
+      'dim','axis','shape','stride','slice','embedding','prompt','token','vocab','span','cursor',
+      'frontier','oracle','ledger','attention','mlp','ffn','gate','expert','register','context',
+      'index','catalog','digest','signature','sentinel','warmup','prefill','decode','rollout',
+      'quantizer','bandwidth','latency','barrier','semaphore','heap','arena'
+    ];
+    const statuses = ['ok','done','pass','warn','skip','live','idle','ready','wait','hold'];
+    const blocks = ['▒','░','▓','█'];
+    const HEX = '0123456789abcdef';
 
     // simple seeded RNG for stable, reproducible columns
     let s = seed >>> 0;
-    function rand() {
-      s = (s * 1664525 + 1013904223) >>> 0;
-      return s / 4294967296;
-    }
+    function rand() { s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296; }
     function pick(arr) { return arr[Math.floor(rand() * arr.length)]; }
+    function ri(max) { return Math.floor(rand() * max); }
+    function ts() {
+      return '[' + String(ri(24)).padStart(2,'0') + ':' + String(ri(60)).padStart(2,'0') + ':' + String(ri(60)).padStart(2,'0') + ']';
+    }
+    function hex(n) { let o = ''; for (let i = 0; i < n; i++) o += HEX[ri(16)]; return o; }
+    function bar(w) { const W = w || 10 + ri(6); const f = ri(W); return '▓'.repeat(f) + '░'.repeat(W - f); }
+    function pad2(n) { return String(n).padStart(2, '0'); }
+    function blockRun() { let o = ''; const n = 8 + ri(8); for (let i = 0; i < n; i++) o += pick(blocks); return o; }
 
-    function bar() {
-      const filled = Math.floor(rand() * 24);
-      const empty  = 24 - filled;
-      return '▓'.repeat(filled) + '░'.repeat(empty) + '  ' + (filled * 4) + '%';
-    }
-    function timestamp() {
-      const hh = String(13 + Math.floor(rand() * 11)).padStart(2, '0');
-      const mm = String(Math.floor(rand() * 60)).padStart(2, '0');
-      const ss = String(Math.floor(rand() * 60)).padStart(2, '0');
-      return '[' + hh + ':' + mm + ':' + ss + ']';
-    }
-    function tool()    { return '● ' + pick(verbs) + ' ' + pick(nouns); }
-    function result()  { return '  ⎿ ok'; }
-    function ascii()   {
-      let out = '';
-      const n = 12 + Math.floor(rand() * 8);
-      for (let i = 0; i < n; i++) out += pick(blocks);
-      return out;
-    }
-    function spin()    { return pick(braille) + ' ' + pick(verbs) + '...'; }
-    function prompt()  { return '$ autoinference ' + pick(verbs); }
-
-    const generators = [
-      blank, blank, blank, blank,    // lots of breathing room
-      timestamp,
-      rules,
-      bar,
-      tool, result,
-      ascii,
-      spin,
-      prompt,
+    const tpls = [
+      // ~50% blank for breathing room
+      () => '', () => '', () => '', () => '', () => '', () => '', () => '', () => '',
+      () => '', () => '', () => '', () => '', () => '',
+      // timestamps, rules
+      () => ts(),
+      () => '─'.repeat(8 + ri(6)),
+      () => '┄'.repeat(8 + ri(6)),
+      // tool / result rows
+      () => '● ' + pick(verbs),
+      () => '● ' + pick(verbs) + ' ' + pick(nouns),
+      () => '  ⎿ ' + pick(statuses),
+      () => '  ⎿ ' + ri(999) + 'ms',
+      () => '  ⎿ ' + (ri(99)) + '.' + pad2(ri(99)) + 'MB',
+      () => '  ⎿ ' + pick(nouns) + ': ' + pick(statuses),
+      // bars / progress
+      () => bar() + ' ' + ri(100) + '%',
+      () => blockRun(),
+      // paths + identifiers
+      () => 'src/' + pick(nouns) + '.py',
+      () => 'lib/' + pick(nouns) + '.cu',
+      () => 'out/' + pick(verbs) + '-' + ri(9999),
+      () => pick(nouns) + '_' + ri(99) + '.bin',
+      // network/hex/version
+      () => '0x' + hex(6),
+      () => 'sha:' + hex(8),
+      () => 'v' + ri(9) + '.' + ri(99) + '.' + ri(99),
+      () => 'node-' + pad2(ri(64)),
+      () => '10.0.' + ri(255) + '.' + ri(255),
+      // command-like
+      () => '$ autoinference ' + pick(verbs),
+      () => '> ' + pick(verbs) + ' ' + pick(nouns),
+      () => '↳ ' + pick(verbs) + ' ' + ri(100) + '%',
+      // measurement-like
+      () => pick(nouns) + ': ' + (ri(99) + 1) + '.' + ri(9) + 'k',
+      () => 'p' + (50 + ri(50)) + ' = ' + ri(999) + 'ms'
     ];
 
     const lines = [];
     for (let i = 0; i < lineCount; i++) {
-      const g = generators[Math.floor(rand() * generators.length)];
-      lines.push(typeof g === 'function' ? g() : '');
+      lines.push(tpls[Math.floor(rand() * tpls.length)]());
     }
-    // duplicate the content so the seamless loop works on the CSS translateY(-50%) animation
     const text = lines.join('\n');
     el.textContent = text + '\n' + text;
   }
 
-  buildRain('bgRainL', 90, 12345);
-  buildRain('bgRainR', 90, 67890);
+  buildRain('bgRainL', 130, 12345);
+  buildRain('bgRainR', 130, 67890);
 
   /* ---------------------------------------------------------------------
      Agent widget spinner (Claude Code CLI braille cycle)

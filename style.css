@@ -3700,10 +3700,10 @@ body.preloading { overflow: hidden; }
   top: 0;
   margin: 0;
   padding: 0;
-  max-width: 180px;          /* hard cap so columns can't visually run into each other */
+  max-width: 140px;          /* narrow column body — keeps a real visible gap to the next column */
   font-family: 'JetBrains Mono', ui-monospace, monospace;
   font-size: 11px;
-  line-height: 2.0;          /* more vertical breathing room (was 1.7) */
+  line-height: 2.6;          /* generous vertical breathing room (was 2.0) */
   color: var(--orange-400);
   opacity: 0.22;
   text-shadow: 0 0 6px rgba(249, 115, 22, 0.4);
