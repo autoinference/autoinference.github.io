@@ -257,6 +257,20 @@
     return REVEAL_START_DELAY + (Math.max(0, wc - 1)) * WORD_STAGGER + WORD_DURATION;
   }
 
+  // Title-class ancestors that should get a trailing blinking cursor
+  const TITLE_CLASSES = ['hero__title', 'section__title', 'cta__title'];
+
+  function findTitleAncestor(el) {
+    let cur = el.parentElement;
+    while (cur && cur !== document.body) {
+      for (let i = 0; i < TITLE_CLASSES.length; i++) {
+        if (cur.classList && cur.classList.contains(TITLE_CLASSES[i])) return cur;
+      }
+      cur = cur.parentElement;
+    }
+    return null;
+  }
+
   function revealEl(el) {
     if (el.dataset.revealed === '1') return;
     if (!el.dataset.scrambleText) el.dataset.scrambleText = el.textContent;
@@ -284,16 +298,22 @@
     void el.offsetWidth;
     el.classList.add('rv-in');
 
-    // If this element is the LAST [data-scramble] inside the hero title,
-    // schedule the blinking cursor to fade in right after the final word settles.
-    if (parent && parent.classList.contains('hero__title')) {
-      const sibs = parent.querySelectorAll(':scope > [data-scramble]');
-      if (sibs[sibs.length - 1] === el) {
-        const cursor = document.getElementById('heroCursor');
-        if (cursor) {
-          const total = seqDelay + revealDurationFor(el);
-          setTimeout(() => cursor.classList.add('in'), Math.max(0, total - 200));
+    // Cursor: if this element is the LAST [data-scramble] in its title ancestor,
+    // append a blinking orange cursor at the end of the title and trigger it.
+    const titleEl = findTitleAncestor(el);
+    if (titleEl) {
+      const allInTitle = titleEl.querySelectorAll('[data-scramble]');
+      const isLast = allInTitle[allInTitle.length - 1] === el;
+      if (isLast) {
+        let cursor = titleEl.querySelector(':scope > .line-cursor');
+        if (!cursor) {
+          cursor = document.createElement('span');
+          cursor.className = 'line-cursor';
+          cursor.setAttribute('aria-hidden', 'true');
+          titleEl.appendChild(cursor);
         }
+        const total = seqDelay + revealDurationFor(el);
+        setTimeout(function () { cursor.classList.add('in'); }, Math.max(0, total - 200));
       }
     }
   }
