@@ -2351,7 +2351,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
    ========================================================================= */
 
 .agentw {
-  background: linear-gradient(180deg, #050505, #000000);
+  background: #000000 !important;
   border: 1px solid rgba(255, 230, 210, 0.08);
   border-radius: 12px;
   box-shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.85);
@@ -3906,7 +3906,7 @@ body.preloading { overflow: hidden; }
 /* terminal-style MCP demo widget */
 .mcp-demo {
   margin-top: 36px;
-  background: linear-gradient(180deg, #050505, #000000);
+  background: #000000 !important;
   border: 1px solid rgba(255, 230, 210, 0.08);
   border-radius: 12px;
   overflow: hidden;
