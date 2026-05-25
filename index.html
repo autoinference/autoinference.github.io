@@ -115,8 +115,15 @@
         so your GPUs run at the <em class="hl-red hl-keepwhite">limit of silicon</em>.
       </p>
 
-      <!-- CLI install card (Factory.ai pattern) -->
+      <!-- CLI install card — terminal-window aesthetic -->
       <div class="install-hero" data-reveal id="install">
+        <div class="install-hero__chrome">
+          <span class="mock__dot mock__dot--r"></span>
+          <span class="mock__dot mock__dot--y"></span>
+          <span class="mock__dot mock__dot--g"></span>
+          <span class="install-hero__chromeT">autoinference &middot; install</span>
+        </div>
+
         <div class="install-hero__tabs" role="tablist">
           <button class="install-tab active" data-tab="skill" role="tab">skill</button>
           <button class="install-tab" data-tab="pip" role="tab">pip</button>
@@ -126,14 +133,15 @@
           <button class="install-tab" data-tab="cargo" role="tab">cargo</button>
           <button class="install-tab" data-tab="docker" role="tab">docker</button>
         </div>
+
         <div class="install-hero__body">
-          <code class="install-cmd" data-cmd="skill">$ npx skill add @autoinference/skill</code>
-          <code class="install-cmd" data-cmd="pip" hidden>$ pip install autoinference</code>
-          <code class="install-cmd" data-cmd="uv" hidden>$ uv add autoinference</code>
-          <code class="install-cmd" data-cmd="brew" hidden>$ brew install autoinference/tap/autoinference</code>
-          <code class="install-cmd" data-cmd="npm" hidden>$ npm install autoinference</code>
-          <code class="install-cmd" data-cmd="cargo" hidden>$ cargo add autoinference</code>
-          <code class="install-cmd" data-cmd="docker" hidden>$ docker pull autoinference/autoinference</code>
+          <code class="install-cmd" data-cmd="skill"><span class="install-prompt">$</span>npx skill add @autoinference/skill</code>
+          <code class="install-cmd" data-cmd="pip" hidden><span class="install-prompt">$</span>pip install autoinference</code>
+          <code class="install-cmd" data-cmd="uv" hidden><span class="install-prompt">$</span>uv add autoinference</code>
+          <code class="install-cmd" data-cmd="brew" hidden><span class="install-prompt">$</span>brew install autoinference/tap/autoinference</code>
+          <code class="install-cmd" data-cmd="npm" hidden><span class="install-prompt">$</span>npm install autoinference</code>
+          <code class="install-cmd" data-cmd="cargo" hidden><span class="install-prompt">$</span>cargo add autoinference</code>
+          <code class="install-cmd" data-cmd="docker" hidden><span class="install-prompt">$</span>docker pull autoinference/autoinference</code>
           <button class="install-copy" id="installCopy" aria-label="Copy install command">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" width="13" height="13"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
             <span>copy</span>

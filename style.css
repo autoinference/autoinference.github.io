@@ -1471,46 +1471,67 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .badge__text { font-family: var(--font-mono); font-size: 12.5px; }
 
 /* ----- CLI install card in hero (Factory.ai pattern) ----- */
+/* ----- install hero — terminal-window aesthetic (chrome + body) ----- */
 .install-hero {
-  max-width: 620px;
+  max-width: 680px;
   margin: 0 auto 32px;
-  background: linear-gradient(180deg, rgba(20,20,32,0.92), rgba(11,11,20,0.96));
-  border: 1px solid var(--border-2);
-  border-radius: 14px;
+  background: linear-gradient(180deg, #050505, #000000);
+  border: 1px solid rgba(255, 230, 210, 0.08);
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: var(--shadow-2);
+  box-shadow: 0 30px 80px -30px rgba(0,0,0,0.85);
   text-align: left;
 }
+
+/* macOS-style chrome bar with traffic-light dots + subtitle */
+.install-hero__chrome {
+  display: flex; align-items: center; gap: 8px;
+  padding: 11px 16px;
+  background: rgba(255, 230, 210, 0.02);
+  border-bottom: 1px solid rgba(255, 230, 210, 0.05);
+}
+.install-hero__chromeT {
+  margin-left: 10px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--fg-3);
+  letter-spacing: 0.01em;
+}
+
+/* package-manager tab strip — sits between chrome and body */
 .install-hero__tabs {
   display: flex;
-  border-bottom: 1px solid var(--border);
-  background: rgba(0,0,0,0.3);
+  border-bottom: 1px solid rgba(255, 230, 210, 0.05);
+  background: rgba(0, 0, 0, 0.4);
   overflow-x: auto;
   scrollbar-width: none;
 }
 .install-hero__tabs::-webkit-scrollbar { display: none; }
 .install-tab {
-  padding: 10px 16px;
+  padding: 11px 18px;
   font-family: var(--font-mono);
-  font-size: 12px; font-weight: 600;
+  font-size: 12px; font-weight: 500;
   color: var(--fg-3);
   border: none; background: none;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: color 0.15s ease, background 0.15s ease, border-bottom-color 0.15s ease;
   border-bottom: 2px solid transparent;
   white-space: nowrap;
   letter-spacing: 0.01em;
 }
 .install-tab:hover { color: var(--fg-1); }
 .install-tab.active {
-  color: var(--cyan-400);
-  border-bottom-color: var(--cyan-400);
-  background: rgba(34,211,238,0.05);
+  color: var(--orange-400);
+  border-bottom-color: var(--orange-400);
+  background: transparent;
+  font-weight: 600;
 }
+
+/* terminal body — generous padding, prompt + command + copy */
 .install-hero__body {
   position: relative;
-  padding: 14px 18px;
-  display: flex; align-items: center; gap: 12px;
+  padding: 22px 24px;
+  display: flex; align-items: center; gap: 14px;
 }
 .install-cmd {
   flex: 1;
@@ -1523,31 +1544,45 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   padding: 0;
   scrollbar-width: none;
   font-weight: 500;
-  letter-spacing: -0.005em;
+  letter-spacing: -0.003em;
+  line-height: 1.5;
+  display: flex; align-items: baseline; gap: 12px;
+  min-width: 0;
 }
 .install-cmd::-webkit-scrollbar { display: none; }
 .install-cmd[hidden] { display: none; }
-.install-cmd::before {
-  content: '';
-  display: inline-block; width: 6px; height: 6px; border-radius: 50%;
-  background: var(--green-400);
-  box-shadow: 0 0 6px rgba(52,211,153,0.6);
-  margin-right: 10px; vertical-align: middle;
+/* green terminal $ prompt with soft phosphor glow */
+.install-prompt {
+  color: #00C244;
+  font-weight: 700;
+  text-shadow: 0 0 8px rgba(0, 194, 68, 0.45);
+  flex-shrink: 0;
+  font-size: 15px;
 }
+
 .install-copy {
   display: inline-flex; align-items: center; gap: 6px;
-  padding: 6px 11px;
-  background: var(--surface-2);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  color: var(--fg-2);
+  padding: 7px 12px;
+  background: rgba(255, 230, 210, 0.04);
+  border: 1px solid rgba(255, 230, 210, 0.08);
+  border-radius: 7px;
+  color: var(--fg-3);
   font-family: var(--font-mono);
-  font-size: 11px; font-weight: 600;
+  font-size: 11px; font-weight: 500;
   flex-shrink: 0;
-  transition: all 0.15s ease;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
 }
-.install-copy:hover { background: var(--surface-3); color: var(--fg-0); }
-.install-copy.copied { color: var(--green-400); border-color: rgba(52,211,153,0.3); }
+.install-copy:hover {
+  background: rgba(217, 119, 6, 0.08);
+  border-color: rgba(217, 119, 6, 0.35);
+  color: var(--orange-400);
+}
+.install-copy.copied {
+  color: #00C244;
+  border-color: rgba(0, 194, 68, 0.45);
+  background: rgba(0, 194, 68, 0.08);
+}
 
 /* ----- logo grid (structured engines/hardware/runtimes) ----- */
 .logobar { padding: 60px 0 50px; }
@@ -2613,17 +2648,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .delta--up   { color: var(--amber-400); }
 .delta--down { color: var(--orange-400); }
 
-/* install copy / install tabs — warm */
-.install-tab.active {
-  color: var(--orange-400);
-  border-bottom-color: var(--orange-400);
-  background: rgba(249,115,22,0.05);
-}
-.install-cmd::before {
-  background: var(--orange-400);
-  box-shadow: 0 0 6px rgba(249,115,22,0.6);
-}
-.install-copy.copied { color: var(--green-400); border-color: rgba(74,222,128,0.3); }
+/* install hero — warm theme baked into the base, nothing to override here */
 
 /* hero terminal float--br metric color */
 .hero__terminal .float--br .float__metric span { color: var(--amber-400); }
@@ -2882,31 +2907,7 @@ em.hl-keepwhite .rv-w {
 }
 .badge__text { color: var(--fg-3); }
 
-/* install card — subtler, less brittle accent */
-.install-hero {
-  background: #1B1714;
-  border: 1px solid rgba(255, 230, 210, 0.08);
-  box-shadow: 0 1px 0 rgba(255,230,210,0.04) inset, 0 20px 50px -20px rgba(0,0,0,0.6);
-}
-.install-hero__tabs {
-  background: rgba(0, 0, 0, 0.15);
-  border-bottom-color: rgba(255, 230, 210, 0.06);
-}
-.install-tab { color: var(--fg-3); font-weight: 500; }
-.install-tab:hover { color: var(--fg-1); }
-.install-tab.active {
-  color: var(--fg-0);
-  border-bottom-color: var(--orange-400);
-  background: transparent;
-}
-.install-cmd { color: var(--fg-1); font-weight: 400; }
-.install-cmd::before { background: var(--orange-400); box-shadow: none; }
-.install-copy {
-  background: rgba(255, 230, 210, 0.04);
-  border-color: rgba(255, 230, 210, 0.08);
-  color: var(--fg-3);
-}
-.install-copy:hover { background: rgba(255, 230, 210, 0.08); color: var(--fg-1); }
+/* install hero — final aesthetic now lives in the base ruleset above */
 
 /* hero meta — neutral */
 .hero__meta {

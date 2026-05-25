@@ -649,7 +649,10 @@
     copyBtn.addEventListener('click', async () => {
       const visible = document.querySelector('.install-cmd:not([hidden])');
       if (!visible) return;
-      const text = visible.textContent.replace(/^\$\s*/, '').trim();
+      // strip the .install-prompt $ span (and any plain leading $) before copying
+      const clone = visible.cloneNode(true);
+      clone.querySelectorAll('.install-prompt').forEach(el => el.remove());
+      const text = clone.textContent.replace(/^\$\s*/, '').trim();
       try {
         await navigator.clipboard.writeText(text);
         copyBtn.classList.add('copied');
