@@ -4202,4 +4202,200 @@ body.preloading { overflow: hidden; }
 }
 .termx::after { display: none; }
 
+/* ============================================================================
+   MOBILE-FIRST RESPONSIVE PASS
+   Consolidated phone/tablet refinements. Existing breakpoints in this file
+   handle most desktop→tablet transitions; this block fills the gaps for
+   phone widths (≤640px and ≤420px) — section spacing, typography scale,
+   widget paddings, touch targets, and overflow-prone elements.
+   ============================================================================ */
+
+@media (max-width: 640px) {
+  /* ---- Layout containers ---------------------------------------------- */
+  .container { padding-left: 18px; padding-right: 18px; }
+
+  .section,
+  .section--tight,
+  .section--how,
+  .section--perf,
+  .section--webapp,
+  .section--mcp,
+  .section--validation,
+  .section--install { padding-top: 64px; padding-bottom: 64px; }
+
+  /* ---- Typography scale ----------------------------------------------- */
+  .hero__title { font-size: clamp(32px, 9vw, 44px); line-height: 1.08; }
+  .section__title { font-size: clamp(22px, 6vw, 30px); line-height: 1.15; }
+  .hero__sub { font-size: 15px; line-height: 1.55; }
+
+  /* ---- Hero CTA + meta ------------------------------------------------ */
+  .hero__cta { flex-direction: column; gap: 10px; align-items: stretch; }
+  .hero__cta .btn { width: 100%; justify-content: center; padding: 14px 18px; }
+  .hero__meta {
+    display: flex; flex-wrap: wrap; gap: 8px 18px;
+    padding: 10px 16px;
+    font-size: 12px;
+  }
+
+  /* ---- Nav (mobile bar a little tighter) ----------------------------- */
+  .nav__inner { padding-top: 10px; padding-bottom: 10px; }
+  .brand-name { font-size: 13px !important; }
+  .brand-ver { font-size: 10px !important; padding: 1px 7px !important; }
+  .nav__cta .btn--ghost { display: none; } /* only the primary CTA stays */
+
+  /* ---- Hero install card --------------------------------------------- */
+  .install-hero { max-width: 100%; }
+  .install-hero__chrome { padding: 10px 14px; }
+  .install-hero__chromeT { font-size: 10.5px; margin-left: 8px; }
+  .install-hero__body { padding: 16px 16px; gap: 10px; }
+  .install-cmd { font-size: 13px; }
+  .install-prompt { font-size: 14px; }
+  .install-tab { padding: 10px 14px; font-size: 11.5px; }
+  .install-copy { padding: 6px 10px; font-size: 10.5px; }
+
+  /* ---- Hero agent widget --------------------------------------------- */
+  .agentw { border-radius: 12px; }
+  .agentw__chrome { padding: 10px 14px; gap: 6px; }
+  .agentw__chrome .agentw__star { font-size: 13px; }
+  .agentw__name { font-size: 12px; }
+  .agentw__ver { font-size: 10px; padding: 1px 6px; }
+  .agentw__chromeR { font-size: 10.5px; gap: 6px; }
+  .agentw__body { padding: 16px 14px !important; font-size: 11.5px !important; min-height: auto !important; line-height: 1.6; }
+  .agentw__cmd { font-size: 12px; }
+
+  /* ---- Hide hero float widgets on mobile (they overlap the agent body) */
+  .hero__terminal .float--tl,
+  .hero__terminal .float--br,
+  .float--mid-r,
+  .float--mid-l { display: none; }
+
+  /* ---- Pillars: stack 1 col on phone -------------------------------- */
+  .pillars { grid-template-columns: 1fr !important; gap: 14px; }
+  .pillar { padding: 22px 20px; }
+
+  /* ---- How-it-works code blocks (already stacks at 1000px) ---------- */
+  .hstep { padding: 20px 18px; }
+  .hstep__copy { font-size: 13px; min-height: 0 !important; /* drop the 3-line reserve on mobile */ }
+  .hstep .codeblock pre { font-size: 12px; padding: 14px 16px !important; }
+  .codeblock__head { padding: 10px 14px; }
+
+  /* ---- Performance ASCII bar widget --------------------------------- */
+  .ascii-perf__chrome { padding: 10px 18px; }
+  .ascii-perf__head { padding: 18px 18px 0 18px; margin-bottom: 12px; }
+  .ascii-perf__rows { padding-left: 18px; padding-right: 18px; }
+  .ascii-perf__foot { padding: 0 18px 18px 18px; }
+  .ascii-perf__title { font-size: 12px; }
+  .ascii-perf__sub { font-size: 10.5px; }
+
+  /* ---- Dashboard mockup: flatten 3D tilt + hide floating callouts --- */
+  .mock--dashwarm,
+  .dashwrap { transform: none !important; }
+  .float--dashwarm-tl,
+  .float--dashwarm-tr,
+  .float--dashwarm-br,
+  .float--dashwarm-bl { display: none; }
+  .mock__topbar-actions { gap: 6px; }
+  .mock__topbar-actions .chip { padding: 6px 10px; font-size: 11px; }
+  .statcard { padding: 10px 12px; }
+  .statcard__value { font-size: 18px; }
+
+  /* ---- MCP section --------------------------------------------------- */
+  .mcp-npx { padding: 14px 14px; }
+  .mcp-npx__head { margin-bottom: 12px; }
+  .mcp-npx__tag { font-size: 10.5px; }
+  .mcp-npx__variantLabel { font-size: 10px; }
+  .mcp-npx__variantPkg { font-size: 10.5px; }
+  .mcp-npx__cmd { font-size: 12px; padding: 11px 12px; }
+  .mcp-tile { padding: 16px 14px; gap: 8px; }
+  .mcp-tile__cmd { padding: 8px 8px 8px 10px; }
+  .mcp-tile__cmdT { font-size: 11px; }
+  .mcp-demo__body { padding: 16px 14px !important; font-size: 11.5px !important; line-height: 1.65; }
+  .mcp-demo__chrome { padding: 10px 14px; }
+  .mcp-demo__t { font-size: 10.5px; margin-left: 6px; }
+  .mcp-demo__call,
+  .mcp-demo__result { font-size: 11px; }
+  .mcp-demo__args { font-size: 10.5px; }
+  .mcp-demo__agentBody { font-size: 12.5px !important; line-height: 1.5; }
+  .mcp-registries { gap: 6px; justify-content: flex-start; }
+  .mcp-registries .lg-chip { font-size: 11px; padding: 5px 10px; }
+
+  /* ---- Logo bar (engines / hardware / runtimes) --------------------- */
+  .logobar { padding: 40px 0 30px; }
+  .logogrid__row { gap: 6px; }
+  .lg-chip { font-size: 11px; padding: 5px 10px; gap: 6px; }
+
+  /* ---- Install grid: ensure single column + compact ----------------- */
+  .installgrid { grid-template-columns: minmax(0, 1fr) !important; gap: 8px; }
+  .installcard { padding: 12px 14px; }
+  .installcard__l { min-width: 0; flex: 0 0 auto; }
+  .installcard__cmd { padding: 6px 6px 6px 10px; }
+  .installcard__cmd code { font-size: 11.5px; }
+
+  /* ---- Validation testterm + tcards --------------------------------- */
+  .testterm__body { padding: 18px 18px !important; }
+  .tx-rule { font-size: 10px; }
+  .tcards { grid-template-columns: 1fr !important; gap: 12px; }
+  .tcard { padding: 18px 16px; }
+
+  /* ---- Waitlist CTA card -------------------------------------------- */
+  .cta { padding: 70px 0; }
+  .cta__card { padding: 36px 22px !important; }
+  .cta__title { font-size: 28px !important; line-height: 1.15; }
+  .cta__form { flex-direction: column; gap: 10px; }
+  .cta__form .btn,
+  .cta__form input[type="email"] { width: 100%; }
+
+  /* ---- Code blocks (everywhere): readable on phone ------------------ */
+  .codeblock pre { font-size: 12px; padding: 14px 16px; line-height: 1.65; }
+  .codeblock__head { padding: 10px 14px; }
+
+  /* ---- Touch targets: copy buttons stay clickable ------------------- */
+  .copybtn { width: 32px; height: 32px; }
+  .install-copy { min-height: 32px; }
+
+  /* ---- Footer -------------------------------------------------------- */
+  .footer { padding: 60px 0 40px; }
+  .footer__inner { gap: 32px; }
+  .footer__cols { gap: 22px; }
+}
+
+/* small phones (iPhone SE 1st-gen / fold devices) */
+@media (max-width: 420px) {
+  .container { padding-left: 14px; padding-right: 14px; }
+  .hero__title { font-size: clamp(28px, 8.5vw, 36px); }
+  .section__title { font-size: clamp(20px, 5.5vw, 26px); }
+
+  /* even tighter sections */
+  .section,
+  .section--tight,
+  .section--how,
+  .section--perf,
+  .section--webapp,
+  .section--mcp,
+  .section--validation,
+  .section--install { padding-top: 52px; padding-bottom: 52px; }
+
+  /* nav primary CTA stays visible, ghost was already hidden at 640px */
+  .nav__cta .btn--primary { padding: 8px 12px; font-size: 12.5px; }
+  .nav__cta .btn--primary .btn__arrow { display: none; }
+
+  /* very narrow code blocks — let long URLs wrap */
+  .codeblock pre,
+  .installcard__cmd code { word-break: break-word; white-space: pre-wrap !important; }
+
+  /* mcp demo args wrap aggressively */
+  .mcp-demo__args { word-break: break-all; }
+}
+
+/* Reduced-motion users (system preference) — disable big animations */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .float__icon { animation: none; }
+  .preloader__bar-fill { animation-duration: 0.6s !important; }
+}
+
 
