@@ -118,7 +118,8 @@
       <!-- CLI install card (Factory.ai pattern) -->
       <div class="install-hero" data-reveal id="install">
         <div class="install-hero__tabs" role="tablist">
-          <button class="install-tab active" data-tab="pip" role="tab">pip</button>
+          <button class="install-tab active" data-tab="skill" role="tab">skill</button>
+          <button class="install-tab" data-tab="pip" role="tab">pip</button>
           <button class="install-tab" data-tab="uv" role="tab">uv</button>
           <button class="install-tab" data-tab="brew" role="tab">brew</button>
           <button class="install-tab" data-tab="npm" role="tab">npm</button>
@@ -126,7 +127,8 @@
           <button class="install-tab" data-tab="docker" role="tab">docker</button>
         </div>
         <div class="install-hero__body">
-          <code class="install-cmd" data-cmd="pip">$ pip install autoinference</code>
+          <code class="install-cmd" data-cmd="skill">$ npx skill add @autoinference/skill</code>
+          <code class="install-cmd" data-cmd="pip" hidden>$ pip install autoinference</code>
           <code class="install-cmd" data-cmd="uv" hidden>$ uv add autoinference</code>
           <code class="install-cmd" data-cmd="brew" hidden>$ brew install autoinference/tap/autoinference</code>
           <code class="install-cmd" data-cmd="npm" hidden>$ npm install autoinference</code>
@@ -336,7 +338,7 @@
     <div class="container">
       <div class="eyebrow" data-reveal>// the_platform</div>
       <h2 class="section__title" data-reveal>
-        Four agents. One <span class="grad-text" data-scramble>autonomous pipeline</span>
+        Multiple agents. One <span class="grad-text" data-scramble>autonomous pipeline</span>
       </h2>
       <p class="section__lede" data-reveal>
         Each stage is owned by a specialized agent. Together they take you from
