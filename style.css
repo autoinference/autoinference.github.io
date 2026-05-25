@@ -3835,25 +3835,21 @@ body.preloading { overflow: hidden; }
   display: flex; align-items: center; gap: 12px;
   margin-bottom: 2px;
 }
+/* All four logos fill their cell at the same size (matches Codex's edge-to-edge look) */
 .mcp-tile__logo {
   width: 38px; height: 38px;
   display: inline-flex; align-items: center; justify-content: center;
-  background: rgba(255, 230, 210, 0.04);
-  border: 1px solid rgba(255, 230, 210, 0.07);
-  border-radius: 9px;
-  flex-shrink: 0;
-}
-.mcp-tile__logo img { display: block; opacity: 0.95; }
-/* Codex SVG carries its own white tile — let it fill the logo box edge-to-edge */
-.mcp-tile__logo--cx {
   background: transparent;
   border: none;
-  padding: 0;
+  border-radius: 9px;
+  flex-shrink: 0;
   overflow: hidden;
 }
-.mcp-tile__logo--cx img {
+.mcp-tile__logo img {
+  display: block;
   width: 100%;
   height: 100%;
+  object-fit: contain;
   opacity: 1;
 }
 .mcp-tile__glyph {
@@ -3875,29 +3871,30 @@ body.preloading { overflow: hidden; }
   font-family: var(--font-mono);
   line-height: 1.5;
 }
-/* Primary command display per tile — clickable to copy, whole command visible */
+/* Per-tile install command — flex row with the cmd text + a copy-icon button */
 .mcp-tile__cmd {
   margin-top: auto;
-  padding: 11px 12px;
+  padding: 9px 9px 9px 12px;
   background: rgba(0, 0, 0, 0.45);
   border: 1px solid rgba(255, 230, 210, 0.06);
   border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.mcp-tile__cmd:hover {
+  border-color: rgba(217, 119, 6, 0.25);
+}
+.mcp-tile__cmdT {
+  flex: 1;
   font-family: var(--font-mono);
   font-size: 11.5px;
   color: var(--fg-0);
   line-height: 1.5;
   white-space: normal;
   word-break: break-word;
-  cursor: pointer;
-  transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
-}
-.mcp-tile__cmd:hover {
-  border-color: rgba(217, 119, 6, 0.40);
-  background: rgba(0, 0, 0, 0.6);
-}
-.mcp-tile__cmd.copied {
-  border-color: rgba(0, 194, 68, 0.55);
-  background: rgba(0, 194, 68, 0.08);
+  min-width: 0;
 }
 .mcp-tile__prompt {
   color: #00C244;            /* terminal green $ — matches universal install card */
@@ -4114,5 +4111,60 @@ body.preloading { overflow: hidden; }
   color: var(--fg-3);
   margin-right: 4px;
 }
+
+/* ==========================================================================
+   REUSABLE COPY-ICON BUTTON  (mcp tiles, install grid, anywhere with [data-copy])
+   ========================================================================== */
+.copybtn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 28px; height: 28px;
+  padding: 0;
+  background: rgba(255, 230, 210, 0.04);
+  border: 1px solid rgba(255, 230, 210, 0.08);
+  border-radius: 6px;
+  color: var(--fg-3);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease, transform 0.1s ease;
+}
+.copybtn:hover {
+  color: var(--orange-400);
+  border-color: rgba(217, 119, 6, 0.40);
+  background: rgba(217, 119, 6, 0.08);
+}
+.copybtn:active { transform: translateY(1px); }
+.copybtn.copied {
+  color: #00C244;
+  border-color: rgba(0, 194, 68, 0.50);
+  background: rgba(0, 194, 68, 0.10);
+}
+.copybtn svg { display: block; }
+
+/* install card grows a copy button on the right edge */
+.installcard {
+  position: relative;
+}
+.installcard code {
+  padding-right: 8px;
+}
+.installcard .copybtn {
+  margin-left: auto;
+}
+
+/* validation/test terminal — match the pure-black gradient of other terminal widgets */
+.testterm,
+.termx {
+  background: linear-gradient(180deg, #050505, #000000) !important;
+  border: 1px solid rgba(255, 230, 210, 0.08) !important;
+  border-radius: 12px;
+  box-shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.85) !important;
+  overflow: hidden;
+}
+.testterm__chrome,
+.termx__chrome {
+  background: rgba(255, 230, 210, 0.02) !important;
+  border-bottom: 1px solid rgba(255, 230, 210, 0.05) !important;
+}
+.termx::after { display: none; }
 
 

@@ -519,10 +519,7 @@ deploy = Deployment(
       <h2 class="section__title" data-reveal>
         Numbers we're targeting at GA &mdash; on <span class="grad-text" data-scramble>your existing hardware</span>
       </h2>
-      <p class="section__lede" data-reveal>
-        Internal benchmarks on DeepSeek-V4-Pro, batch=192, NVIDIA B300.
-        Comparison vs out-of-the-box default config.
-      </p>
+
 
       <!-- ASCII bar chart panel -->
       <div class="ascii-perf" data-reveal>
@@ -811,16 +808,19 @@ deploy = Deployment(
         </div>
       </div>
 
-      <!-- 4-tile grid — each tile is a single-click Install button per editor -->
+      <!-- 4-tile grid — each tile shows logo + name + install cmd with a copy-icon button -->
       <div class="mcp-grid" data-reveal>
         <div class="mcp-tile">
           <div class="mcp-tile__head">
             <div class="mcp-tile__logo mcp-tile__logo--cc">
-              <img src="logos/claudecode-color.svg" width="24" height="24" alt="Claude Code" />
+              <img src="logos/claudecode-color.svg" alt="Claude Code" />
             </div>
             <div class="mcp-tile__name">Claude Code</div>
           </div>
-          <div class="mcp-tile__cmd" data-copy="claude mcp add autoinference" title="Click to copy"><span class="mcp-tile__prompt">$</span> claude mcp add autoinference</div>
+          <div class="mcp-tile__cmd">
+            <span class="mcp-tile__cmdT"><span class="mcp-tile__prompt">$</span> claude mcp add autoinference</span>
+            <button class="copybtn" type="button" data-copy="claude mcp add autoinference" aria-label="Copy install command"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" width="13" height="13"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+          </div>
         </div>
 
         <div class="mcp-tile">
@@ -830,27 +830,36 @@ deploy = Deployment(
             </div>
             <div class="mcp-tile__name">Codex</div>
           </div>
-          <div class="mcp-tile__cmd" data-copy="codex mcp add autoinference" title="Click to copy"><span class="mcp-tile__prompt">$</span> codex mcp add autoinference</div>
+          <div class="mcp-tile__cmd">
+            <span class="mcp-tile__cmdT"><span class="mcp-tile__prompt">$</span> codex mcp add autoinference</span>
+            <button class="copybtn" type="button" data-copy="codex mcp add autoinference" aria-label="Copy install command"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" width="13" height="13"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+          </div>
         </div>
 
         <div class="mcp-tile">
           <div class="mcp-tile__head">
             <div class="mcp-tile__logo mcp-tile__logo--cr">
-              <img src="https://cdn.simpleicons.org/cursor/FAFAFA" width="22" height="22" alt="Cursor" />
+              <img src="https://cdn.simpleicons.org/cursor/FAFAFA" alt="Cursor" />
             </div>
             <div class="mcp-tile__name">Cursor</div>
           </div>
-          <div class="mcp-tile__cmd" data-copy="cursor mcp add autoinference" title="Click to copy"><span class="mcp-tile__prompt">$</span> cursor mcp add autoinference</div>
+          <div class="mcp-tile__cmd">
+            <span class="mcp-tile__cmdT"><span class="mcp-tile__prompt">$</span> cursor mcp add autoinference</span>
+            <button class="copybtn" type="button" data-copy="cursor mcp add autoinference" aria-label="Copy install command"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" width="13" height="13"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+          </div>
         </div>
 
         <div class="mcp-tile">
           <div class="mcp-tile__head">
             <div class="mcp-tile__logo mcp-tile__logo--ag">
-              <img src="logos/antigravity.svg" width="24" height="24" alt="Antigravity" />
+              <img src="logos/antigravity.svg" alt="Antigravity" />
             </div>
             <div class="mcp-tile__name">Antigravity</div>
           </div>
-          <div class="mcp-tile__cmd" data-copy="antigravity mcp install autoinference" title="Click to copy"><span class="mcp-tile__prompt">$</span> antigravity mcp install autoinference</div>
+          <div class="mcp-tile__cmd">
+            <span class="mcp-tile__cmdT"><span class="mcp-tile__prompt">$</span> antigravity mcp install autoinference</span>
+            <button class="copybtn" type="button" data-copy="antigravity mcp install autoinference" aria-label="Copy install command"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" width="13" height="13"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+          </div>
         </div>
       </div>
 
@@ -1107,41 +1116,49 @@ deploy = Deployment(
           <img src="https://cdn.simpleicons.org/python/3776AB" width="16" height="16" alt="" />
           <span class="installcard__l">Python</span>
           <code>pip install autoinference</code>
+          <button class="copybtn" type="button" data-copy="pip install autoinference" aria-label="Copy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" width="13" height="13"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
         </div>
         <div class="installcard" data-reveal>
           <span class="lg-glyph lg-glyph--uv" style="width:16px;height:16px;font-size:9px;">uv</span>
           <span class="installcard__l">uv</span>
           <code>uv add autoinference</code>
+          <button class="copybtn" type="button" data-copy="uv add autoinference" aria-label="Copy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" width="13" height="13"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
         </div>
         <div class="installcard" data-reveal>
           <img src="https://cdn.simpleicons.org/npm/CB3837" width="16" height="16" alt="" />
           <span class="installcard__l">Node</span>
           <code>npm install autoinference</code>
+          <button class="copybtn" type="button" data-copy="npm install autoinference" aria-label="Copy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" width="13" height="13"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
         </div>
         <div class="installcard" data-reveal>
           <img src="https://cdn.simpleicons.org/rust/CE412B" width="16" height="16" alt="" />
           <span class="installcard__l">Rust</span>
           <code>cargo add autoinference</code>
+          <button class="copybtn" type="button" data-copy="cargo add autoinference" aria-label="Copy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" width="13" height="13"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
         </div>
         <div class="installcard" data-reveal>
           <img src="https://cdn.simpleicons.org/go/00ADD8" width="16" height="16" alt="" />
           <span class="installcard__l">Go</span>
           <code>go get github.com/autoinference/autoinference</code>
+          <button class="copybtn" type="button" data-copy="go get github.com/autoinference/autoinference" aria-label="Copy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" width="13" height="13"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
         </div>
         <div class="installcard" data-reveal>
           <img src="https://cdn.simpleicons.org/docker/2496ED" width="16" height="16" alt="" />
           <span class="installcard__l">Docker</span>
           <code>docker pull autoinference/autoinference</code>
+          <button class="copybtn" type="button" data-copy="docker pull autoinference/autoinference" aria-label="Copy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" width="13" height="13"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
         </div>
         <div class="installcard" data-reveal>
           <img src="https://cdn.simpleicons.org/homebrew/FBB040" width="16" height="16" alt="" />
           <span class="installcard__l">brew</span>
           <code>brew install autoinference/tap/autoinference</code>
+          <button class="copybtn" type="button" data-copy="brew install autoinference/tap/autoinference" aria-label="Copy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" width="13" height="13"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
         </div>
         <div class="installcard" data-reveal>
           <img src="https://cdn.simpleicons.org/huggingface/FFD21E" width="16" height="16" alt="" />
           <span class="installcard__l">HF</span>
           <code>huggingface.co/autoinference</code>
+          <button class="copybtn" type="button" data-copy="huggingface.co/autoinference" aria-label="Copy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" width="13" height="13"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
         </div>
       </div>
     </div>
