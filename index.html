@@ -751,20 +751,41 @@ deploy = Deployment(
         models on your infrastructure &mdash; without you ever opening a terminal.
       </p>
 
-      <!-- Universal install: one word, every editor -->
+      <!-- Universal install: two equal paths — npm-direct + skill-registry -->
       <div class="mcp-npx" data-reveal>
         <div class="mcp-npx__head">
-          <span class="mcp-npx__tag">// one word · every editor</span>
-          <span class="mcp-npx__pkg">npm: autoinference</span>
+          <span class="mcp-npx__tag">// universal install · pick either path</span>
         </div>
-        <div class="mcp-npx__row">
-          <pre class="mcp-npx__cmd"><span class="mcp-npx__prompt">$</span> npx autoinference</pre>
-          <button class="mcp-npx__copy" type="button" data-copy="npx autoinference" aria-label="Copy install command">⎘ copy</button>
+
+        <div class="mcp-npx__variants">
+          <div class="mcp-npx__variant">
+            <div class="mcp-npx__variantHead">
+              <span class="mcp-npx__variantLabel">npm direct</span>
+              <span class="mcp-npx__variantPkg">npm: autoinference</span>
+            </div>
+            <div class="mcp-npx__row">
+              <pre class="mcp-npx__cmd"><span class="mcp-npx__prompt">$</span> npx autoinference</pre>
+              <button class="mcp-npx__copy" type="button" data-copy="npx autoinference" aria-label="Copy install command">⎘ copy</button>
+            </div>
+          </div>
+
+          <div class="mcp-npx__variant">
+            <div class="mcp-npx__variantHead">
+              <span class="mcp-npx__variantLabel">skill registry</span>
+              <span class="mcp-npx__variantPkg">@autoinference/peak</span>
+            </div>
+            <div class="mcp-npx__row">
+              <pre class="mcp-npx__cmd"><span class="mcp-npx__prompt">$</span> npx skill add @autoinference/peak</pre>
+              <button class="mcp-npx__copy" type="button" data-copy="npx skill add @autoinference/peak" aria-label="Copy install command">⎘ copy</button>
+            </div>
+          </div>
         </div>
+
         <div class="mcp-npx__foot">
-          One package. The CLI runs as <code>autoinference deploy</code>; agents start the MCP server with
-          <code>autoinference mcp</code>, which exposes <code>autoinference.deploy</code>,
-          <code>autoinference.benchmark</code>, and <code>autoinference.summary_url</code>.
+          Both paths land the same MCP server. The CLI runs as <code>autoinference deploy</code>;
+          agents start the MCP server with <code>autoinference mcp</code>, which exposes
+          <code>autoinference.deploy</code>, <code>autoinference.benchmark</code>, and
+          <code>autoinference.summary_url</code>.
         </div>
       </div>
 
