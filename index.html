@@ -751,23 +751,24 @@ deploy = Deployment(
         models on your infrastructure &mdash; without you ever opening a terminal.
       </p>
 
-      <!-- Universal npx install: one line, every editor -->
+      <!-- Universal install: one word, every editor -->
       <div class="mcp-npx" data-reveal>
         <div class="mcp-npx__head">
-          <span class="mcp-npx__tag">// one command · every editor</span>
-          <span class="mcp-npx__pkg">@autoinference/mcp</span>
+          <span class="mcp-npx__tag">// one word · every editor</span>
+          <span class="mcp-npx__pkg">npm: autoinference</span>
         </div>
         <div class="mcp-npx__row">
-          <pre class="mcp-npx__cmd"><span class="mcp-npx__prompt">$</span> npx -y @autoinference/mcp</pre>
-          <button class="mcp-npx__copy" type="button" aria-label="Copy install command">⎘ copy</button>
+          <pre class="mcp-npx__cmd"><span class="mcp-npx__prompt">$</span> npx autoinference</pre>
+          <button class="mcp-npx__copy" type="button" data-copy="npx autoinference" aria-label="Copy install command">⎘ copy</button>
         </div>
         <div class="mcp-npx__foot">
-          Spawns a local MCP server that exposes <code>autoinference.deploy</code>,
-          <code>autoinference.benchmark</code>, and <code>autoinference.summary_url</code> to any MCP-aware client.
+          One package. The CLI runs as <code>autoinference deploy</code>; agents start the MCP server with
+          <code>autoinference mcp</code>, which exposes <code>autoinference.deploy</code>,
+          <code>autoinference.benchmark</code>, and <code>autoinference.summary_url</code>.
         </div>
       </div>
 
-      <!-- 4-tile grid of supported MCP clients, each with its editor-native add command -->
+      <!-- 4-tile grid — each tile is a single-click Install button per editor -->
       <div class="mcp-grid" data-reveal>
         <div class="mcp-tile">
           <div class="mcp-tile__head">
@@ -779,8 +780,12 @@ deploy = Deployment(
               <div class="mcp-tile__desc">Anthropic's coding agent</div>
             </div>
           </div>
-          <div class="mcp-tile__cmd"><span class="mcp-tile__prompt">$</span> claude mcp add autoinference \<br />&nbsp;&nbsp;&nbsp;&nbsp;-- npx -y @autoinference/mcp</div>
+          <button class="mcp-tile__btn" type="button" data-copy="claude mcp add autoinference">
+            <span class="mcp-tile__btnIcon">+</span> Install
+          </button>
+          <code class="mcp-tile__hint">claude mcp add autoinference</code>
         </div>
+
         <div class="mcp-tile">
           <div class="mcp-tile__head">
             <div class="mcp-tile__logo mcp-tile__logo--cx">
@@ -791,8 +796,12 @@ deploy = Deployment(
               <div class="mcp-tile__desc">OpenAI's coding CLI</div>
             </div>
           </div>
-          <div class="mcp-tile__cmd"><span class="mcp-tile__prompt">$</span> codex mcp add autoinference \<br />&nbsp;&nbsp;&nbsp;&nbsp;-- npx -y @autoinference/mcp</div>
+          <button class="mcp-tile__btn" type="button" data-copy="codex mcp add autoinference">
+            <span class="mcp-tile__btnIcon">+</span> Install
+          </button>
+          <code class="mcp-tile__hint">codex mcp add autoinference</code>
         </div>
+
         <div class="mcp-tile">
           <div class="mcp-tile__head">
             <div class="mcp-tile__logo mcp-tile__logo--cr">
@@ -803,8 +812,12 @@ deploy = Deployment(
               <div class="mcp-tile__desc">AI-native code editor</div>
             </div>
           </div>
-          <div class="mcp-tile__cmd"><span class="mcp-tile__prompt">~/.cursor/mcp.json</span><br />"autoinference": <span class="mcp-tile__brc">{</span> "command": "npx",<br />&nbsp;&nbsp;"args": ["-y", "@autoinference/mcp"] <span class="mcp-tile__brc">}</span></div>
+          <a class="mcp-tile__btn" href="cursor://anysphere.cursor-deeplink/mcp/install?name=autoinference&amp;config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyJhdXRvaW5mZXJlbmNlIiwibWNwIl19">
+            <span class="mcp-tile__btnIcon">+</span> Install
+          </a>
+          <code class="mcp-tile__hint">cursor:// deep-link · or edit mcp.json</code>
         </div>
+
         <div class="mcp-tile">
           <div class="mcp-tile__head">
             <div class="mcp-tile__logo mcp-tile__logo--ag">
@@ -825,7 +838,10 @@ deploy = Deployment(
               <div class="mcp-tile__desc">Google's agentic IDE</div>
             </div>
           </div>
-          <div class="mcp-tile__cmd"><span class="mcp-tile__prompt">$</span> antigravity mcp install \<br />&nbsp;&nbsp;&nbsp;&nbsp;@autoinference/mcp</div>
+          <button class="mcp-tile__btn" type="button" data-copy="antigravity mcp install autoinference">
+            <span class="mcp-tile__btnIcon">+</span> Install
+          </button>
+          <code class="mcp-tile__hint">antigravity mcp install autoinference</code>
         </div>
       </div>
 

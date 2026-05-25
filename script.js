@@ -667,18 +667,26 @@
   }
 
   /* ---------------------------------------------------------------------
-     MCP npx-install copy button
+     MCP section — generic [data-copy] click-to-copy buttons
+     (covers npx hero block + per-editor tile Install buttons)
      --------------------------------------------------------------------- */
-  document.querySelectorAll('.mcp-npx__copy').forEach(btn => {
-    btn.addEventListener('click', async () => {
-      const cmd = btn.closest('.mcp-npx').querySelector('.mcp-npx__cmd');
-      if (!cmd) return;
-      const text = cmd.textContent.replace(/^\$\s*/, '').trim();
+  document.querySelectorAll('[data-copy]').forEach(btn => {
+    btn.addEventListener('click', async (ev) => {
+      const text = btn.getAttribute('data-copy');
+      if (!text) return;
       try {
         await navigator.clipboard.writeText(text);
-        const orig = btn.textContent;
-        btn.textContent = '✓ copied';
-        setTimeout(() => { btn.textContent = orig; }, 1800);
+        const origHTML = btn.innerHTML;
+        btn.classList.add('copied');
+        if (btn.classList.contains('mcp-tile__btn')) {
+          btn.innerHTML = '<span class="mcp-tile__btnIcon">✓</span> Copied';
+        } else {
+          btn.textContent = '✓ copied';
+        }
+        setTimeout(() => {
+          btn.classList.remove('copied');
+          btn.innerHTML = origHTML;
+        }, 1800);
       } catch (e) {
         console.warn('Copy failed', e);
       }
