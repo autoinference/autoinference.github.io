@@ -2,13 +2,13 @@
    autoinference — landing page styles
    ========================================================================= */
 
-/* ----- Self-hosted brand font (ari-w9500-display) -------------------- */
+/* ----- Self-hosted brand font (ari-w9500 bold — chunky modern sans) -- */
 @font-face {
   font-family: 'AriW9500';
-  src: url('fonts/ari-w9500-display.ttf') format('truetype');
-  font-weight: 400 900;       /* the file is a single weight but accept any request */
+  src: url('fonts/ari-w9500-bold.ttf') format('truetype');
+  font-weight: 400 900;
   font-style: normal;
-  font-display: swap;          /* show Silkscreen / fallback until the .ttf is decoded */
+  font-display: swap;
 }
 
 /* ----- Tokens -------------------------------------------------------- */
@@ -3700,15 +3700,17 @@ body.preloading { overflow: hidden; }
   top: 0;
   margin: 0;
   padding: 0;
+  max-width: 180px;          /* hard cap so columns can't visually run into each other */
   font-family: 'JetBrains Mono', ui-monospace, monospace;
   font-size: 11px;
-  line-height: 1.7;
+  line-height: 2.0;          /* more vertical breathing room (was 1.7) */
   color: var(--orange-400);
   opacity: 0.22;
   text-shadow: 0 0 6px rgba(249, 115, 22, 0.4);
   white-space: pre;
   user-select: none;
   will-change: transform;
+  overflow: hidden;
 }
 @keyframes preRainScroll {
   0%   { transform: translateY(0); }
@@ -3743,24 +3745,20 @@ body.preloading { overflow: hidden; }
   72.01%, 100% { opacity: 0.28; }
 }
 
-/* terminal green loading bar */
+/* terminal-green loading bar — plain, solid, no stripes, no glow */
 .preloader__bar {
-  width: clamp(240px, 30vw, 360px);
-  height: 12px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(74, 222, 128, 0.35);
-  border-radius: 2px;
+  width: clamp(280px, 36vw, 440px);
+  height: 14px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 1px;
   overflow: hidden;
   margin: 0 auto;
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.3) inset;
+  position: relative;
 }
 .preloader__bar-fill {
   height: 100%;
   width: 0%;
-  background-image: repeating-linear-gradient(90deg,
-    var(--green-400) 0 6px,
-    transparent 6px 8px);
-  box-shadow: 0 0 10px rgba(74, 222, 128, 0.45);
+  background: #2D5A3A;            /* darker forest green — pure flat fill */
   animation: preLoadFill 2.4s cubic-bezier(0.42, 0, 0.4, 1) forwards;
 }
 @keyframes preLoadFill {
