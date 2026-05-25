@@ -105,11 +105,11 @@
       return text + '\n' + text; // duplicate for seamless loop
     }
 
-    // Significantly fewer columns + much wider per-column slots so there's
-    // clear empty space between them. 380px per slot → 3-5 columns max
-    // on any viewport. Each column body capped to 140px so it never spills.
+    // 10-11 parallel columns with small visible gaps between them.
+    // Slot width ~140px → typically 10-11 columns on a 1400-1500px desktop.
+    // Each column body capped to 115px in CSS so a small gap stays visible.
     const vw = window.innerWidth || 1200;
-    const numCols = Math.max(3, Math.min(5, Math.floor(vw / 380)));
+    const numCols = Math.max(8, Math.min(12, Math.floor(vw / 140)));
     const colWidth = 100 / numCols;
 
     for (let i = 0; i < numCols; i++) {
