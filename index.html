@@ -1349,13 +1349,32 @@ deploy = Deployment(
           We're onboarding design-partner teams running real production inference. Tell us your stack &mdash;
           we'll come back with a deployment plan and an early slot.
         </p>
-        <form class="cta__form" onsubmit="event.preventDefault(); window._aiSubmit(this);">
-          <input type="email" required placeholder="you@company.com" class="cta__email" autocomplete="email" />
+        <!-- =========================================================
+             WAITLIST FORM — posts to Formspree → hello@autoinference.org
+             SETUP (one-time): create a free form at https://formspree.io
+             with destination email hello@autoinference.org. Replace
+             FORMSPREE_FORM_ID below with the assigned form id
+             (looks like 'xpwlqyz' — the last segment of the action URL).
+             ========================================================= -->
+        <form class="cta__form" id="waitlistForm"
+              action="https://formspree.io/f/FORMSPREE_FORM_ID"
+              method="POST">
+          <input type="email" name="email" required
+                 placeholder="you@company.com"
+                 class="cta__email" autocomplete="email"
+                 spellcheck="false" autocapitalize="off" />
+          <!-- honeypot: real users won't fill this, bots will — Formspree drops the submission if it has content -->
+          <input type="text" name="_gotcha" tabindex="-1" autocomplete="off"
+                 style="position:absolute;left:-9999px;opacity:0;pointer-events:none;" aria-hidden="true" />
+          <input type="hidden" name="_subject" value="New autoinference.org waitlist signup" />
+          <input type="hidden" name="source" value="autoinference.org#waitlist" />
           <button type="submit" class="btn btn--primary btn--lg">
-            request_access <span class="btn__arrow">→</span>
+            <span class="btn__label">request_access</span>
+            <span class="btn__arrow">→</span>
+            <span class="btn__spinner" aria-hidden="true"></span>
           </button>
         </form>
-        <p class="cta__fine">
+        <p class="cta__fine" id="waitlistFine">
           No spam. We use the email only to reply about beta access.
         </p>
         <div class="cta__row">
@@ -1485,6 +1504,29 @@ deploy = Deployment(
     </div>
   </footer>
 
+  <!-- ===========================================================
+       WAITLIST SUCCESS MODAL  (shown after a confirmed signup,
+       fires confetti, dismissible via ESC / backdrop / × button)
+       =========================================================== -->
+  <div class="wl-modal" id="wlModal" hidden aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="wlModalTitle">
+    <div class="wl-modal__backdrop" data-wl-close></div>
+    <div class="wl-modal__card" role="document">
+      <button class="wl-modal__close" type="button" data-wl-close aria-label="Close">&times;</button>
+      <div class="wl-modal__emoji" aria-hidden="true">🎉</div>
+      <h3 class="wl-modal__title" id="wlModalTitle">Cheers! You're on the waitlist <span aria-hidden="true">🥳</span></h3>
+      <p class="wl-modal__sub">
+        We'll email <span class="wl-modal__email" id="wlModalEmail">you</span> the moment your beta slot opens up.
+      </p>
+      <div class="wl-modal__meta">
+        <span class="wl-modal__metaItem"><span class="dot dot--pulse" style="background:#00C244;box-shadow:0 0 8px rgba(0,194,68,0.55);"></span> on the list</span>
+        <span class="wl-modal__metaItem">private beta &middot; Q3 2026</span>
+      </div>
+      <button class="wl-modal__btn" type="button" data-wl-close>Sweet, close</button>
+    </div>
+  </div>
+
+  <!-- confetti library — pure JS, ~10kb gzipped, no deps, defers like the main script -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js" defer></script>
   <script src="script.js" defer></script>
 </body>
 </html>

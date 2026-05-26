@@ -359,24 +359,153 @@
   }
 
   /* ---------------------------------------------------------------------
-     Waitlist form (mock submit handler)
+     WAITLIST FORM — Formspree-backed submission with client-side
+     validation, per-browser dedup (localStorage), spinner, error states,
+     success modal + canvas-confetti fanfare.
+
+     Backend: Formspree (free tier 50/mo), delivers to hello@autoinference.org.
+     One-time setup: replace FORMSPREE_FORM_ID in the form's action URL
+     in index.html with the real form id from formspree.io dashboard.
      --------------------------------------------------------------------- */
-  window._aiSubmit = function (form) {
-    const email = form.querySelector('.cta__email').value;
-    if (!email) return;
-    const btn = form.querySelector('button');
-    const original = btn.innerHTML;
-    btn.innerHTML = 'Thanks — we\'ll be in touch <span class="btn__arrow">✓</span>';
-    btn.style.background = 'var(--grad-brand)';
-    btn.style.color = 'white';
-    setTimeout(() => {
-      btn.innerHTML = original;
-      btn.style.background = '';
-      btn.style.color = '';
-      form.querySelector('.cta__email').value = '';
-    }, 3500);
-    // when backend exists, POST to /waitlist here
-  };
+  (function setupWaitlist() {
+    const form = document.getElementById('waitlistForm');
+    if (!form) return;
+
+    const emailInput = form.querySelector('.cta__email');
+    const fine = document.getElementById('waitlistFine');
+    const fineOriginal = fine ? fine.textContent : '';
+    const modal = document.getElementById('wlModal');
+    const modalEmail = document.getElementById('wlModalEmail');
+    const STORAGE_KEY = 'ai_waitlist_emails_v1';
+    const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+    function setFine(msg, kind /* 'error' | 'success' | null */) {
+      if (!fine) return;
+      fine.textContent = msg || fineOriginal;
+      fine.classList.remove('is-error', 'is-success');
+      if (kind === 'error')   fine.classList.add('is-error');
+      if (kind === 'success') fine.classList.add('is-success');
+    }
+
+    function alreadySubmitted(email) {
+      try {
+        const seen = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+        return Array.isArray(seen) && seen.includes(email);
+      } catch (_) { return false; }
+    }
+
+    function recordSubmitted(email) {
+      try {
+        const seen = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+        if (!seen.includes(email)) seen.push(email);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(seen));
+      } catch (_) {}
+    }
+
+    /* ---- confetti fanfare ------------------------------------------- */
+    function fireConfetti() {
+      if (typeof window.confetti !== 'function') return; // CDN may have failed
+      const palette = ['#D97706', '#FB923C', '#FBBF24', '#F97316', '#FFFFFF', '#00C244'];
+      const defaults = { colors: palette, disableForReducedMotion: true };
+
+      // center burst
+      window.confetti({ ...defaults, particleCount: 110, spread: 80, startVelocity: 45, origin: { y: 0.55 } });
+      // side cannons fire after a beat
+      setTimeout(() => window.confetti({ ...defaults, particleCount: 70, spread: 60, angle:  60, origin: { x: 0,   y: 0.7 } }), 220);
+      setTimeout(() => window.confetti({ ...defaults, particleCount: 70, spread: 60, angle: 120, origin: { x: 1,   y: 0.7 } }), 360);
+      // slow drift at the end
+      setTimeout(() => window.confetti({ ...defaults, particleCount: 40, spread: 100, startVelocity: 22, gravity: 0.6, origin: { y: 0.4 } }), 620);
+    }
+
+    /* ---- modal open/close ------------------------------------------- */
+    function openModal(email) {
+      if (!modal) return;
+      if (modalEmail) modalEmail.textContent = email;
+      modal.hidden = false;
+      modal.setAttribute('aria-hidden', 'false');
+      requestAnimationFrame(() => modal.classList.add('is-open'));
+      document.body.style.overflow = 'hidden';
+      fireConfetti();
+    }
+    function closeModal() {
+      if (!modal) return;
+      modal.classList.remove('is-open');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      setTimeout(() => { modal.hidden = true; }, 300);
+    }
+    if (modal) {
+      modal.querySelectorAll('[data-wl-close]').forEach(el => el.addEventListener('click', closeModal));
+      document.addEventListener('keydown', (ev) => {
+        if (ev.key === 'Escape' && modal.classList.contains('is-open')) closeModal();
+      });
+    }
+
+    /* ---- live validation hint --------------------------------------- */
+    emailInput && emailInput.addEventListener('input', () => {
+      // clear any stale error as soon as the user starts editing
+      if (fine && fine.classList.contains('is-error')) setFine('');
+    });
+
+    /* ---- submit handler --------------------------------------------- */
+    form.addEventListener('submit', async (ev) => {
+      ev.preventDefault();
+      const email = (emailInput.value || '').trim().toLowerCase();
+
+      // 1) format
+      if (!EMAIL_RE.test(email)) {
+        setFine('That email doesn\'t look right — double-check the format.', 'error');
+        emailInput.focus();
+        return;
+      }
+
+      // 2) dedup (per-browser; the source of truth is Formspree's dashboard)
+      if (alreadySubmitted(email)) {
+        setFine("You're already on the waitlist from this browser — we'll be in touch.", 'success');
+        return;
+      }
+
+      // 3) sanity: action URL must be configured
+      const action = form.getAttribute('action') || '';
+      if (action.includes('FORMSPREE_FORM_ID')) {
+        setFine('Waitlist isn\'t wired up yet — finish the Formspree setup in index.html.', 'error');
+        return;
+      }
+
+      // 4) submit
+      form.classList.add('is-submitting');
+      setFine('');
+      try {
+        const res = await fetch(action, {
+          method: 'POST',
+          headers: { 'Accept': 'application/json' },
+          body: new FormData(form),
+        });
+
+        if (res.ok) {
+          recordSubmitted(email);
+          form.classList.remove('is-submitting');
+          emailInput.value = '';
+          openModal(email);
+          setFine('You\'re on the list — check your inbox for a confirmation.', 'success');
+        } else {
+          // try to surface Formspree's error message if it returned JSON
+          let msg = `Couldn't reach the waitlist (HTTP ${res.status}). Please try again.`;
+          try {
+            const data = await res.json();
+            if (data && Array.isArray(data.errors) && data.errors[0] && data.errors[0].message) {
+              msg = data.errors[0].message;
+            }
+          } catch (_) {}
+          form.classList.remove('is-submitting');
+          setFine(msg, 'error');
+        }
+      } catch (err) {
+        form.classList.remove('is-submitting');
+        setFine('Network blip — please try again in a moment.', 'error');
+      }
+    });
+  })();
 
   /* ---------------------------------------------------------------------
      Year in footer (in case copyright moves)
