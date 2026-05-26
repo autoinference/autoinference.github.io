@@ -2092,7 +2092,8 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
    ASCII PERFORMANCE BAR CHART
    ========================================================================= */
 .ascii-perf {
-  margin-top: 30px;
+  margin: 30px auto 0;
+  max-width: 1080px;             /* matches install-hero/agent widget feel; no longer spans the full container on wide screens */
   background: #000000 !important;
   border: 1px solid rgba(255, 230, 210, 0.08);
   border-radius: 12px;
@@ -2105,7 +2106,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .ascii-perf::before { display: none; }
 .ascii-perf__chrome {
   display: flex; align-items: center; gap: 8px;
-  padding: 11px 28px;
+  padding: 11px 36px;
   background: rgba(255, 230, 210, 0.02);
   border-bottom: 1px solid rgba(255, 230, 210, 0.05);
 }
@@ -2119,8 +2120,8 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .ascii-perf__head,
 .ascii-perf__rows,
 .ascii-perf__foot {
-  padding-left: 28px;
-  padding-right: 28px;
+  padding-left: 36px;            /* +8px breathing room on each side */
+  padding-right: 36px;
 }
 .ascii-perf__head { padding-top: 22px; }
 .ascii-perf__foot { padding-bottom: 22px; }
@@ -2158,8 +2159,8 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 }
 .ascii-perf__row {
   display: grid;
-  grid-template-columns: 130px 1fr 200px;
-  gap: 14px; align-items: center;
+  grid-template-columns: 120px 1fr 240px;   /* slightly wider value column so 'tok/s vs default' has air on the right */
+  gap: 18px; align-items: center;            /* slightly larger column gap for a cleaner read */
   font-size: 13px;
 }
 @media (max-width: 700px) {
@@ -4280,6 +4281,7 @@ body.preloading { overflow: hidden; }
   .codeblock__head { padding: 10px 14px; }
 
   /* ---- Performance ASCII bar widget --------------------------------- */
+  .ascii-perf { max-width: 100%; }                /* fill the mobile viewport */
   .ascii-perf__chrome { padding: 10px 18px; }
   .ascii-perf__head { padding: 18px 18px 0 18px; margin-bottom: 12px; }
   .ascii-perf__rows { padding-left: 18px; padding-right: 18px; }
