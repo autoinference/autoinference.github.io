@@ -1290,16 +1290,16 @@ deploy = Deployment(
 
       <div class="faq" data-reveal>
         <details class="faq__item" open>
-          <summary class="faq__q">What is Auto Inference?</summary>
+          <summary class="faq__q"><span class="faq__qSlash">//</span> what_is_auto_inference</summary>
           <div class="faq__a">
             <p>
-              Auto Inference (autoinference) is an <em class="hl">agentic CLI for production LLM inference optimization</em>. It runs on your own infrastructure (not a hosted API), picks the optimal inference engine for your model and hardware, tunes every config, synthesises custom kernels, and stress-tests the result &mdash; so your GPUs run at the limit of silicon.
+              Auto Inference (autoinference) is an <em class="hl-red hl-keepwhite">agentic CLI for production LLM inference optimization</em>. It runs on your own infrastructure (not a hosted API), picks the optimal inference engine for your model and hardware, tunes every config, synthesises custom kernels, and stress-tests the result &mdash; so your GPUs run at the limit of silicon.
             </p>
           </div>
         </details>
 
         <details class="faq__item">
-          <summary class="faq__q">Which inference engines does Auto Inference support?</summary>
+          <summary class="faq__q"><span class="faq__qSlash">//</span> supported_inference_engines</summary>
           <div class="faq__a">
             <p>
               Auto Inference ranks and tunes across <strong>vLLM</strong>, <strong>SGLang</strong>, <strong>TensorRT-LLM</strong>, <strong>tokenspeed</strong>, and <strong>LMDeploy</strong>. The agentic pipeline picks whichever engine is genuinely optimal for the chosen model + hardware combination &mdash; e.g. SGLang wins for DeepSeek-family MoE deployments on H200; NVFP4 / fused Triton paths win for Kimi 2.6 on B300.
@@ -1308,7 +1308,7 @@ deploy = Deployment(
         </details>
 
         <details class="faq__item">
-          <summary class="faq__q">What hardware can Auto Inference deploy to?</summary>
+          <summary class="faq__q"><span class="faq__qSlash">//</span> supported_hardware</summary>
           <div class="faq__a">
             <p>
               NVIDIA <strong>H100, H200, B200, B300, GB200</strong> (single-node and multi-node, demonstrated up to 32-node &times; 8-GPU = 256&times; H200); AMD <strong>MI300X</strong> and <strong>MI355X</strong>; <strong>Intel Gaudi 3</strong>; Google <strong>TPU v5p</strong> and <strong>v6e</strong>; and Apple Silicon for local development.
@@ -1317,7 +1317,7 @@ deploy = Deployment(
         </details>
 
         <details class="faq__item">
-          <summary class="faq__q">How do I install Auto Inference as an MCP skill?</summary>
+          <summary class="faq__q"><span class="faq__qSlash">//</span> install_as_mcp_skill</summary>
           <div class="faq__a">
             <p>
               Run <code>npx skill add @autoinference/skill</code>, or <code>npx -y @autoinference/skill</code>, in any MCP-aware client (Claude Code, Codex, Cursor, Antigravity). Per-editor short forms: <code>claude mcp add autoinference</code>, <code>codex mcp add autoinference</code>, <code>cursor mcp add autoinference</code>, <code>antigravity mcp install autoinference</code>.
@@ -1326,10 +1326,10 @@ deploy = Deployment(
         </details>
 
         <details class="faq__item">
-          <summary class="faq__q">Is Auto Inference a hosted inference API?</summary>
+          <summary class="faq__q"><span class="faq__qSlash">//</span> is_it_a_hosted_api</summary>
           <div class="faq__a">
             <p>
-              No. Auto Inference is a CLI tool that runs on your own GPU cluster. There is no <code>api.autoinference.org</code> endpoint. The mental model is <em class="hl">wandb for inference</em>: wandb does hyperparameter tuning for training; autoinference does parameter tuning for production inference and gives you a dashboard URL per deployment at <code>dashboard.autoinference.org/&lt;user&gt;/&lt;project&gt;/&lt;hash&gt;</code>.
+              No. Auto Inference is a CLI tool that runs on your own GPU cluster. There is no <code>api.autoinference.org</code> endpoint. The mental model is <em class="hl-red hl-keepwhite">wandb for inference</em>: wandb does hyperparameter tuning for training; autoinference does parameter tuning for production inference and gives you a dashboard URL per deployment at <code>dashboard.autoinference.org/&lt;user&gt;/&lt;project&gt;/&lt;hash&gt;</code>.
             </p>
           </div>
         </details>

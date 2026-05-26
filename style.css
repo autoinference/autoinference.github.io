@@ -4425,16 +4425,22 @@ body.preloading { overflow: hidden; }
   list-style: none;
   cursor: pointer;
   padding: 18px 22px;
-  font-family: var(--font-sans);
-  font-size: 15px;
+  font-family: var(--font-mono);
+  font-size: 14px;
   font-weight: 600;
-  color: var(--fg-0);
+  color: #FBBF24;                  /* amber/yellow — matches IDE string color */
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  letter-spacing: -0.005em;
+  letter-spacing: 0.01em;
   transition: color 0.15s ease;
+}
+.faq__qSlash {
+  color: var(--fg-4);              /* dim, like a real code-comment '//' */
+  font-weight: 500;
+  margin-right: 8px;
+  user-select: none;
 }
 .faq__q::-webkit-details-marker { display: none; }
 .faq__q::after {
@@ -4447,7 +4453,8 @@ body.preloading { overflow: hidden; }
   flex-shrink: 0;
 }
 .faq__item[open] .faq__q::after { transform: rotate(45deg); }
-.faq__q:hover { color: var(--orange-400); }
+.faq__q:hover { color: #FDE68A; }   /* lighter amber on hover */
+.faq__q:hover .faq__qSlash { color: var(--orange-400); }
 .faq__a {
   padding: 0 22px 20px;
 }
@@ -4470,7 +4477,8 @@ body.preloading { overflow: hidden; }
 .faq__a strong { color: var(--fg-0); font-weight: 600; }
 @media (max-width: 640px) {
   .section--faq { padding: 64px 0; }
-  .faq__q { padding: 16px 18px; font-size: 14px; }
+  .faq__q { padding: 16px 18px; font-size: 13px; }
+  .faq__qSlash { margin-right: 6px; }
   .faq__a { padding: 0 18px 16px; }
   .faq__a p { font-size: 13.5px; }
 }
