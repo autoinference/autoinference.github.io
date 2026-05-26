@@ -1,0 +1,44 @@
+# https://autoinference.org/robots.txt
+# Auto Inference — agentic inference optimization
+# Allows all reputable crawlers; points to canonical sitemap.
+
+User-agent: *
+Allow: /
+Disallow: /404.html
+
+# AI/LLM crawlers — explicitly allowed (we want citations in
+# ChatGPT, Perplexity, Claude, Google AI Overviews, etc.)
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+Sitemap: https://autoinference.org/sitemap.xml

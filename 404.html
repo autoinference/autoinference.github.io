@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#06060B" />
+  <title>404 — Auto Inference</title>
+  <meta name="description" content="That page doesn't exist on autoinference.org. Head back home to find the agentic LLM inference optimization CLI." />
+  <meta name="robots" content="noindex, follow" />
+  <link rel="canonical" href="https://autoinference.org/404.html" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #06060B;
+      --fg: #FAFAFA;
+      --dim: #9CA3AF;
+      --orange: #D97706;
+      --green: #00C244;
+      --border: rgba(255, 230, 210, 0.08);
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg);
+      font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace;
+      min-height: 100vh; -webkit-font-smoothing: antialiased; }
+    body {
+      display: flex; align-items: center; justify-content: center;
+      padding: 24px;
+      background:
+        radial-gradient(ellipse 60% 40% at 50% -5%, rgba(217,119,6,0.06) 0%, rgba(194,65,12,0.02) 40%, transparent 75%),
+        var(--bg);
+    }
+    .box {
+      max-width: 640px; width: 100%;
+      background: #000;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: 0 30px 80px -30px rgba(0,0,0,0.85);
+      overflow: hidden;
+    }
+    .chrome {
+      display: flex; align-items: center; gap: 8px;
+      padding: 11px 16px;
+      background: rgba(255, 230, 210, 0.02);
+      border-bottom: 1px solid rgba(255, 230, 210, 0.05);
+      font-size: 11px; color: var(--dim);
+    }
+    .dot { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; }
+    .dot--r { background: #FF5F57; }
+    .dot--y { background: #FEBC2E; }
+    .dot--g { background: #28C840; }
+    .chrome__t { margin-left: 10px; letter-spacing: 0.01em; }
+    .body { padding: 36px 32px 32px; }
+    .prompt { color: var(--green); font-weight: 700; margin-right: 10px;
+      text-shadow: 0 0 8px rgba(0,194,68,0.45); }
+    .cmd { font-size: 14px; color: var(--fg); display: block; margin-bottom: 24px; }
+    h1 {
+      font-family: Inter, system-ui, -apple-system, 'Segoe UI', sans-serif;
+      font-size: clamp(40px, 8vw, 64px); font-weight: 800; letter-spacing: -0.025em;
+      margin: 0 0 12px; color: var(--orange);
+    }
+    .lead { font-size: 14px; color: var(--dim); margin: 0 0 28px; line-height: 1.6; }
+    .lead strong { color: var(--fg); font-weight: 600; }
+    a.btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 18px;
+      background: var(--orange);
+      color: #fff;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 13px; font-weight: 600;
+      font-family: Inter, system-ui, sans-serif;
+      transition: background 0.15s ease;
+    }
+    a.btn:hover { background: #C2410C; }
+    a.ghost {
+      display: inline-flex; align-items: center; gap: 6px;
+      margin-left: 10px;
+      padding: 10px 14px;
+      color: var(--dim); text-decoration: none;
+      border: 1px solid var(--border); border-radius: 8px;
+      font-size: 13px; font-weight: 500;
+      font-family: Inter, system-ui, sans-serif;
+      transition: color 0.15s ease, border-color 0.15s ease;
+    }
+    a.ghost:hover { color: var(--fg); border-color: rgba(217,119,6,0.45); }
+  </style>
+</head>
+<body>
+  <main class="box" role="main">
+    <div class="chrome">
+      <span class="dot dot--r"></span>
+      <span class="dot dot--y"></span>
+      <span class="dot dot--g"></span>
+      <span class="chrome__t">autoinference &middot; 404</span>
+    </div>
+    <div class="body">
+      <code class="cmd"><span class="prompt">$</span> autoinference open <em style="color:var(--dim);font-style:normal">[that page]</em></code>
+      <h1>404</h1>
+      <p class="lead">
+        <strong>No route to that URL.</strong> Either the link is stale, the page hasn&rsquo;t shipped yet,
+        or autoinference.org never had it. Head back home and find the agentic LLM inference optimization CLI.
+      </p>
+      <a class="btn" href="/">← Back to autoinference.org</a>
+      <a class="ghost" href="https://github.com/autoinference/autoinference" rel="noopener">GitHub</a>
+    </div>
+  </main>
+</body>
+</html>

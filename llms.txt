@@ -1,0 +1,59 @@
+# Auto Inference
+
+> Agentic CLI for production LLM inference optimization. Drop in any model and any hardware; autoinference picks the optimal inference engine, tunes every config, synthesises custom kernels, and stress-tests the result — so your GPUs run at the limit of silicon.
+
+Auto Inference (npm: `autoinference`, MCP skill: `@autoinference/skill`) is a CLI tool that runs on the **user's own inference cluster** (not a hosted API). The mental model is "wandb for inference": wandb does hyperparameter tuning for training; autoinference does parameter tuning for production LLM inference and gives you a wandb-style dashboard URL per deployment.
+
+## What it does
+
+The CLI deploys a chosen LLM on the user's own hardware with the optimal configuration to yield peak throughput, lowest p99 latency, and lowest cost-per-million-tokens for that exact workload. Behind the CLI, multiple agents form one autonomous pipeline:
+
+- **Hardware probe** — detects topology, interconnect, HBM
+- **Engine selection** — ranks compatible engines (SGLang, TensorRT-LLM, tokenspeed, vLLM, LMDeploy) for the model + hardware combination
+- **Kernel synthesis** — writes fused Triton / CUTLASS / NVFP4 kernels for the hot path
+- **Config tuning** — sweeps batch size, tensor / expert parallelism, KV cache layout, quantisation scheme, speculative decoding
+- **Validation harness** — load + correctness + security suites (OWASP LLM 01..10, SBOM + signature)
+
+## Install
+
+The same package ships under three distribution paths so any developer workflow can adopt it:
+
+| Path | One-liner |
+|------|-----------|
+| npm direct | `npx autoinference` |
+| skill registry (MCP) | `npx skill add @autoinference/skill` |
+| pip / uv / brew / cargo / docker | per-ecosystem `install autoinference` |
+
+The MCP server exposes three tools to any MCP-aware coding agent (Claude Code, Codex, Cursor, Antigravity): `autoinference.deploy`, `autoinference.benchmark`, `autoinference.summary_url`.
+
+## Supported stack
+
+- **Engines:** vLLM, SGLang, TensorRT-LLM, tokenspeed, LMDeploy
+- **NVIDIA hardware:** H100, H200, B200, B300, GB200 — single-node and multi-node (up to 32-node × 8 GPU = 256 H200 demonstrated)
+- **AMD:** MI300X, MI355X
+- **Other:** Intel Gaudi 3, Google TPU v5p / v6e, Apple Silicon
+- **Runtimes:** CUDA, ROCm, Triton, PyTorch, NCCL, Kubernetes, Docker
+
+## Supported model families (with first-class kernel + drafter choices)
+
+- **DeepSeek V3 / V4 family** — MLA attention, native MTP drafter, DeepGEMM FP8, DeepEP all-to-all, FlashMLA. SGLang is the recommended production engine
+- **Kimi 2.6** — EAGLE-3 speculative decoding, NVFP4 fused RMSNorm+RoPE on Blackwell Ultra
+- **GLM 5.1** — EAGLE-3 / Medusa-2 drafter, FlashAttention-3, fused norm kernels
+
+## Status
+
+v0.0.1-alpha placeholder — CLI + MCP skill are published across npm, PyPI, crates.io, Homebrew, Hugging Face. The full agentic pipeline ships with the design-partner beta.
+
+## Links
+
+- Website: https://autoinference.org
+- npm: https://www.npmjs.com/package/autoinference
+- npm (MCP skill): https://www.npmjs.com/package/@autoinference/skill
+- GitHub: https://github.com/autoinference/autoinference
+- Contact: hello@autoinference.org
+
+## What we are NOT
+
+- Not a hosted inference API. autoinference runs on the user's own GPUs. There is no `api.autoinference.org/v1/<model>` endpoint — that framing is wrong.
+- Not a model. Auto Inference does not train or serve models itself; it makes the user's existing inference stack run at the limit of the silicon.
+- Not vLLM, SGLang, or TensorRT-LLM. We compose and tune these engines; we don't replace them.

@@ -4,26 +4,236 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="theme-color" content="#06060B" />
-  <title>autoinference — Peak inference performance. Zero ML engineering.</title>
-  <meta name="description" content="Drop in any model and any hardware. autoinference picks the optimal engine, tunes every config, writes custom kernels, and stress-tests the result — so your GPUs run at the limit of silicon." />
-  <meta name="keywords" content="inference, vLLM, SGLang, TensorRT-LLM, LLM serving, GPU optimization, agentic, kernel optimization, CLI" />
+  <meta name="color-scheme" content="dark" />
 
-  <meta property="og:title" content="autoinference — Peak inference performance. Zero ML engineering." />
-  <meta property="og:description" content="An agentic CLI for production LLM inference. Drop in any model, any hardware. Ship at the limit of silicon." />
-  <meta property="og:url" content="https://autoinference.org" />
+  <!-- ==========================================================================
+       PRIMARY SEO
+       Primary keyword: "agentic inference optimization"
+       Brand: "Auto Inference" / "autoinference" (lowercase one-word + two-word)
+       ========================================================================== -->
+  <title>Auto Inference — Agentic LLM Inference Optimization CLI</title>
+  <meta name="description" content="Auto Inference is an agentic CLI for production LLM inference optimization. Picks the optimal engine, tunes every config, ships as an MCP skill." />
+  <meta name="author" content="Auto Inference" />
+  <meta name="keywords" content="Auto Inference, autoinference, agentic inference optimization, LLM inference optimization, peak inference performance, MCP server for LLM inference, vLLM, SGLang, TensorRT-LLM, tokenspeed, LMDeploy, NVIDIA B300, H200, multi-node inference, kernel synthesis, EAGLE-3, MTP, FlashMLA, DeepGEMM, speculative decoding" />
+  <link rel="canonical" href="https://autoinference.org/" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1" />
+
+  <!-- ==========================================================================
+       OPEN GRAPH (Facebook, LinkedIn, Slack, Discord, Telegram, etc.)
+       ========================================================================== -->
   <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Auto Inference" />
+  <meta property="og:title" content="Auto Inference — Agentic LLM Inference Optimization CLI" />
+  <meta property="og:description" content="Drop in any model and any hardware. Auto Inference picks the optimal engine, tunes every config, synthesises custom kernels, and stress-tests the result — so your GPUs run at the limit of silicon." />
+  <meta property="og:url" content="https://autoinference.org/" />
+  <meta property="og:image" content="https://autoinference.org/og-image.png" />
+  <meta property="og:image:secure_url" content="https://autoinference.org/og-image.png" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Auto Inference — Peak inference performance. Zero ML engineering. Agentic CLI for production LLM inference." />
+  <meta property="og:locale" content="en_US" />
 
+  <!-- ==========================================================================
+       TWITTER / X
+       ========================================================================== -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:site" content="@autoinference_" />
+  <meta name="twitter:creator" content="@autoinference_" />
+  <meta name="twitter:title" content="Auto Inference — Agentic LLM Inference Optimization CLI" />
+  <meta name="twitter:description" content="Drop in any model, any hardware. Picks the optimal engine, tunes every config, synthesises custom kernels. Runs your GPUs at the limit of silicon." />
+  <meta name="twitter:image" content="https://autoinference.org/og-image.png" />
+  <meta name="twitter:image:alt" content="Auto Inference — Agentic LLM inference optimization CLI" />
 
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238B5CF6'/%3E%3Cstop offset='0.5' stop-color='%233B82F6'/%3E%3Cstop offset='1' stop-color='%2306B6D4'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='24' height='24' rx='6' fill='url(%23g)'/%3E%3Cpath d='M7 16 L12 6 L17 16 M9 13 L15 13' stroke='white' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+  <!-- ==========================================================================
+       ICONS  (orange brand mark — replaces the legacy purple gradient)
+       ========================================================================== -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="mask-icon" href="/favicon.svg" color="#D97706" />
 
+  <!-- ==========================================================================
+       SEARCH CONSOLE / ANALYTICS PLACEHOLDERS
+       Uncomment and fill in once verified. Kept commented so empty values
+       don't show up as garbage in 'view source'.
+       ========================================================================== -->
+  <!-- <meta name="google-site-verification" content="REPLACE_WITH_GSC_VERIFICATION_TOKEN" /> -->
+  <!-- <meta name="msvalidate.01" content="REPLACE_WITH_BING_VERIFICATION_TOKEN" /> -->
+  <!-- Plausible (privacy-first, recommended):
+       <script defer data-domain="autoinference.org" src="https://plausible.io/js/script.js"></script>
+  -->
+  <!-- OR Google Analytics 4:
+       <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+       <script>
+         window.dataLayer = window.dataLayer || [];
+         function gtag(){dataLayer.push(arguments);}
+         gtag('js', new Date());
+         gtag('config', 'G-XXXXXXXXXX');
+       </script>
+  -->
+
+  <!-- ==========================================================================
+       RESOURCE HINTS  (preconnect to font + icon CDNs, preload self-hosted fonts)
+       ========================================================================== -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="preconnect" href="https://cdn.simpleicons.org" crossorigin />
+  <link rel="preload" as="font" type="font/ttf" href="/fonts/ari-w9500-bold.ttf" crossorigin />
+
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="style.css" />
+
+  <!-- ==========================================================================
+       STRUCTURED DATA  (schema.org JSON-LD)
+       Validates clean against https://search.google.com/test/rich-results
+       and https://validator.schema.org/
+       ========================================================================== -->
+
+  <!-- 1. Organization — anchors the brand name → domain association -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": "https://autoinference.org/#organization",
+    "name": "Auto Inference",
+    "alternateName": ["autoinference", "Auto Inference CLI"],
+    "url": "https://autoinference.org/",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://autoinference.org/apple-touch-icon.png",
+      "width": 180,
+      "height": 180
+    },
+    "image": "https://autoinference.org/og-image.png",
+    "description": "Auto Inference is an agentic CLI that deploys any LLM on any hardware at peak performance — picks the optimal engine, tunes every config, synthesises custom kernels, and ships as an MCP skill.",
+    "email": "hello@autoinference.org",
+    "sameAs": [
+      "https://github.com/autoinference",
+      "https://github.com/autoinference/autoinference",
+      "https://www.npmjs.com/package/autoinference",
+      "https://www.npmjs.com/package/@autoinference/skill",
+      "https://pypi.org/project/autoinference/",
+      "https://crates.io/crates/autoinference",
+      "https://hub.docker.com/u/autoinference",
+      "https://huggingface.co/autoinference",
+      "https://twitter.com/autoinference_",
+      "https://x.com/autoinference_",
+      "https://www.instagram.com/autoinference/"
+    ],
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "email": "hello@autoinference.org",
+      "contactType": "customer support",
+      "availableLanguage": ["English"]
+    }
+  }
+  </script>
+
+  <!-- 2. WebSite — enables the SERP sitelinks search box + brand association -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": "https://autoinference.org/#website",
+    "url": "https://autoinference.org/",
+    "name": "Auto Inference",
+    "alternateName": "autoinference",
+    "description": "Agentic CLI for production LLM inference optimization.",
+    "publisher": { "@id": "https://autoinference.org/#organization" },
+    "inLanguage": "en-US",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": "https://autoinference.org/?q={search_term_string}"
+      },
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
+
+  <!-- 3. SoftwareApplication — describes the CLI itself -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Auto Inference",
+    "alternateName": "autoinference",
+    "url": "https://autoinference.org/",
+    "image": "https://autoinference.org/og-image.png",
+    "description": "Agentic CLI + MCP skill for production LLM inference optimization. Picks the optimal engine (SGLang, TensorRT-LLM, tokenspeed, vLLM, LMDeploy), tunes every config, synthesises custom kernels, and validates the deployment — across NVIDIA H100/H200/B200/B300, AMD MI300X/MI355X, Intel Gaudi 3, Google TPU, and Apple Silicon.",
+    "applicationCategory": "DeveloperApplication",
+    "applicationSubCategory": "Machine Learning Infrastructure",
+    "operatingSystem": "Linux, macOS, Windows",
+    "softwareVersion": "0.0.1-alpha",
+    "releaseNotes": "Placeholder release. CLI + MCP skill published across npm, PyPI, crates.io, Homebrew, Hugging Face. Full agentic pipeline ships with the design-partner beta.",
+    "downloadUrl": "https://www.npmjs.com/package/autoinference",
+    "installUrl": "https://autoinference.org/#install",
+    "license": "https://opensource.org/licenses/MIT",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD",
+      "availability": "https://schema.org/InStock"
+    },
+    "publisher": { "@id": "https://autoinference.org/#organization" },
+    "keywords": "agentic inference optimization, LLM inference optimization, MCP server, peak inference performance, vLLM, SGLang, TensorRT-LLM, kernel synthesis, speculative decoding"
+  }
+  </script>
+
+  <!-- 4. FAQPage — short Q&A section near the bottom of the page -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "@id": "https://autoinference.org/#faq",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is Auto Inference?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Auto Inference (autoinference) is an agentic CLI for production LLM inference optimization. It runs on your own infrastructure (not a hosted API), picks the optimal inference engine for your model and hardware, tunes every config, synthesises custom kernels, and stress-tests the result — so your GPUs run at the limit of silicon."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Which inference engines does Auto Inference support?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Auto Inference ranks and tunes across vLLM, SGLang, TensorRT-LLM, tokenspeed, and LMDeploy. The agentic pipeline picks whichever engine is genuinely optimal for the chosen model + hardware combination — e.g. SGLang wins for DeepSeek-family MoE deployments on H200; NVFP4 / fused Triton paths win for Kimi 2.6 on B300."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What hardware can Auto Inference deploy to?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "NVIDIA H100, H200, B200, B300, GB200 (single-node and multi-node, demonstrated up to 32-node × 8-GPU = 256× H200); AMD MI300X and MI355X; Intel Gaudi 3; Google TPU v5p and v6e; and Apple Silicon for local development."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I install Auto Inference as an MCP skill?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Run npx skill add @autoinference/skill, or npx -y @autoinference/skill, in any MCP-aware client (Claude Code, Codex, Cursor, Antigravity). Per-editor short forms: claude mcp add autoinference, codex mcp add autoinference, cursor mcp add autoinference, antigravity mcp install autoinference."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is Auto Inference a hosted inference API?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. Auto Inference is a CLI tool that runs on your own GPU cluster. There is no api.autoinference.org endpoint. The mental model is wandb for inference: wandb does hyperparameter tuning for training; autoinference does parameter tuning for production inference and gives you a dashboard URL per deployment at dashboard.autoinference.org/<user>/<project>/<hash>."
+        }
+      }
+    ]
+  }
+  </script>
 </head>
 <body class="preloading">
 
@@ -79,6 +289,7 @@
         <a href="#webapp" data-scramble-hover>webapp</a>
         <a href="#mcp" data-scramble-hover>mcp</a>
         <a href="#validation" data-scramble-hover>validation</a>
+        <a href="#faq" data-scramble-hover>faq</a>
         <a href="https://github.com/autoinference/autoinference" target="_blank" rel="noopener" class="navic">
           <img src="https://cdn.simpleicons.org/github/A1A1B5" width="14" height="14" alt="" />
           <span data-scramble-hover>github</span>
@@ -1067,6 +1278,65 @@ deploy = Deployment(
     </div>
   </section>
 
+  <!-- FAQ — visible content that backs the FAQPage JSON-LD in the head.
+       Google requires the answers to be present in the rendered HTML for
+       the FAQ rich-result to show. -->
+  <section class="section section--faq" id="faq">
+    <div class="container">
+      <div class="eyebrow" data-reveal>// faq</div>
+      <h2 class="section__title" data-reveal>
+        Common <span class="grad-text" data-scramble>questions</span>
+      </h2>
+
+      <div class="faq" data-reveal>
+        <details class="faq__item" open>
+          <summary class="faq__q">What is Auto Inference?</summary>
+          <div class="faq__a">
+            <p>
+              Auto Inference (autoinference) is an <em class="hl">agentic CLI for production LLM inference optimization</em>. It runs on your own infrastructure (not a hosted API), picks the optimal inference engine for your model and hardware, tunes every config, synthesises custom kernels, and stress-tests the result &mdash; so your GPUs run at the limit of silicon.
+            </p>
+          </div>
+        </details>
+
+        <details class="faq__item">
+          <summary class="faq__q">Which inference engines does Auto Inference support?</summary>
+          <div class="faq__a">
+            <p>
+              Auto Inference ranks and tunes across <strong>vLLM</strong>, <strong>SGLang</strong>, <strong>TensorRT-LLM</strong>, <strong>tokenspeed</strong>, and <strong>LMDeploy</strong>. The agentic pipeline picks whichever engine is genuinely optimal for the chosen model + hardware combination &mdash; e.g. SGLang wins for DeepSeek-family MoE deployments on H200; NVFP4 / fused Triton paths win for Kimi 2.6 on B300.
+            </p>
+          </div>
+        </details>
+
+        <details class="faq__item">
+          <summary class="faq__q">What hardware can Auto Inference deploy to?</summary>
+          <div class="faq__a">
+            <p>
+              NVIDIA <strong>H100, H200, B200, B300, GB200</strong> (single-node and multi-node, demonstrated up to 32-node &times; 8-GPU = 256&times; H200); AMD <strong>MI300X</strong> and <strong>MI355X</strong>; <strong>Intel Gaudi 3</strong>; Google <strong>TPU v5p</strong> and <strong>v6e</strong>; and Apple Silicon for local development.
+            </p>
+          </div>
+        </details>
+
+        <details class="faq__item">
+          <summary class="faq__q">How do I install Auto Inference as an MCP skill?</summary>
+          <div class="faq__a">
+            <p>
+              Run <code>npx skill add @autoinference/skill</code>, or <code>npx -y @autoinference/skill</code>, in any MCP-aware client (Claude Code, Codex, Cursor, Antigravity). Per-editor short forms: <code>claude mcp add autoinference</code>, <code>codex mcp add autoinference</code>, <code>cursor mcp add autoinference</code>, <code>antigravity mcp install autoinference</code>.
+            </p>
+          </div>
+        </details>
+
+        <details class="faq__item">
+          <summary class="faq__q">Is Auto Inference a hosted inference API?</summary>
+          <div class="faq__a">
+            <p>
+              No. Auto Inference is a CLI tool that runs on your own GPU cluster. There is no <code>api.autoinference.org</code> endpoint. The mental model is <em class="hl">wandb for inference</em>: wandb does hyperparameter tuning for training; autoinference does parameter tuning for production inference and gives you a dashboard URL per deployment at <code>dashboard.autoinference.org/&lt;user&gt;/&lt;project&gt;/&lt;hash&gt;</code>.
+            </p>
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
+
   <!-- WAITLIST -->
   <section class="cta" id="waitlist">
     <div class="container">
@@ -1185,6 +1455,7 @@ deploy = Deployment(
           <a href="#webapp">webapp</a>
           <a href="#mcp">mcp</a>
           <a href="#validation">validation</a>
+          <a href="#faq">faq</a>
           <a href="#waitlist">join_waitlist</a>
         </div>
         <div class="footer__col">
