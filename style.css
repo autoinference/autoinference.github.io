@@ -2092,8 +2092,9 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
    ASCII PERFORMANCE BAR CHART
    ========================================================================= */
 .ascii-perf {
+  --ax-pad: 48px;                /* one knob — controls ALL horizontal padding inside the widget */
   margin: 30px auto 0;
-  max-width: 1080px;             /* matches install-hero/agent widget feel; no longer spans the full container on wide screens */
+  max-width: 960px;              /* tighter than v9.3 1080px so the widget is more proportionate */
   background: #000000 !important;
   border: 1px solid rgba(255, 230, 210, 0.08);
   border-radius: 12px;
@@ -2106,7 +2107,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .ascii-perf::before { display: none; }
 .ascii-perf__chrome {
   display: flex; align-items: center; gap: 8px;
-  padding: 11px 36px;
+  padding: 11px var(--ax-pad);
   background: rgba(255, 230, 210, 0.02);
   border-bottom: 1px solid rgba(255, 230, 210, 0.05);
 }
@@ -2117,15 +2118,8 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   color: var(--fg-3);
   letter-spacing: 0.01em;
 }
-.ascii-perf__head,
-.ascii-perf__rows,
-.ascii-perf__foot {
-  padding-left: 36px;            /* +8px breathing room on each side */
-  padding-right: 36px;
-}
-.ascii-perf__head { padding-top: 22px; }
-.ascii-perf__foot { padding-bottom: 22px; }
-.ascii-perf__head { margin-bottom: 20px; }
+.ascii-perf__head { padding: 22px var(--ax-pad) 0; margin-bottom: 20px; }
+.ascii-perf__foot { padding: 0 var(--ax-pad) 22px; }
 .ascii-perf__title {
   font-size: 14px; color: var(--fg-0); font-weight: 600;
   margin-bottom: 4px;
@@ -2153,14 +2147,14 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 
 .ascii-perf__rows {
   display: flex; flex-direction: column; gap: 12px;
-  padding: 18px 0;
+  padding: 18px var(--ax-pad);    /* was '18px 0' — that shorthand was wiping the horizontal padding to zero */
   border-top: 1px dashed var(--border);
   border-bottom: 1px dashed var(--border);
 }
 .ascii-perf__row {
   display: grid;
-  grid-template-columns: 120px 1fr 240px;   /* slightly wider value column so 'tok/s vs default' has air on the right */
-  gap: 18px; align-items: center;            /* slightly larger column gap for a cleaner read */
+  grid-template-columns: 110px 1fr 220px;
+  gap: 18px; align-items: center;
   font-size: 13px;
 }
 @media (max-width: 700px) {
