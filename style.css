@@ -4475,4 +4475,42 @@ body.preloading { overflow: hidden; }
   .faq__a p { font-size: 13.5px; }
 }
 
+/* ============================================================================
+   TERMINAL-WINDOW EDGE POLISH  (final pass)
+   Sharper border + macOS-style triple-layer shadow on every terminal-window
+   surface so the edges look LIT, not soft. Was: 0.08-alpha border + a single
+   80px-spread mushy drop shadow → corners looked fuzzy / "unasthetic".
+   Now: 0.14 border + inset top rim highlight + crisp 1px definition shadow
+   + tighter 50px drop. Applied to ALL terminal surfaces together so the
+   whole page stays one visual family.
+   ============================================================================ */
+.install-hero,
+.agentw,
+.hstep .codeblock,
+.ascii-perf,
+.mock--dashwarm,
+.mcp-demo,
+.testterm,
+.termx {
+  border: 1px solid rgba(255, 230, 210, 0.14) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 1px 2px rgba(0, 0, 0, 0.55),
+    0 20px 50px -20px rgba(0, 0, 0, 0.75) !important;
+}
+
+/* Chrome bars (the strip with the traffic-light dots) get a crisper
+   bottom-edge separator so it reads as a real window header, not
+   washed-out warm tint */
+.install-hero__chrome,
+.agentw__chrome,
+.codeblock__head,
+.ascii-perf__chrome,
+.mcp-demo__chrome,
+.testterm__chrome,
+.termx__chrome {
+  background: rgba(255, 230, 210, 0.025) !important;
+  border-bottom: 1px solid rgba(255, 230, 210, 0.08) !important;
+}
+
 
